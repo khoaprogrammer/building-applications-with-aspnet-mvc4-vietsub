@@ -1,6 +1,6 @@
 1
 00:00:02,000 --> 00:00:05,000
-Hi, this is Scott Allen and in this module we're going to take some time
+Xin chào, tôi là Scott Allen và trong chương này chúng ta sẽ dành thời gian
 
 2
 00:00:05,000 --> 00:00:09,000
