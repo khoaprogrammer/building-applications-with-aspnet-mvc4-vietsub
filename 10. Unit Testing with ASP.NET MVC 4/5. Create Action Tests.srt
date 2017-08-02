@@ -1,0 +1,244 @@
+1
+00:00:02,000 --> 00:00:06,000
+Let's see what it would look like to test the "Create" action of the "Restaurant Controller".
+
+2
+00:00:06,000 --> 00:00:10,000
+Here are two tests with less than 10 lines of code for each test.
+
+3
+00:00:10,000 --> 00:00:14,000
+The first test wants to make sure a controller saves a restaurant when the restaurant is valid.
+
+4
+00:00:14,000 --> 00:00:17,000
+The second test wants to make sure we do not save a restaurant
+
+5
+00:00:17,000 --> 00:00:19,000
+when the model state is invalid.
+
+6
+00:00:19,000 --> 00:00:23,000
+Both of these tests use our fake database to make it easy to test.
+
+7
+00:00:23,000 --> 00:00:28,000
+In the scenario where there is an error, we set up "Model State" to look like validation failed.
+
+8
+00:00:28,000 --> 00:00:30,000
+I can do that by adding a model error to "Model State".
+
+9
+00:00:30,000 --> 00:00:34,000
+You can call "Add Model Error" to simulate an error condition.
+
+10
+00:00:34,000 --> 00:00:36,000
+You can also call "Add Model Error" inside of "Controller"
+
+11
+00:00:36,000 --> 00:00:40,000
+if you wanted a real error condition that would display to the user.
+
+12
+00:00:40,000 --> 00:00:42,000
+But I will point out that you need to be careful.
+
+13
+00:00:42,000 --> 00:00:45,000
+If you're calling "Add Model Error" a lot in your controllers,
+
+14
+00:00:45,000 --> 00:00:48,000
+it might mean that your controllers have too many validation responsibilities,
+
+15
+00:00:48,000 --> 00:00:52,000
+and validation is generally a responsibility you can assign elsewhere.
+
+16
+00:00:52,000 --> 00:00:55,000
+In this application, we're using validation attributes,
+
+17
+00:00:55,000 --> 00:00:58,000
+but you could also have a model validate itself.
+
+18
+00:00:58,000 --> 00:01:01,000
+Once we call the "Create Action", we'll make sure nothing was added to the
+
+19
+00:01:01,000 --> 00:01:03,000
+"Added" collection of our fake database.
+
+20
+00:01:03,000 --> 00:01:07,000
+And this demonstrates how fakes have a different purpose than real objects.
+
+21
+00:01:07,000 --> 00:01:11,000
+Fakes should make things easy to test, perhaps even adding additional properties and methods
+
+22
+00:01:11,000 --> 00:01:15,000
+to figure out how the object was used by the code under test.
+
+23
+00:01:15,000 --> 00:01:18,000
+In the "Create Scenario", where we want the "Create" to work,
+
+24
+00:01:18,000 --> 00:01:22,000
+we can make sure our restaurant was added to the database by asserting that "Added.count is equal
+
+25
+00:01:22,000 --> 00:01:26,000
+to one", and also check the saved property of the fake database
+
+26
+00:01:26,000 --> 00:01:30,000
+to ensure the controller called "Save Changes", which will save everything.
+
+27
+00:01:30,000 --> 00:01:34,000
+Obviously, the fake database has some additional features now for the "Create" scenario
+
+28
+00:01:34,000 --> 00:01:37,000
+to be testable like this, so let's see what they are.
+
+29
+00:01:37,000 --> 00:01:40,000
+We'll start with the interface definition.
+
+30
+00:01:40,000 --> 00:01:42,000
+This interface definition now contains everything
+
+31
+00:01:42,000 --> 00:01:45,000
+that we currently need to do against the database.
+
+32
+00:01:45,000 --> 00:01:49,000
+We can query objects, add an object, update an object, remove an object,
+
+33
+00:01:49,000 --> 00:01:53,000
+and call "Save Changes" to flush everything to the database.
+
+34
+00:01:53,000 --> 00:01:57,000
+For the real "Ode to Food DB" that implements this interface,
+
+35
+00:01:57,000 --> 00:02:02,000
+we just need to forward these calls to the "Entity Framework" DB Context API,
+
+36
+00:02:02,000 --> 00:02:05,000
+calling methods like "Add" or "Remove" on a DB set,
+
+37
+00:02:05,000 --> 00:02:08,000
+or in the case of "Update" we call the "Entry" API.
+
+38
+00:02:08,000 --> 00:02:12,000
+Remember, "Entry" was a way of attaching an existing object to the context
+
+39
+00:02:12,000 --> 00:02:16,000
+so the entity framework would track the object, and it will issue an update statement
+
+40
+00:02:16,000 --> 00:02:20,000
+because we tell the framework the object has been modified.
+
+41
+00:02:20,000 --> 00:02:25,000
+The fake database takes a different approach.
+
+42
+00:02:25,000 --> 00:02:28,000
+When you call "Add", it keeps the object in memory in a collection
+
+43
+00:02:28,000 --> 00:02:30,000
+that remembers all the added objects.
+
+44
+00:02:30,000 --> 00:02:33,000
+So during a test, it would be easy to see what's been added,
+
+45
+00:02:33,000 --> 00:02:35,000
+what's been updated, what's been removed.
+
+46
+00:02:35,000 --> 00:02:40,000
+We also have a flag telling us when someone calls "Save Changes", so we can write asserts
+
+47
+00:02:40,000 --> 00:02:43,000
+and make sure that changes were committed to the database.
+
+48
+00:02:43,000 --> 00:02:48,000
+And the end result is that we can write relatively simple tests,
+
+49
+00:02:48,000 --> 00:02:52,000
+tests that will execute very fast because all the data is in memory.
+
+50
+00:02:52,000 --> 00:02:56,000
+We can also control the data in this fake database, and we don't have to set up a schema
+
+51
+00:02:56,000 --> 00:02:59,000
+or database file or make sure we're pointed to the right database server.
+
+52
+00:02:59,000 --> 00:03:03,000
+And this represents, as I said, just one approach to testing controllers.
+
+53
+00:03:03,000 --> 00:03:07,000
+Some people will test against the database; some people will test against in-memory fakes.
+
+54
+00:03:07,000 --> 00:03:09,000
+You have to find what you are comfortable with,
+
+55
+00:03:09,000 --> 00:03:12,000
+and what works for your team and for your application.
+
+56
+00:03:12,000 --> 00:03:14,000
+And the tests here might be tests you want to write,
+
+57
+00:03:14,000 --> 00:03:17,000
+or you can certainly have different tests or additional tests.
+
+58
+00:03:17,000 --> 00:03:21,000
+You might want to test that the controller returns the proper "Action Result",
+
+59
+00:03:21,000 --> 00:03:24,000
+like a "Redirect" result when it successfully saves or updates and object.
+
+60
+00:03:24,000 --> 00:03:27,000
+And that would also be a valid and easy test to write.
+
+61
+00:03:27,000 --> 00:59:00,000
+( Silence )
+

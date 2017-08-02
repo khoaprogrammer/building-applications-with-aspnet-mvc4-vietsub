@@ -1,0 +1,56 @@
+1
+00:00:01,000 --> 00:00:04,000
+In this first module I've demonstrated how to use the Web Platform Installer
+
+2
+00:00:04,000 --> 00:00:10,000
+to create a development environment or you can build ASP.NET MVC Web Applications.
+
+3
+00:00:10,000 --> 00:00:15,000
+With just a few clicks we were able to install Visual Studio, SQL Server and the MVC Framework.
+
+4
+00:00:15,000 --> 00:00:19,000
+We still how to create a new MVC application and we talked
+
+5
+00:00:19,000 --> 00:00:21,000
+about the Model, View, Controller design pattern.
+
+6
+00:00:21,000 --> 00:00:23,000
+In the rest of this course we will be again drilling
+
+7
+00:00:23,000 --> 00:00:26,000
+into specific areas of the MVC Framework.
+
+8
+00:00:26,000 --> 00:00:31,000
+And see how to build Controllers, how to build Models, send story information in SQL Server.
+
+9
+00:00:31,000 --> 00:00:35,000
+We'll take a very close look at Razor and also how to use jQuery plugins
+
+10
+00:00:35,000 --> 00:00:38,000
+to add Ajax features to our application.
+
+11
+00:00:38,000 --> 00:00:40,000
+We'll be writing more unit test and then
+
+12
+00:00:40,000 --> 00:00:43,000
+in the end we'll deploy our application live to the internet.
+
+13
+00:00:43,000 --> 00:00:47,000
+Thanks to Microsoft Windows Azure websites.
+
+14
+00:00:47,000 --> 00:59:00,000
+So don't go away, we're only getting started with this excitement.
+

@@ -1,0 +1,296 @@
+1
+00:00:02,000 --> 00:00:07,000
+Now we can look at Forms Authentication in the application we've been building, OdeToFood.
+
+2
+00:00:07,000 --> 00:00:10,000
+But before we get into the code, I feel we should take a step back and look
+
+3
+00:00:10,000 --> 00:00:13,000
+at the big picture of how Forms Authentication works in general
+
+4
+00:00:13,000 --> 00:00:18,000
+and how ASP.NET implements Forms Authentication in MVC 4.
+
+5
+00:00:18,000 --> 00:00:21,000
+First, imagine the user tries to go to a members only area of the site,
+
+6
+00:00:21,000 --> 00:00:24,000
+an area that requires user authentication.
+
+7
+00:00:24,000 --> 00:00:27,000
+We'll see how to enforce this requirement.
+
+8
+00:00:27,000 --> 00:00:29,000
+But MVC will know when you require authentication.
+
+9
+00:00:29,000 --> 00:00:33,000
+And when it sees an anonymous user trying to get to such a place,
+
+10
+00:00:33,000 --> 00:00:36,000
+it will redirect the user's browser to a log in page.
+
+11
+00:00:36,000 --> 00:00:39,000
+You can configure where this log in page lives
+
+12
+00:00:39,000 --> 00:00:44,000
+and in an MVC application this will not be a page of course, it will be a controller action.
+
+13
+00:00:44,000 --> 00:00:48,000
+But to the user it's a page and it's a page where they enter the user name and password.
+
+14
+00:00:48,000 --> 00:00:52,000
+When ASP.NET does this redirect, it will also save the URL,
+
+15
+00:00:52,000 --> 00:00:55,000
+the user originally wanted to access.
+
+16
+00:00:55,000 --> 00:00:57,000
+So if they successfully authenticate,
+
+17
+00:00:57,000 --> 00:01:01,000
+ASP.NET will automatically redirect them back to where they wanted to go.
+
+18
+00:01:01,000 --> 00:01:04,000
+It does this by storing the original URL in the query string
+
+19
+00:01:04,000 --> 00:01:08,000
+with the name ReturnUrl and it will use that value.
+
+20
+00:01:08,000 --> 00:01:11,000
+So once a user logs in, they don't have to click around the site trying
+
+21
+00:01:11,000 --> 00:01:13,000
+to find that members only area again.
+
+22
+00:01:13,000 --> 00:01:16,000
+They'll be redirected right back to it.
+
+23
+00:01:16,000 --> 00:01:19,000
+If the user cannot get logged in, they'll never get to the members area.
+
+24
+00:01:19,000 --> 00:01:25,000
+But if they do give the user name and password, ASP.NET will redirect them back and they'll get
+
+25
+00:01:25,000 --> 00:01:27,000
+to see the content that you're protecting.
+
+26
+00:01:27,000 --> 00:01:31,000
+ASP.NET also gives the browser a cookie for the application.
+
+27
+00:01:31,000 --> 00:01:34,000
+A cookie is like a piece of data that the browser will hold on to.
+
+28
+00:01:34,000 --> 00:01:39,000
+And once a browser holds a cookie for a site, it will continue to send that cookie along
+
+29
+00:01:39,000 --> 00:01:44,000
+in every request that it makes to the site or at least as long as the browsing session lasts,
+
+30
+00:01:44,000 --> 00:01:47,000
+possibly longer if you and the user allow it.
+
+31
+00:01:47,000 --> 00:01:51,000
+Inside of that cookie is some encrypted information letting ASP.NET know
+
+32
+00:01:51,000 --> 00:01:54,000
+that the user has already authenticated themselves and this means,
+
+33
+00:01:54,000 --> 00:01:59,000
+as the user is browsing through that members only area or other sections of the application
+
+34
+00:01:59,000 --> 00:02:02,000
+that require authentication, ASP.NET will see that cookie,
+
+35
+00:02:02,000 --> 00:02:06,000
+know the user has been authenticated, it's not an anonymous user,
+
+36
+00:02:06,000 --> 00:02:09,000
+and ASP.NET will allow them to succeed with that request.
+
+37
+00:02:09,000 --> 00:02:13,000
+It won't force them to reauthenticate or sign in again.
+
+38
+00:02:13,000 --> 00:02:17,000
+What I'm describing about Forms Authentication isn't specific to ASP.NET,
+
+39
+00:02:17,000 --> 00:02:21,000
+many web frameworks take a similar approach to Forms Authentication.
+
+40
+00:02:21,000 --> 00:02:25,000
+They use log in pages, they use cookies, just the names of the pages and the names
+
+41
+00:02:25,000 --> 00:02:28,000
+of the cookies and query string values change.
+
+42
+00:02:28,000 --> 00:02:32,000
+Let's talk about how this works in ASP.NET MVC 4 specifically.
+
+43
+00:02:32,000 --> 00:02:36,000
+First, when you create a new application using the internet project template,
+
+44
+00:02:36,000 --> 00:02:41,000
+the project template will include everything you need to register a user, allow them to log in,
+
+45
+00:02:41,000 --> 00:02:45,000
+allow them to change their password, all the basics that you need for Forms Authentication.
+
+46
+00:02:45,000 --> 00:02:48,000
+All these basics are provided by an AccountController,
+
+47
+00:02:48,000 --> 00:02:52,000
+you'll find that in your Controllers folder as well as a set of views
+
+48
+00:02:52,000 --> 00:02:55,000
+in the Views Account folder and there're also some models.
+
+49
+00:02:55,000 --> 00:02:57,000
+You'll find them in the Models folder.
+
+50
+00:02:57,000 --> 00:03:00,000
+If you peek at the code inside the AccountController,
+
+51
+00:03:00,000 --> 00:03:03,000
+you'll see it's using a class named WebSecurity.
+
+52
+00:03:03,000 --> 00:03:07,000
+And WebSecurity is from a Microsoft library named WebMatrix.
+
+53
+00:03:07,000 --> 00:03:09,000
+Perhaps, you've heard of WebMatrix.
+
+54
+00:03:09,000 --> 00:03:12,000
+It's another tool from Microsoft, you can use to create websites
+
+55
+00:03:12,000 --> 00:03:15,000
+and ASP.NET MVC is borrowing some of that technology from WebMatrix
+
+56
+00:03:15,000 --> 00:03:17,000
+to implement Forms Authentication.
+
+57
+00:03:17,000 --> 00:03:21,000
+It's the WebSecurity class you can talk to from your code in the AccountController
+
+58
+00:03:21,000 --> 00:03:24,000
+to tell it to validate a user's password.
+
+59
+00:03:24,000 --> 00:03:28,000
+WebSecurity in turn talks to a component known as this SimpleMembershipProvider.
+
+60
+00:03:28,000 --> 00:03:31,000
+And although there are more layers that what I'm showing here.
+
+61
+00:03:31,000 --> 00:03:34,000
+Ultimately, you can think of the membership provider as doing the hard work
+
+62
+00:03:34,000 --> 00:03:37,000
+of storing information in the database.
+
+63
+00:03:37,000 --> 00:03:40,000
+Earlier I mentioned that Forms Authentication is customizable.
+
+64
+00:03:40,000 --> 00:03:42,000
+And you can certainly go into the AccountController
+
+65
+00:03:42,000 --> 00:03:45,000
+and the AccountController views and make as many changes as you'd
+
+66
+00:03:45,000 --> 00:03:47,000
+like to have the log in form look different.
+
+67
+00:03:47,000 --> 00:03:53,000
+You can also customize the application by taking control over the underlying SQL Storage.
+
+68
+00:03:53,000 --> 00:03:55,000
+You can customize what you want to store about a user.
+
+69
+00:03:55,000 --> 00:03:59,000
+For instance, you could customize the Register screen by asking the user
+
+70
+00:03:59,000 --> 00:04:03,000
+to name their favorite restaurant, and then store that in a table in SQLServer along
+
+71
+00:04:03,000 --> 00:04:06,000
+with the rest of the user information that you need.
+
+72
+00:04:06,000 --> 00:04:09,000
+I'll show you how all this works together and some steps you want
+
+73
+00:04:09,000 --> 00:04:11,000
+to make to customize the application.
+
+74
+00:04:11,000 --> 00:59:00,000
+( Pause )
+

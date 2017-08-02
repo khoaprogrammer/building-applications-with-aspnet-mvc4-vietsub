@@ -1,0 +1,708 @@
+1
+00:00:01,000 --> 00:00:05,000
+We now have a working database in our project and we will be using LINQ statements
+
+2
+00:00:05,000 --> 00:00:07,000
+to query the data in that database.
+
+3
+00:00:07,000 --> 00:00:10,000
+LINQ stands for Language Integrated Query.
+
+4
+00:00:10,000 --> 00:00:14,000
+And I want you to know about two different styles of queries that you can write with LINQ.
+
+5
+00:00:14,000 --> 00:00:16,000
+The first style looks almost like a query you would write
+
+6
+00:00:16,000 --> 00:00:19,000
+with structured query language against SQL Server.
+
+7
+00:00:19,000 --> 00:00:24,000
+One difference you'll notice that might jump out immediately though is that select appears
+
+8
+00:00:24,000 --> 00:00:27,000
+at the end of the statement, unlike in Structured Query Language
+
+9
+00:00:27,000 --> 00:00:30,000
+where you begin the query with a select.
+
+10
+00:00:30,000 --> 00:00:32,000
+These LINQ queries are going to be strongly typed.
+
+11
+00:00:32,000 --> 00:00:35,000
+That is the Compiler and Visual Studio, they know about the types
+
+12
+00:00:35,000 --> 00:00:37,000
+of objects you're querying against.
+
+13
+00:00:37,000 --> 00:00:41,000
+So if you change something in a class, you can end up with compiler areas in your queries
+
+14
+00:00:41,000 --> 00:00:45,000
+because the compiler will know exactly what is inside of those objects.
+
+15
+00:00:45,000 --> 00:00:49,000
+This particular query is what we call the Comprehension Query Syntax.
+
+16
+00:00:49,000 --> 00:00:53,000
+It starts with a from keyword to specify where the data is coming from
+
+17
+00:00:53,000 --> 00:00:55,000
+and it introduces a range variable.
+
+18
+00:00:55,000 --> 00:01:00,000
+In this case, the name of the range variable is r. You can use that throughout the rest
+
+19
+00:01:00,000 --> 00:01:04,000
+of the query when you want to do filtering, grouping, joining, and projecting.
+
+20
+00:01:04,000 --> 00:01:10,000
+There are keywords in C Sharp to let you do the filtering, grouping, joining, and projecting.
+
+21
+00:01:10,000 --> 00:01:12,000
+Keywords like where, and orderby, and select.
+
+22
+00:01:12,000 --> 00:01:15,000
+That's just a subset of the available keywords.
+
+23
+00:01:15,000 --> 00:01:18,000
+In this example, we're taking our restaurants,
+
+24
+00:01:18,000 --> 00:01:22,000
+filtering out so we only have the restaurants that have a country of USA.
+
+25
+00:01:22,000 --> 00:01:26,000
+We're going to order them by their names and that's an ascending order by default
+
+26
+00:01:26,000 --> 00:01:28,000
+and then select the entire Restaurant.
+
+27
+00:01:28,000 --> 00:01:32,000
+We're not doing a projection into some smaller set of data.
+
+28
+00:01:32,000 --> 00:01:36,000
+The job of the Entity Framework then is to take this query and translate it
+
+29
+00:01:36,000 --> 00:01:39,000
+into an efficient query for the database, then execute that query
+
+30
+00:01:39,000 --> 00:01:42,000
+and bring you back objects, actual restaurant objects.
+
+31
+00:01:42,000 --> 00:01:46,000
+But you can also express this query a second way.
+
+32
+00:01:46,000 --> 00:01:50,000
+This query is using extension method and lambda expressions.
+
+33
+00:01:50,000 --> 00:01:55,000
+The first part of this query would produce the exact same results as the query above.
+
+34
+00:01:55,000 --> 00:01:59,000
+We want restaurants whose country is equal to a specific value,
+
+35
+00:01:59,000 --> 00:02:02,000
+and we want them ordered by name.
+
+36
+00:02:02,000 --> 00:02:06,000
+But when you use this syntax, there are some additional operators that you can use.
+
+37
+00:02:06,000 --> 00:02:08,000
+For instance, Skip and Take.
+
+38
+00:02:08,000 --> 00:02:12,000
+They're quite commonly used when you want to do paging operations.
+
+39
+00:02:12,000 --> 00:02:15,000
+I want to skip the first ten results because they're on the first page.
+
+40
+00:02:15,000 --> 00:02:18,000
+I want to take the next ten results because I'm going
+
+41
+00:02:18,000 --> 00:02:21,000
+to display the second page of results to users.
+
+42
+00:02:21,000 --> 00:02:26,000
+There's no C Sharp keywords to express those operators
+
+43
+00:02:26,000 --> 00:02:30,000
+so you'll always see those invoked as extension methods.
+
+44
+00:02:30,000 --> 00:02:32,000
+There are dozens of LINQ operators available.
+
+45
+00:02:32,000 --> 00:02:35,000
+If you want to explore the syntax and the possibilities,
+
+46
+00:02:35,000 --> 00:02:39,000
+then you can look for 101 LINQ Samples on MSDN.
+
+47
+00:02:39,000 --> 00:02:42,000
+These samples are available on both C Sharp and Visual Basic.
+
+48
+00:02:42,000 --> 00:02:46,000
+You can also download a free utility called LINQPad.
+
+49
+00:02:46,000 --> 00:02:49,000
+It comes with hundreds of samples and you can write LINQ queries
+
+50
+00:02:49,000 --> 00:02:53,000
+in an interactive manner and try them out immediately.
+
+51
+00:02:53,000 --> 00:02:58,000
+Also, if you're a Pluralsight subscriber, I have a few courses devoted to LINQ.
+
+52
+00:02:58,000 --> 00:03:05,000
+Well let's try out a few different queries inside of our application.
+
+53
+00:03:05,000 --> 00:03:09,000
+Inside the application, we're displaying a list of restaurants now on the home page
+
+54
+00:03:09,000 --> 00:03:12,000
+but they're obviously not in alphabetical order.
+
+55
+00:03:12,000 --> 00:03:14,000
+So let's try to fix that by changing the query
+
+56
+00:03:14,000 --> 00:03:16,000
+around in the index action of the HomeController.
+
+57
+00:03:16,000 --> 00:03:20,000
+I'm going to switch over to using the comprehension query syntax for a bit
+
+58
+00:03:20,000 --> 00:03:25,000
+and say from r, where r is my range variable, it represents a restaurant
+
+59
+00:03:25,000 --> 00:03:29,000
+because I'm going to say from r in db.restaurants.
+
+60
+00:03:29,000 --> 00:03:32,000
+Let's OrderBy r. Name.
+
+61
+00:03:32,000 --> 00:03:36,000
+By default, this will be ascending, you can explicitly specify that using the keyword.
+
+62
+00:03:36,000 --> 00:03:41,000
+You could also specify descending but we'll stick with ascending for right now
+
+63
+00:03:41,000 --> 00:03:44,000
+and just select the entire restaurant.
+
+64
+00:03:44,000 --> 00:03:52,000
+Just by putting that change in the code, if I refresh, we should now be getting Great Lakes
+
+65
+00:03:52,000 --> 00:03:54,000
+on top of the list which we do, so that's good.
+
+66
+00:03:54,000 --> 00:03:58,000
+But we could do some more fancier ordering.
+
+67
+00:03:58,000 --> 00:04:00,000
+Let me try to arrange these windows so we can see everything.
+
+68
+00:04:00,000 --> 00:04:04,000
+And now let's say that we want to display the restaurants but perhaps we want
+
+69
+00:04:04,000 --> 00:04:07,000
+to display the most popular restaurants at the top.
+
+70
+00:04:07,000 --> 00:04:11,000
+And perhaps one way to measure the popularity of a restaurant is
+
+71
+00:04:11,000 --> 00:04:14,000
+to see how many times it's been reviewed.
+
+72
+00:04:14,000 --> 00:04:20,000
+So we'll order by r.Reviews.Count descending, so the one with the most review should be here
+
+73
+00:04:20,000 --> 00:04:26,000
+at the top and that's going to be our restaurant in Sweden, if I refresh.
+
+74
+00:04:26,000 --> 00:04:29,000
+And now that appears to work too.
+
+75
+00:04:29,000 --> 00:04:34,000
+And behind the scenes, the Entity Framework is taking this query and translating it
+
+76
+00:04:34,000 --> 00:04:40,000
+into a query for SQL Server then it executes that query and brings back a result set
+
+77
+00:04:40,000 --> 00:04:44,000
+from SQL Server but transforms that result set into real objects,
+
+78
+00:04:44,000 --> 00:04:46,000
+into real restaurants that I can use in C Sharp code.
+
+79
+00:04:46,000 --> 00:04:51,000
+And you can see the query we have now is a bit of a mix.
+
+80
+00:04:51,000 --> 00:04:55,000
+It is in the comprehension query syntax but there's a little bit of extension method
+
+81
+00:04:55,000 --> 00:04:58,000
+in here too because we need to count the reviews.
+
+82
+00:04:58,000 --> 00:05:04,000
+And there's no keyword in C Sharp to say count.
+
+83
+00:05:04,000 --> 00:05:07,000
+Now maybe someone discovers that the restaurants coming to the top are restaurants
+
+84
+00:05:07,000 --> 00:05:10,000
+that have a lot of reviews but they're all negative reviews.
+
+85
+00:05:10,000 --> 00:05:14,000
+So what we'd really like to do is order by the average review and find
+
+86
+00:05:14,000 --> 00:05:16,000
+out what the best restaurants are.
+
+87
+00:05:16,000 --> 00:05:21,000
+So there I could say r.Reviews, please give me an average, compute an average.
+
+88
+00:05:21,000 --> 00:05:26,000
+And for the average extension method to work, I need to pass in a lambda expression
+
+89
+00:05:26,000 --> 00:05:30,000
+that tells the Entity Framework which property I want to average.
+
+90
+00:05:30,000 --> 00:05:36,000
+So given a review, please average Review.rating,
+
+91
+00:05:36,000 --> 00:05:40,000
+and we'll still specify this in descending order.
+
+92
+00:05:40,000 --> 00:05:46,000
+And if I do a build and refresh, you can see now we have a relatively complicated query going on,
+
+93
+00:05:46,000 --> 00:05:48,000
+still going to produce the same result though
+
+94
+00:05:48,000 --> 00:05:51,000
+because we only have one restaurant with reviews in the database.
+
+95
+00:05:51,000 --> 00:05:55,000
+And actually this query is quite mild in complexity compared to some
+
+96
+00:05:55,000 --> 00:05:58,000
+of the LINQ queries I've worked with in the past.
+
+97
+00:05:58,000 --> 00:05:59,000
+But let me show you one more thing.
+
+98
+00:05:59,000 --> 00:06:03,000
+Suppose that in addition to displaying the restaurant name, city and country,
+
+99
+00:06:03,000 --> 00:06:07,000
+we also want to display how many reviews that we have for that restaurant.
+
+100
+00:06:07,000 --> 00:06:11,000
+There's a couple different ways to do that but I want to show you one of the most performant way
+
+101
+00:06:11,000 --> 00:06:13,000
+and also a popular approach to this.
+
+102
+00:06:13,000 --> 00:06:19,000
+And that is if the view needs to know all this information including the number of reviews
+
+103
+00:06:19,000 --> 00:06:23,000
+and perhaps the model that we build for should include the number of reviews.
+
+104
+00:06:23,000 --> 00:06:28,000
+So I'm going to do a projection and not just hand back a list of restaurants to view,
+
+105
+00:06:28,000 --> 00:06:34,000
+it could use that list of restaurants to compute the number of reviews for each restaurant.
+
+106
+00:06:34,000 --> 00:06:35,000
+But I'm going to do a transformation.
+
+107
+00:06:35,000 --> 00:06:46,000
+Let's say give me a new object that includes r.Id, r.Name, r.City, r.Country,
+
+108
+00:06:46,000 --> 00:06:55,000
+and also a new property NumberOfReviews equals r.Reviews.Count
+
+109
+00:06:55,000 --> 00:07:00,000
+and just put my missing comma in here.
+
+110
+00:07:00,000 --> 00:07:06,000
+This is creating a new anonymous type that has properties named ID, Name, City and Country.
+
+111
+00:07:06,000 --> 00:07:08,000
+The C Sharp compiler will just give it those property names
+
+112
+00:07:08,000 --> 00:07:11,000
+if you don't specify something equals.
+
+113
+00:07:11,000 --> 00:07:16,000
+And we're also adding in this NumberOfReviews equals r.Reviews.Count.
+
+114
+00:07:16,000 --> 00:07:20,000
+I could take this and still pass it to my View.
+
+115
+00:07:20,000 --> 00:07:23,000
+But being an anonymously typed object, we have the problem
+
+116
+00:07:23,000 --> 00:07:26,000
+that we don't know its name, it's anonymous.
+
+117
+00:07:26,000 --> 00:07:29,000
+What would I put as a strongly typed model directive here?
+
+118
+00:07:29,000 --> 00:07:34,000
+Well, what I could do instead is create a new model.
+
+119
+00:07:34,000 --> 00:07:38,000
+I'll call it a View Model because it's dedicated to this View.
+
+120
+00:07:38,000 --> 00:07:48,000
+So, let's create a class called RestaurantListViewModel and I'm going
+
+121
+00:07:48,000 --> 00:07:50,000
+to give it those properties that we need.
+
+122
+00:07:50,000 --> 00:07:53,000
+I'll just paste in that code to give it the properties that I need: ID,
+
+123
+00:07:53,000 --> 00:07:56,000
+Name, City, Country, CountOfReviews.
+
+124
+00:07:56,000 --> 00:08:01,000
+And now, I'll use this class when I'm building a model.
+
+125
+00:08:01,000 --> 00:08:13,000
+Select new RestaurantListViewModel, ID equals r.Id, Name equals r.Name, City equals r.City,
+
+126
+00:08:13,000 --> 00:08:22,000
+Country equals r.Country and CountOfReviews will be equal to r.Reviews.Count.
+
+127
+00:08:22,000 --> 00:08:26,000
+So this is an entity that I've created, something that I'll add as a DbSet
+
+128
+00:08:26,000 --> 00:08:28,000
+to my DbContext to save in the database.
+
+129
+00:08:28,000 --> 00:08:32,000
+It's what I call a View Model, it's something that is going to carry the information along
+
+130
+00:08:32,000 --> 00:08:35,000
+that the View needs to display and respond to this request.
+
+131
+00:08:35,000 --> 00:08:43,000
+So let me take this class and we will open up the Index View for the HomeController
+
+132
+00:08:43,000 --> 00:08:49,000
+and we'll change the model from being Restaurant to being a RestaurantListViewModel.
+
+133
+00:08:49,000 --> 00:09:00,000
+And now one of the pieces of information that we can add here would include item.CountOfReviews.
+
+134
+00:09:00,000 --> 00:09:06,000
+Let me save everything and do a Build and refresh our home page,
+
+135
+00:09:06,000 --> 00:09:11,000
+and now we're getting a little more insight into each restaurant,
+
+136
+00:09:11,000 --> 00:09:13,000
+a little more information out here.
+
+137
+00:09:13,000 --> 00:09:17,000
+View models, by the way, are a topic that we will return to talk about again.
+
+138
+00:09:17,000 --> 00:09:21,000
+They're quite useful because, very often, a page that you need
+
+139
+00:09:21,000 --> 00:09:25,000
+to display requires more information that one of your entities can have.
+
+140
+00:09:25,000 --> 00:09:28,000
+So you need to aggregate some information from a couple different places,
+
+141
+00:09:28,000 --> 00:09:33,000
+a couple different sources, wrap it all up into one object to hand over to the view
+
+142
+00:09:33,000 --> 00:09:35,000
+so it can do its job very efficiently.
+
+143
+00:09:35,000 --> 00:09:37,000
+And it's very easy to build a View Model.
+
+144
+00:09:37,000 --> 00:09:40,000
+You can do a projection with the select operator.
+
+145
+00:09:40,000 --> 00:09:42,000
+You can use a framework like AutoMapper.
+
+146
+00:09:42,000 --> 00:09:47,000
+AutoMapper is very good at copying data from one object into another object.
+
+147
+00:09:47,000 --> 00:09:50,000
+But what I want to focus on is just to show you that in addition
+
+148
+00:09:50,000 --> 00:09:53,000
+to using this pretty comprehension query syntax,
+
+149
+00:09:53,000 --> 00:09:56,000
+it's entirely legal and we can see it works well.
+
+150
+00:09:56,000 --> 00:09:59,000
+We could rate the same query using extension methods.
+
+151
+00:09:59,000 --> 00:10:03,000
+So I could say model equals db.Restaurants.
+
+152
+00:10:03,000 --> 00:10:07,000
+and let's do the OrderBy.
+
+153
+00:10:07,000 --> 00:10:10,000
+Now I need to pass a lambda expression to specify how to OrderBy.
+
+154
+00:10:10,000 --> 00:10:16,000
+So I'll say given a restaurant r, r goes to r.Reviews.average,
+
+155
+00:10:16,000 --> 00:10:21,000
+I need another lambda expression here that says given a review called review,
+
+156
+00:10:21,000 --> 00:10:24,000
+make you sure you average review.rating.
+
+157
+00:10:24,000 --> 00:10:30,000
+And in this case, to make this descending, what I should really invoke is not OrderBy,
+
+158
+00:10:30,000 --> 00:10:34,000
+I should invoke OrderByDescending into different extension method,
+
+159
+00:10:34,000 --> 00:10:36,000
+different LINQ operator that's available.
+
+160
+00:10:36,000 --> 00:10:38,000
+And now we just need to select.
+
+161
+00:10:38,000 --> 00:10:47,000
+I could say select, given a restaurant r, r goes to and let me try to save myself some typing,
+
+162
+00:10:47,000 --> 00:10:53,000
+I'm going to take this bit of code, new RestaurantListViewModel and try to paste it
+
+163
+00:10:53,000 --> 00:10:59,000
+into my Select statement here and highlight this, Control K, Control U to uncomment
+
+164
+00:10:59,000 --> 00:11:03,000
+and then close things off with a parenthesis and semicolon.
+
+165
+00:11:03,000 --> 00:11:07,000
+Control K, Control D to do some formatting which didn't really work in this case.
+
+166
+00:11:07,000 --> 00:11:12,000
+Sometimes it's not quite smart enough to know how you wanted something formatted.
+
+167
+00:11:12,000 --> 00:11:14,000
+I'll just select everything, tab this over.
+
+168
+00:11:14,000 --> 00:11:19,000
+But that is the equivalent query in the comprehension syntax.
+
+169
+00:11:19,000 --> 00:11:22,000
+There is no reason to choose these based on performance.
+
+170
+00:11:22,000 --> 00:11:26,000
+It's really which syntax do you like better and what operators do you need
+
+171
+00:11:26,000 --> 00:11:29,000
+because again some operators like Take and Skip,
+
+172
+00:11:29,000 --> 00:11:34,000
+you can only invoke them using this extension method syntax.
+
+173
+00:11:34,000 --> 00:11:40,000
+So I could say just give me the first ten restaurants that are in the database.
+
+174
+00:11:40,000 --> 00:11:44,000
+And if I do a Build right now and refresh, we should get the same result
+
+175
+00:11:44,000 --> 00:11:47,000
+because we have the exact same query that we had before.
+
+176
+00:11:47,000 --> 00:11:53,000
+And now, the one scenario we haven't looked at quite yet is filtering.
+
+177
+00:11:53,000 --> 00:59:00,000
+Let's look at that next.
+

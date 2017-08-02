@@ -1,0 +1,184 @@
+1
+00:00:02,000 --> 00:00:06,000
+The first stop we'll take in this module is to get up and running with the Entity Framework.
+
+2
+00:00:06,000 --> 00:00:10,000
+The Entity Framework is a part of the .NET framework and you'll already have a reference
+
+3
+00:00:10,000 --> 00:00:14,000
+to the Entity Framework in the new MVC internet application.
+
+4
+00:00:14,000 --> 00:00:17,000
+The Entity Framework or EF as I sometimes call it for short,
+
+5
+00:00:17,000 --> 00:00:22,000
+allows me to access a relational database using strongly typed C Sharp code,
+
+6
+00:00:22,000 --> 00:00:25,000
+or Visual Basic code, or really any .NET language.
+
+7
+00:00:25,000 --> 00:00:29,000
+When I'm working with classes to talk to the Entity Framework, I don't have to worry
+
+8
+00:00:29,000 --> 00:00:34,000
+about SQL connections, SQL commands, SQL parameters, SQL data readers,
+
+9
+00:00:34,000 --> 00:00:38,000
+none of the low level abstractions you might have programmed with in the past with .NET.
+
+10
+00:00:38,000 --> 00:00:42,000
+And if you don't know them, that's good for you because you won't have to learn them.
+
+11
+00:00:42,000 --> 00:00:46,000
+With the Entity Framework, I work with my C Sharp code and I can issue queries
+
+12
+00:00:46,000 --> 00:00:51,000
+to the database using a language feature called Language Integrated Query also known as LINQ
+
+13
+00:00:51,000 --> 00:00:56,000
+and this is a feature that's in both the C Sharp and Visual Basic languages.
+
+14
+00:00:56,000 --> 00:01:00,000
+There's a few different ways to get started with the Entity Framework.
+
+15
+00:01:00,000 --> 00:01:02,000
+One approach is called the Schema First approach.
+
+16
+00:01:02,000 --> 00:01:06,000
+In this approach, you open up a graphical designer in Visual Studio,
+
+17
+00:01:06,000 --> 00:01:10,000
+you point it to an existing database, and it can import the database schema
+
+18
+00:01:10,000 --> 00:01:14,000
+and generate all the classes you need to query and update that database.
+
+19
+00:01:14,000 --> 00:01:19,000
+Another approach is a Model First approach, this is where I use the same graphical designer
+
+20
+00:01:19,000 --> 00:01:24,000
+in Visual Studio to draw a conceptual model for my applications, so what classes do I want.
+
+21
+00:01:24,000 --> 00:01:29,000
+And then I have the Entity Framework generate both my class definitions
+
+22
+00:01:29,000 --> 00:01:31,000
+and my database schema.
+
+23
+00:01:31,000 --> 00:01:34,000
+Finally, there's a Code First approach you can take with EF.
+
+24
+00:01:34,000 --> 00:01:38,000
+In this approach, I just write C Sharp classes and the Entity Framework
+
+25
+00:01:38,000 --> 00:01:42,000
+and use those class definitions to create a database for me.
+
+26
+00:01:42,000 --> 00:01:45,000
+And it will do that either using conventions like naming conventions,
+
+27
+00:01:45,000 --> 00:01:50,000
+very similar to the naming conventions we've seen with the MVC framework and that is
+
+28
+00:01:50,000 --> 00:01:53,000
+where things just magically work if they had the right name.
+
+29
+00:01:53,000 --> 00:01:58,000
+I can also provide explicit mappings or change the mappings if I don't like any
+
+30
+00:01:58,000 --> 00:02:02,000
+of these conventions or defaults that the Entity Framework uses.
+
+31
+00:02:02,000 --> 00:02:05,000
+In this module, we're going to use a Code First approach,
+
+32
+00:02:05,000 --> 00:02:09,000
+so we won't see a visual design surface or any XML configuration files.
+
+33
+00:02:09,000 --> 00:02:11,000
+I hope that makes you happy.
+
+34
+00:02:11,000 --> 00:02:15,000
+And when I say that the Entity Framework supports relational databases,
+
+35
+00:02:15,000 --> 00:02:17,000
+then the Entity Framework supports quite a few.
+
+36
+00:02:17,000 --> 00:02:21,000
+You can point the Entity Framework towards a full-blown SQL Server installation
+
+37
+00:02:21,000 --> 00:02:25,000
+on a remote server that has hundreds of gigabytes of RAM and network storage.
+
+38
+00:02:25,000 --> 00:02:30,000
+Or you can point it to SQL Server Compact edition which is running in process
+
+39
+00:02:30,000 --> 00:02:33,000
+and accessing a database file on the local file system.
+
+40
+00:02:33,000 --> 00:02:36,000
+You can also use it with usher in the clown (phonetic),
+
+41
+00:02:36,000 --> 00:02:40,000
+you can use it with Oracle, you can use it with DB2.
+
+42
+00:02:40,000 --> 00:02:43,000
+But my code really doesn't have to know what's on the back end.
+
+43
+00:02:43,000 --> 00:02:46,000
+The Entity Framework knows how to work with all these different databases.
+
+44
+00:02:46,000 --> 00:02:51,000
+I can build an application without worrying so much about the database details.
+
+45
+00:02:51,000 --> 00:02:54,000
+In this module, we'll be working with SQL Server,
+
+46
+00:02:54,000 --> 00:59:00,000
+specifically the local DB version of SQL Server.
+

@@ -1,0 +1,236 @@
+1
+00:00:02,000 --> 00:00:05,000
+You do need to be careful with model binding in MVC.
+
+2
+00:00:05,000 --> 00:00:09,000
+The model binder has a brute force algorithm that will try to move anything and everything
+
+3
+00:00:09,000 --> 00:00:11,000
+into your model that it can possibly move.
+
+4
+00:00:11,000 --> 00:00:15,000
+This means you might values you didn't expect in a model which can lead
+
+5
+00:00:15,000 --> 00:00:18,000
+to security related problems you might not have thought about.
+
+6
+00:00:18,000 --> 00:00:22,000
+Let's pretend that once a review is created, no one should be allowed
+
+7
+00:00:22,000 --> 00:00:24,000
+to edit the Reviewer Name of a review.
+
+8
+00:00:24,000 --> 00:00:27,000
+If you didn't watch this video, you would think that would be very easy.
+
+9
+00:00:27,000 --> 00:00:32,000
+All I need to do is take Reviewer Name out of my form.
+
+10
+00:00:32,000 --> 00:00:36,000
+If there's no more editor for Reviewer Name and I don't see it on the form,
+
+11
+00:00:36,000 --> 00:00:39,000
+how can I possibly change the Reviewer Name?
+
+12
+00:00:39,000 --> 00:00:44,000
+Well unfortunately, there's all sorts of tools out there that you can use to modify data
+
+13
+00:00:44,000 --> 00:00:50,000
+in a request or just create a request with arbitrary data and send it off to a server.
+
+14
+00:00:50,000 --> 00:00:52,000
+People use these tools all the time to break into servers
+
+15
+00:00:52,000 --> 00:00:55,000
+and send people information they didn't expect.
+
+16
+00:00:55,000 --> 00:00:59,000
+In fact, we don't really need a fancy tool here, all I need to do to get something
+
+17
+00:00:59,000 --> 00:01:03,000
+into reviewer name is to add a parameter to the query string.
+
+18
+00:01:03,000 --> 00:01:06,000
+I'll add reviewer name equals hack.
+
+19
+00:01:06,000 --> 00:01:11,000
+We usually get request for this form and now has that value in the query string and I don't need
+
+20
+00:01:11,000 --> 00:01:14,000
+to save anything here, all I want to do is get that reviewer name in there.
+
+21
+00:01:14,000 --> 00:01:17,000
+If I click save, we now have a new reviewer name.
+
+22
+00:01:17,000 --> 00:01:23,000
+And the problem here is that the model binder didn't know about my forum, about my view code,
+
+23
+00:01:23,000 --> 00:01:27,000
+it didn't know that I didn't want a reviewer name to be edited.
+
+24
+00:01:27,000 --> 00:01:31,000
+All it knows is that the restaurant review has a reviewer name property
+
+25
+00:01:31,000 --> 00:01:37,000
+and that the request had a reviewer name value so it moved the value into the property.
+
+26
+00:01:37,000 --> 00:01:40,000
+This problem is often referred to by one of two names.
+
+27
+00:01:40,000 --> 00:01:44,000
+Some people call it over posting that is we created more values than you expected
+
+28
+00:01:44,000 --> 00:01:48,000
+in the request but it also goes by the name mass assignment
+
+29
+00:01:48,000 --> 00:01:51,000
+because the model binder just assigns all the values it can
+
+30
+00:01:51,000 --> 00:01:54,000
+without regard to how you wrote your view code.
+
+31
+00:01:54,000 --> 00:01:58,000
+If someone knows the right syntax, they can move anything into your model.
+
+32
+00:01:58,000 --> 00:02:01,000
+There's a number of different solutions to this problem.
+
+33
+00:02:01,000 --> 00:02:05,000
+I'll show you one quick and easy solution probably not the best solution but if you want
+
+34
+00:02:05,000 --> 00:02:08,000
+to see more alternatives, you can read the post on my blog
+
+35
+00:02:08,000 --> 00:02:10,000
+where I cover this topic in more detail.
+
+36
+00:02:10,000 --> 00:02:16,000
+For now, let me show you one quick easy solution which is to use that bind attribute again.
+
+37
+00:02:16,000 --> 00:02:21,000
+We use this before when we aliased a parameter name.
+
+38
+00:02:21,000 --> 00:02:25,000
+This time, I'll show you some of the other things that you can pass in the bind,
+
+39
+00:02:25,000 --> 00:02:30,000
+they include a list of things to exclude and a list of things to include.
+
+40
+00:02:30,000 --> 00:02:31,000
+You typically pick one or the other.
+
+41
+00:02:31,000 --> 00:02:33,000
+Exclude is a black list.
+
+42
+00:02:33,000 --> 00:02:41,000
+I can say please exclude the following fields, reviewer name.
+
+43
+00:02:41,000 --> 00:02:45,000
+And if I had additional field here, I could just separate them by commas
+
+44
+00:02:45,000 --> 00:02:48,000
+but that's the one thing I want to be excluded when you do the model binding.
+
+45
+00:02:48,000 --> 00:02:51,000
+You can also use include and that's a white list,
+
+46
+00:02:51,000 --> 00:02:55,000
+I just list all the things that you do want to be bound.
+
+47
+00:02:55,000 --> 00:02:59,000
+But exclude works for me well here because I only need to exclude one thing.
+
+48
+00:02:59,000 --> 00:03:02,000
+Another common approach to this problem is to define a view model.
+
+49
+00:03:02,000 --> 00:03:07,000
+This time, an input view model and the view model would only have the properties you expect
+
+50
+00:03:07,000 --> 00:03:09,000
+to receive from the user, nothing else.
+
+51
+00:03:09,000 --> 00:03:13,000
+You'll use the view model as the parameter to your action and then you'll need
+
+52
+00:03:13,000 --> 00:03:17,000
+to copy the values into a real entity to update the database.
+
+53
+00:03:17,000 --> 00:03:21,000
+But by only having the values you expect from the user in the view model,
+
+54
+00:03:21,000 --> 00:03:26,000
+you can be sure you don't pick up anything unexpected from one of your shadier customers.
+
+55
+00:03:26,000 --> 00:03:30,000
+Also, related to security, make sure to watch the security module and learn
+
+56
+00:03:30,000 --> 00:03:32,000
+about cross site request forgeries.
+
+57
+00:03:32,000 --> 00:03:35,000
+Cross site request forgeries are a dangerous settle attack you should worry
+
+58
+00:03:35,000 --> 00:03:38,000
+about when posting form data and we'll look at the attack
+
+59
+00:03:38,000 --> 00:59:00,000
+and how to avoid a cross site request forgery in the security module later in the course.
+

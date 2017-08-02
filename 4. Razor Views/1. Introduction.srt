@@ -1,0 +1,36 @@
+1
+00:00:01,000 --> 00:00:05,000
+Hi. This is Scott Allen and in this module we're going to build views
+
+2
+00:00:05,000 --> 00:00:08,000
+with the Razor view engine in ASP.NET MVC.
+
+3
+00:00:08,000 --> 00:00:13,000
+The topics we'll cover in this module include the Razor syntax and how to transition
+
+4
+00:00:13,000 --> 00:00:16,000
+between c sharp code and mark up inside of a Razor view.
+
+5
+00:00:16,000 --> 00:00:20,000
+We'll also see how to use HTML helpers to keep our view simple and how to work
+
+6
+00:00:20,000 --> 00:00:24,000
+with a layout view that defines the structure of our user interface.
+
+7
+00:00:24,000 --> 00:00:29,000
+No module on views would be complete without a security discussion so we'll also talk about how
+
+8
+00:00:29,000 --> 00:00:34,000
+to avoid cross-site scripting attacks and how to use HTML encoding.
+
+9
+00:00:34,000 --> 00:59:00,000
+Finally I'll also show you how to use partial views and when they can be helpful.
+

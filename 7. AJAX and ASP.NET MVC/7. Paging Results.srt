@@ -1,0 +1,824 @@
+1
+00:00:02,000 --> 00:00:05,000
+Finally, there's one more feature I'd like to add.
+
+2
+00:00:05,000 --> 00:00:08,000
+I'd like the ability to pageList lists of restaurants.
+
+3
+00:00:08,000 --> 00:00:12,000
+The last search we did was to search for restaurants that start with a 20.
+
+4
+00:00:12,000 --> 00:00:17,000
+And I can see 20 and 201, but it only goes to 208
+
+5
+00:00:17,000 --> 00:00:21,000
+and there is a restaurant 209 but I cannot see it here.
+
+6
+00:00:21,000 --> 00:00:23,000
+There's no indication that there's more results.
+
+7
+00:00:23,000 --> 00:00:28,000
+That's because we only take the first ten records from the database that we get.
+
+8
+00:00:28,000 --> 00:00:31,000
+So let's have paging.
+
+9
+00:00:31,000 --> 00:00:35,000
+To do the paging, I'm going to rely on a third party component and one of the best ways
+
+10
+00:00:35,000 --> 00:00:39,000
+to install a third party component is by right clicking on the References folder
+
+11
+00:00:39,000 --> 00:00:42,000
+and selecting Manage NuGet Packages.
+
+12
+00:00:42,000 --> 00:00:44,000
+NuGet is a package manager for .NET.
+
+13
+00:00:44,000 --> 00:00:50,000
+You can download software packages which might be JavaScript libraries or .NET assemblies
+
+14
+00:00:50,000 --> 00:00:52,000
+or something that has both of those and more.
+
+15
+00:00:52,000 --> 00:00:54,000
+Now, you don't have to find the project and download the zip
+
+16
+00:00:54,000 --> 00:00:57,000
+and extract the files and add them to your project.
+
+17
+00:00:57,000 --> 00:01:01,000
+All you need to do is come to that References and open up the NuGet Package manager.
+
+18
+00:01:01,000 --> 00:01:06,000
+From here, I can see a list of all the packages that are installed in my application.
+
+19
+00:01:06,000 --> 00:01:09,000
+That includes things like the EntityFramework and jQuery UI.
+
+20
+00:01:09,000 --> 00:01:17,000
+I can also go online and I want to search for paged list.
+
+21
+00:01:17,000 --> 00:01:20,000
+I'll search from the text box up here in the top right of the screen
+
+22
+00:01:20,000 --> 00:01:25,000
+and that will find me PagedList.Mvc and PagedList.
+
+23
+00:01:25,000 --> 00:01:27,000
+Two great projects by a fellow named Troy Goode.
+
+24
+00:01:27,000 --> 00:01:32,000
+I'm going to tell NuGet to install PagedList.Mvc.
+
+25
+00:01:32,000 --> 00:01:36,000
+NuGet understands package dependencies too and it can see that this package depends
+
+26
+00:01:36,000 --> 00:01:40,000
+on PagedList, so it downloads them both and adds them to my project.
+
+27
+00:01:40,000 --> 00:01:47,000
+I can click Close and come in to the assembly references and see PagedList and PagedList.Mvc.
+
+28
+00:01:47,000 --> 00:01:51,000
+Now, I can start making changes to the application.
+
+29
+00:01:51,000 --> 00:01:53,000
+We'll start with the HomeController.
+
+30
+00:01:53,000 --> 00:01:58,000
+The index action of the HomeController will no longer be able to just return just ten records.
+
+31
+00:01:58,000 --> 00:02:01,000
+Instead, we need to return the proper page of records.
+
+32
+00:02:01,000 --> 00:02:07,000
+And what the PagedList package will give me is, first of all, an extension method that I can use
+
+33
+00:02:07,000 --> 00:02:12,000
+in the query to get the proper page of results and also some HTML helpers that I can use
+
+34
+00:02:12,000 --> 00:02:18,000
+in a view to display a pager widget, something with more and next links and page numbers in it
+
+35
+00:02:18,000 --> 00:02:22,000
+that a user can click on to navigate around through a large result.
+
+36
+00:02:22,000 --> 00:02:26,000
+The first thing we need to use though is the Extension method in a query.
+
+37
+00:02:26,000 --> 00:02:29,000
+So let me add a using statement for PagedList.
+
+38
+00:02:29,000 --> 00:02:36,000
+And now, I can come down to the index action and instead of having that take operator in there,
+
+39
+00:02:36,000 --> 00:02:40,000
+we will end this query using a call ToPagedList.
+
+40
+00:02:40,000 --> 00:02:43,000
+ToPagedList, I need to pass it the page number that I want.
+
+41
+00:02:43,000 --> 00:02:45,000
+Where do I get that from?
+
+42
+00:02:45,000 --> 00:02:49,000
+We'll take it as a parameter, because when the user interacts with the pager that we're going
+
+43
+00:02:49,000 --> 00:02:53,000
+to produce, we'll make sure there's something in the request called page.
+
+44
+00:02:53,000 --> 00:02:57,000
+It might not always be there though, so we'll have a default of 1.
+
+45
+00:02:57,000 --> 00:03:01,000
+That way, if you come to this page and you don't specify what page number you want,
+
+46
+00:03:01,000 --> 00:03:02,000
+you get the first page of results.
+
+47
+00:03:02,000 --> 00:03:08,000
+And so, ToPagedList will get whatever page has been passed in.
+
+48
+00:03:08,000 --> 00:03:11,000
+And also, we need to specify the page size.
+
+49
+00:03:11,000 --> 00:03:14,000
+Let's just say ten restaurants per page is good.
+
+50
+00:03:14,000 --> 00:03:17,000
+And these are all the changes that we need to make to the controller.
+
+51
+00:03:17,000 --> 00:03:21,000
+Everything else is going to be in the UI.
+
+52
+00:03:21,000 --> 00:03:25,000
+The first change we'll make in the UI is to tell it about the new model type
+
+53
+00:03:25,000 --> 00:03:29,000
+because this is now a model that is of type IPagedList.
+
+54
+00:03:29,000 --> 00:03:34,000
+That's going to allow me to use the pager helpers to build a paging control.
+
+55
+00:03:34,000 --> 00:03:39,000
+Let's come in to the index action and instead of being a model that is IEnumerable
+
+56
+00:03:39,000 --> 00:03:46,000
+of RestaurantListViewModel, it's now going to be a model of IPagedLisr of Restaurant View Model.
+
+57
+00:03:46,000 --> 00:03:52,000
+Right now, I have a red squiggly here because razor doesn't understand what an IPagedLIst is.
+
+58
+00:03:52,000 --> 00:03:56,000
+I could add a using statement in here to tell it what namespace that is in,
+
+59
+00:03:56,000 --> 00:04:00,000
+or I can just add that as a default namespace for my entire application.
+
+60
+00:04:00,000 --> 00:04:05,000
+In fact, I could add OdeToFood.Models also as a default namespace.
+
+61
+00:04:05,000 --> 00:04:09,000
+This just cleans up the code and makes it a little easier to work with.
+
+62
+00:04:09,000 --> 00:04:16,000
+So the way that you do this is by opening up the Web.config file that is in the Views folder.
+
+63
+00:04:16,000 --> 00:04:21,000
+Not the Web.config file that is in the root of the application, but the Web.config file that's
+
+64
+00:04:21,000 --> 00:04:26,000
+in the Views folder because it is this web config that controls the razor configuration.
+
+65
+00:04:26,000 --> 00:04:30,000
+This is the list of default namespaces that razor uses.
+
+66
+00:04:30,000 --> 00:04:34,000
+I want to add three additional namespaces, PagedList,
+
+67
+00:04:34,000 --> 00:04:38,000
+PagedList.Mvc, and also my OdeToFood.Models.
+
+68
+00:04:38,000 --> 00:04:43,000
+Now, quite often, when you change this section of Web.config, Visual Studio
+
+69
+00:04:43,000 --> 00:04:48,000
+and that razor parser, they do not pickup the changes here until you restart Visual Studio.
+
+70
+00:04:48,000 --> 00:04:53,000
+And because this always happens to me, I'm just going to go ahead and I've maid these changes
+
+71
+00:04:53,000 --> 00:04:57,000
+and save everything and close Visual Studio.
+
+72
+00:04:57,000 --> 00:04:59,000
+We will reopen it right away.
+
+73
+00:04:59,000 --> 00:05:03,000
+And hopefully, all the red squigglies are gone from Index.cshtml.
+
+74
+00:05:03,000 --> 00:05:08,000
+And they are, so we're in good shape.
+
+75
+00:05:08,000 --> 00:05:13,000
+Now, from the Index view, we're also rendering a partial view with the same model.
+
+76
+00:05:13,000 --> 00:05:18,000
+I need to come into this partial view and also change the model directive there to let me open
+
+77
+00:05:18,000 --> 00:05:24,000
+up _restaurants and we'll change this from in IEnumerable to also be an IPagedList.
+
+78
+00:05:24,000 --> 00:05:29,000
+And now, we can get rid of the OdeToFood.Models namespace qualifier too.
+
+79
+00:05:29,000 --> 00:05:36,000
+It is inside of here, in fact, inside of our restaurant list too and I will place a pager,
+
+80
+00:05:36,000 --> 00:05:42,000
+a call to Html.PagedListPager that's provided by PagedList.Mvc.
+
+81
+00:05:42,000 --> 00:05:44,000
+This will build the pager for me.
+
+82
+00:05:44,000 --> 00:05:45,000
+All I need to do is give it the model.
+
+83
+00:05:45,000 --> 00:05:50,000
+It will figure out how many total things are in there and also a lambda expression
+
+84
+00:05:50,000 --> 00:05:55,000
+that given a page will be able to return a URL to go to that page.
+
+85
+00:05:55,000 --> 00:05:57,000
+The PagedListPager will pass me the page.
+
+86
+00:05:57,000 --> 00:06:01,000
+I'll use Url.Action to generate the URL
+
+87
+00:06:01,000 --> 00:06:06,000
+to the HomeController Index action passing page along in the request.
+
+88
+00:06:06,000 --> 00:06:10,000
+And we know now, that will get into the action and into that to PagedList call.
+
+89
+00:06:10,000 --> 00:06:14,000
+There's all sorts of options that you can specify for the PagedList pager.
+
+90
+00:06:14,000 --> 00:06:17,000
+I'm going to select MinimalWithItemCountText.
+
+91
+00:06:17,000 --> 00:06:22,000
+That will just give me previous and next links and the total number of items that are
+
+92
+00:06:22,000 --> 00:06:25,000
+in my model that you can play around with here with the different options.
+
+93
+00:06:25,000 --> 00:06:27,000
+You can have individual page numbers.
+
+94
+00:06:27,000 --> 00:06:30,000
+You can do all sorts of crazy things with the PagedList pager
+
+95
+00:06:30,000 --> 00:06:32,000
+and make it work the way you want it to work.
+
+96
+00:06:32,000 --> 00:06:37,000
+But this should be enough that if I run the application, we should have a pager
+
+97
+00:06:37,000 --> 00:06:40,000
+on the screen now that tells me how many restaurants are in the database.
+
+98
+00:06:40,000 --> 00:06:45,000
+And indeed, there's the pager with the next link and it tells me I'm seeing ten restaurants
+
+99
+00:06:45,000 --> 00:06:48,000
+out a possible 1,003, that's the rate number.
+
+100
+00:06:48,000 --> 00:06:49,000
+So this seems to be working.
+
+101
+00:06:49,000 --> 00:06:54,000
+And I can click on Next to go to the next list of results.
+
+102
+00:06:54,000 --> 00:06:56,000
+So this is all very good, but there are two problems.
+
+103
+00:06:56,000 --> 00:06:59,000
+One is that the pager, it's not aesthetically pleasing at the moment.
+
+104
+00:06:59,000 --> 00:07:00,000
+That's an easy fix.
+
+105
+00:07:00,000 --> 00:07:05,000
+And also, you'll notice that we're redrawing the entire page when I click on the Next link.
+
+106
+00:07:05,000 --> 00:07:07,000
+We're going off and just redrawing the whole page.
+
+107
+00:07:07,000 --> 00:07:12,000
+I'd like that to be able to redraw just this portion of the page just like we do
+
+108
+00:07:12,000 --> 00:07:14,000
+when we do a search on this page.
+
+109
+00:07:14,000 --> 00:07:18,000
+So let's fix the easy one first and that is to improve the user interface here.
+
+110
+00:07:18,000 --> 00:07:22,000
+One of the files that the PagedList package will install
+
+111
+00:07:22,000 --> 00:07:25,000
+into my application is a PagedList.css file.
+
+112
+00:07:25,000 --> 00:07:28,000
+So a style sheet to make that pager look a little bit better.
+
+113
+00:07:28,000 --> 00:07:34,000
+I just need to make sure those styles are included with my styles, or put them in a bundle
+
+114
+00:07:34,000 --> 00:07:37,000
+to download with my style sheet bundles and that's the path I'll take.
+
+115
+00:07:37,000 --> 00:07:40,000
+This is the bundle that includes my site.css.
+
+116
+00:07:40,000 --> 00:07:45,000
+I'll also just include PagedList.css along with that.
+
+117
+00:07:45,000 --> 00:07:49,000
+And just doing a build and refreshing the application,
+
+118
+00:07:49,000 --> 00:07:52,000
+we should see a better implementation of the pager.
+
+119
+00:07:52,000 --> 00:07:55,000
+And indeed, that has helped quite a bit.
+
+120
+00:07:55,000 --> 00:08:00,000
+Now, I have the Previous and Next links, and those still work.
+
+121
+00:08:00,000 --> 00:08:04,000
+Now, let's try to make this asynchronous which will be a little bit more challenging.
+
+122
+00:08:04,000 --> 00:08:09,000
+What I need to do, just like how previously we intercepted this form submission,
+
+123
+00:08:09,000 --> 00:08:12,000
+when I click on this, we catch that event and send off the request ourselves
+
+124
+00:08:12,000 --> 00:08:18,000
+and redraw the screen, now, I have to intercept click events on these anchor tags that are here.
+
+125
+00:08:18,000 --> 00:08:23,000
+Intercept those requests, go off and get the page data myself and redraw the screen.
+
+126
+00:08:23,000 --> 00:08:27,000
+To intercept those requests, of course, we'll still be using jQuery.
+
+127
+00:08:27,000 --> 00:08:33,000
+So let's go back to our script file, but we'll do this a little bit differently.
+
+128
+00:08:33,000 --> 00:08:38,000
+What I'm going to do is not go out and look for those anchor tags and wear out Dot Click event.
+
+129
+00:08:38,000 --> 00:08:41,000
+That would be easy enough to do with jQuery.
+
+130
+00:08:41,000 --> 00:08:45,000
+I'm not going to do that because we destroy those anchor tags every time we repaint
+
+131
+00:08:45,000 --> 00:08:46,000
+the screen.
+
+132
+00:08:46,000 --> 00:08:51,000
+We go off and get a fresh batch of HTML and then we put that HTML in the page
+
+133
+00:08:51,000 --> 00:08:55,000
+and destroy the anchor tags that were there and replace them with new ones.
+
+134
+00:08:55,000 --> 00:08:59,000
+I'd have to rewire the event every time we redrew the screen like that.
+
+135
+00:08:59,000 --> 00:09:03,000
+Instead, what I'm going to do is walk up to something called main-content.
+
+136
+00:09:03,000 --> 00:09:08,000
+main-content is in the Layout view.
+
+137
+00:09:08,000 --> 00:09:09,000
+You can see it right here.
+
+138
+00:09:09,000 --> 00:09:12,000
+A section with a class of main-content.
+
+139
+00:09:12,000 --> 00:09:16,000
+I'm going to wire up a click even on this section because it contains all
+
+140
+00:09:16,000 --> 00:09:18,000
+of the HTML that our view renders.
+
+141
+00:09:18,000 --> 00:09:20,000
+And this section isn't destroyed.
+
+142
+00:09:20,000 --> 00:09:22,000
+It's always going to be on the page.
+
+143
+00:09:22,000 --> 00:09:26,000
+So this syntax is saying go out and find the element or elements with the class
+
+144
+00:09:26,000 --> 00:09:29,000
+of main-content and wire up the Click even.
+
+145
+00:09:29,000 --> 00:09:32,000
+This is using the On method with jQuery.
+
+146
+00:09:32,000 --> 00:09:37,000
+What this allows you to do is wire up an event on a DOM element that's higher up in the tree
+
+147
+00:09:37,000 --> 00:09:40,000
+and then specify how to filter those events.
+
+148
+00:09:40,000 --> 00:09:45,000
+This is saying, yes, I want click events, but I only want click events that originated
+
+149
+00:09:45,000 --> 00:09:50,000
+from an anchor tag that was inside of an element with a class of pagedList.
+
+150
+00:09:50,000 --> 00:09:54,000
+This way, I don't pickup just any anchor tag that might be on the page.
+
+151
+00:09:54,000 --> 00:10:02,000
+I'm picking up just the anchor tags that are inside of this div with a class of pagedList.
+
+152
+00:10:02,000 --> 00:10:03,000
+Now, we're intercepting those events.
+
+153
+00:10:03,000 --> 00:10:06,000
+We can call a method called getPage.
+
+154
+00:10:06,000 --> 00:10:08,000
+getPage is a function that we'll write.
+
+155
+00:10:08,000 --> 00:10:14,000
+And inside of getPage, this reference will point to the anchor tag that the user clicked on.
+
+156
+00:10:14,000 --> 00:10:17,000
+We'll get a reference to that and wrap it with jQuery
+
+157
+00:10:17,000 --> 00:10:19,000
+so that we can extract some values from it.
+
+158
+00:10:19,000 --> 00:10:25,000
+We will extract values like the Href attribute that's on that anchor tag
+
+159
+00:10:25,000 --> 00:10:29,000
+where it's pointing to, because that contains the information that we need to use
+
+160
+00:10:29,000 --> 00:10:30,000
+to get to the correct page number.
+
+161
+00:10:30,000 --> 00:10:35,000
+It will be something like /home/index query string page equals 5.
+
+162
+00:10:35,000 --> 00:10:37,000
+That's the Href value that we need.
+
+163
+00:10:37,000 --> 00:10:38,000
+We'll take that value.
+
+164
+00:10:38,000 --> 00:10:42,000
+Put it into a URL property on this options object.
+
+165
+00:10:42,000 --> 00:10:45,000
+Just like we did earlier with a form, we're going to build an options object
+
+166
+00:10:45,000 --> 00:10:48,000
+that tells jQuery how to contact the server.
+
+167
+00:10:48,000 --> 00:10:50,000
+This is the URL we want to go to.
+
+168
+00:10:50,000 --> 00:10:53,000
+This is the type of request that we want to make and get request.
+
+169
+00:10:53,000 --> 00:10:57,000
+And the rest of the code would look like this.
+
+170
+00:10:57,000 --> 00:11:01,000
+Given that options object that we just built, go out and do $.ajax
+
+171
+00:11:01,000 --> 00:11:04,000
+and make a request to get request to that URL.
+
+172
+00:11:04,000 --> 00:11:08,000
+And when it's done and you have the new data, call this function.
+
+173
+00:11:08,000 --> 00:11:13,000
+We'll go out and find the target, the thing that we need to update which will be restaurant list,
+
+174
+00:11:13,000 --> 00:11:17,000
+but I'm trying to rate this code in a generic fashion so it could be used anywhere
+
+175
+00:11:17,000 --> 00:11:20,000
+with any page list in the application.
+
+176
+00:11:20,000 --> 00:11:25,000
+All you need to specify after the user has clicked on one of the pager links,
+
+177
+00:11:25,000 --> 00:11:27,000
+what DOM element that you want to update.
+
+178
+00:11:27,000 --> 00:11:32,000
+I put that here in a data dash attribute inside of the div with a class of pagedList.
+
+179
+00:11:32,000 --> 00:11:36,000
+So we're just looking for this value to extract restaurant list.
+
+180
+00:11:36,000 --> 00:11:43,000
+And once we have extracted restaurant list, we'll go out and select that element with jQuery
+
+181
+00:11:43,000 --> 00:11:46,000
+and replace it with the fresh data from the server.
+
+182
+00:11:46,000 --> 00:11:51,000
+Let's cross our fingers and run the application and see if we can get this to work.
+
+183
+00:11:51,000 --> 00:11:52,000
+I'll scroll down a bit.
+
+184
+00:11:52,000 --> 00:11:56,000
+That's always a good test to see if you're doing a partial page refresh,
+
+185
+00:11:56,000 --> 00:11:57,000
+or refreshing the whole screen.
+
+186
+00:11:57,000 --> 00:11:59,000
+And it looks like this is not working.
+
+187
+00:11:59,000 --> 00:12:02,000
+I'm able to go to every page just by clicking Next,
+
+188
+00:12:02,000 --> 00:12:06,000
+and we're not refreshing the entire screen.
+
+189
+00:12:06,000 --> 00:12:07,000
+Does it work with the search?
+
+190
+00:12:07,000 --> 00:12:09,000
+Let's search for 20 again.
+
+191
+00:12:09,000 --> 00:12:12,000
+And there's my 20 results.
+
+192
+00:12:12,000 --> 00:12:18,000
+If I go to Next, that seems to be broken and that's because when we go off
+
+193
+00:12:18,000 --> 00:12:24,000
+to fetch the next page of result in here, we're not taking into account the search term
+
+194
+00:12:24,000 --> 00:12:26,000
+that user has entered on the page.
+
+195
+00:12:26,000 --> 00:12:31,000
+All we're passing along is the page number that we got out of the Href for the anchor tag.
+
+196
+00:12:31,000 --> 00:12:34,000
+But this is actually a very easy problem to solve.
+
+197
+00:12:34,000 --> 00:12:41,000
+What I can do inside of our AjaxOptions is say please add some additional data to this request.
+
+198
+00:12:41,000 --> 00:12:45,000
+Essentially, go out and get the form that's on this page and serialize it
+
+199
+00:12:45,000 --> 00:12:47,000
+and send those values along in the request too.
+
+200
+00:12:47,000 --> 00:12:55,000
+And now, if I save the script, and let's do a hard refresh in Internet Explore.
+
+201
+00:12:55,000 --> 00:13:03,000
+Now, let me search for 20 and page through the results,
+
+202
+00:13:03,000 --> 00:13:05,000
+and there's only two pages of results and that looks good.
+
+203
+00:13:05,000 --> 00:13:11,000
+Now, I may have a list of restaurants on the homepage that can search through
+
+204
+00:13:11,000 --> 00:13:14,000
+and page through, and it all happens asynchronously
+
+205
+00:13:14,000 --> 00:13:17,000
+to provide a nice slick user interface.
+
+206
+00:13:17,000 --> 00:59:00,000
+( Pause )
+

@@ -1,0 +1,104 @@
+1
+00:00:00,000 --> 00:00:06,000
+Now, it's just a few minutes later and the Web Platform Installer has completed.
+
+2
+00:00:06,000 --> 00:00:09,000
+It didn't require any reboot on this machine which is always nice.
+
+3
+00:00:09,000 --> 00:00:12,000
+So, we're ready to use Visual Studio for the first time.
+
+4
+00:00:12,000 --> 00:00:14,000
+But before we do, let's just a take a step back and talk
+
+5
+00:00:14,000 --> 00:00:18,000
+about the tools we're going to use in this course.
+
+6
+00:00:18,000 --> 00:00:21,000
+What we've done so far is set up the Web Platform Installer
+
+7
+00:00:21,000 --> 00:00:25,000
+and you can launch this tool again at any time if you want to install more software.
+
+8
+00:00:25,000 --> 00:00:29,000
+But we've already installed the three essential tools that we need to move forward.
+
+9
+00:00:29,000 --> 00:00:31,000
+The first is Visual Studio.
+
+10
+00:00:31,000 --> 00:00:34,000
+Visual Studio is where we will write task and debug our code.
+
+11
+00:00:34,000 --> 00:00:38,000
+It includes editors, debuggers and shortcuts for all the technologies that we need
+
+12
+00:00:38,000 --> 00:00:40,000
+to bring together in a web application.
+
+13
+00:00:40,000 --> 00:00:42,000
+It can handle C sharp code.
+
+14
+00:00:42,000 --> 00:00:46,000
+It can also handle JavaScript HTML and CSS.
+
+15
+00:00:46,000 --> 00:00:49,000
+We've also installed SQL server.
+
+16
+00:00:49,000 --> 00:00:51,000
+Later in this course, we'll see how to persist
+
+17
+00:00:51,000 --> 00:00:53,000
+and query data that's stored in a SQL server database.
+
+18
+00:00:53,000 --> 00:00:57,000
+And finally we've installed IIS Express.
+
+19
+00:00:57,000 --> 00:01:00,000
+IIS Express is a light weight web server we can use during development
+
+20
+00:01:00,000 --> 00:01:03,000
+and it doesn't require any special privileges to run.
+
+21
+00:01:03,000 --> 00:01:08,000
+As a web server, this is the component that will respond to HTTP request that come
+
+22
+00:01:08,000 --> 00:01:11,000
+in from a web browser and it responds by executing the logic
+
+23
+00:01:11,000 --> 00:01:14,000
+that we build inside of our MVC application.
+
+24
+00:01:14,000 --> 00:01:17,000
+We won't interact with IIS Express on a regular basis.
+
+25
+00:01:17,000 --> 00:01:24,000
+It just pretty much sits behind the scenes and faithfully hosts and executes our application.
+
+26
+00:01:24,000 --> 00:59:00,000
+The first step in using all these tools is to just launch Visual Studio.
+

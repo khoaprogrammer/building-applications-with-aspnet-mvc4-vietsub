@@ -1,0 +1,388 @@
+1
+00:00:02,000 --> 00:00:07,000
+The Razor view engine allows us to use Razor templates to produce HTML.
+
+2
+00:00:07,000 --> 00:00:10,000
+Razor views if you remember from previous modules,
+
+3
+00:00:10,000 --> 00:00:13,000
+those are the files with the CHTML extension.
+
+4
+00:00:13,000 --> 00:00:17,000
+Think of them as templates that consist of mark up which is your HTML
+
+5
+00:00:17,000 --> 00:00:23,000
+and C sharp code expressions that are evaluated to place data into the mark up.
+
+6
+00:00:23,000 --> 00:00:28,000
+So if I have a view and my model is a RestaurantReview I'll take properties
+
+7
+00:00:28,000 --> 00:00:32,000
+of that review like the restaurant name and address and place those property values
+
+8
+00:00:32,000 --> 00:00:35,000
+into specific locations in the HTML.
+
+9
+00:00:35,000 --> 00:00:39,000
+When it all comes together I render a full HTML page of the client's browser
+
+10
+00:00:39,000 --> 00:00:41,000
+that gives them all the information that they want to see.
+
+11
+00:00:41,000 --> 00:00:50,000
+Let's look at this in an application to make the concept all the more concrete.
+
+12
+00:00:50,000 --> 00:00:54,000
+Imagine that in the application we want to have a place where you can come in
+
+13
+00:00:54,000 --> 00:00:59,000
+and see the latest reviews in the data base, we'll call that slash reviews.
+
+14
+00:00:59,000 --> 00:01:02,000
+We won't be working with the data base just yet, we're going to focus on views
+
+15
+00:01:02,000 --> 00:01:07,000
+but we cannot even get to a view yet because we do not have a reviews controller and as we saw
+
+16
+00:01:07,000 --> 00:01:11,000
+in the last module, that leads to a 404 error message.
+
+17
+00:01:11,000 --> 00:01:15,000
+So let me right click on the controller's folder and add a new controller.
+
+18
+00:01:15,000 --> 00:01:20,000
+We will call this the reviews controller and instead of using the empty template I'm going
+
+19
+00:01:20,000 --> 00:01:24,000
+to pick the MVC controller with empty read write actions.
+
+20
+00:01:24,000 --> 00:01:27,000
+This will give me an index method the default action for a controller
+
+21
+00:01:27,000 --> 00:01:32,000
+but it will also give me other actions that will ultimately allow me to edit a review.
+
+22
+00:01:32,000 --> 00:01:36,000
+Create a review, delete a review, none of the code will be there as yet
+
+23
+00:01:36,000 --> 00:01:40,000
+but we can fill it in as we go along.
+
+24
+00:01:40,000 --> 00:01:44,000
+It's the index action where you typically would display a list of everything.
+
+25
+00:01:44,000 --> 00:01:48,000
+But we don't even have anything that represents a RestaurantReview yet, so let me also go
+
+26
+00:01:48,000 --> 00:01:56,000
+and add a class called RestaurantReview and add this to the project.
+
+27
+00:01:56,000 --> 00:02:01,000
+We'll give it just a few simple properties.
+
+28
+00:02:01,000 --> 00:02:05,000
+Ultimately one day we'll have a data base behind this and we'll need some sort of property
+
+29
+00:02:05,000 --> 00:02:12,000
+to hold a primary key so I will add an integer ID property to the RestaurantReview.
+
+30
+00:02:12,000 --> 00:02:18,000
+We'll also give this a place to store the name of the restaurant,
+
+31
+00:02:18,000 --> 00:02:30,000
+the city that the restaurant is in, the country, and finally some sort of rating.
+
+32
+00:02:30,000 --> 00:02:34,000
+And that's all I need for a RestaurantReview.
+
+33
+00:02:34,000 --> 00:02:37,000
+One day, this will be in the data base.
+
+34
+00:02:37,000 --> 00:02:40,000
+But for right now in the reviews controller, what I'm going to do is come
+
+35
+00:02:40,000 --> 00:02:45,000
+down to the very bottom and just give us some in memory data to work with,
+
+36
+00:02:45,000 --> 00:02:49,000
+so we don't focus on data access yet, we can focus on views.
+
+37
+00:02:49,000 --> 00:02:56,000
+So I'm going to paste in some code that is just a static private list of RestaurantReview.
+
+38
+00:02:56,000 --> 00:03:00,000
+I need to bring the name space in the scope using OdeToFood.Models
+
+39
+00:03:00,000 --> 00:03:06,000
+and now this is legal C sharp code and this is not something I suggest that you usually do
+
+40
+00:03:06,000 --> 00:03:11,000
+which is keep around a static list of in memory data in your controller that never works.
+
+41
+00:03:11,000 --> 00:03:15,000
+This is just so that we don't have to get a data base involved just yet.
+
+42
+00:03:15,000 --> 00:03:23,000
+What this will allow me to do is to come back into my index action and say that my model
+
+43
+00:03:23,000 --> 00:03:29,000
+for this action is going to be from R in reviews, we'll do a little link query here,
+
+44
+00:03:29,000 --> 00:03:35,000
+let's order by R dot country and select every review.
+
+45
+00:03:35,000 --> 00:03:40,000
+And that will be my model for the view that doesn't exist just yet.
+
+46
+00:03:40,000 --> 00:03:44,000
+But even though it doesn't exist it's still educational to build this application
+
+47
+00:03:44,000 --> 00:03:48,000
+and come back to a browser and refresh to see how it behaves.
+
+48
+00:03:48,000 --> 00:03:52,000
+And what we're looking at now is not the 404 error
+
+49
+00:03:52,000 --> 00:03:55,000
+that we have before but we still do have an error.
+
+50
+00:03:55,000 --> 00:03:59,000
+We've told the MVC runtime that we want to render a view and the runtime has gone looking
+
+51
+00:03:59,000 --> 00:04:02,000
+for what we call the conventional view.
+
+52
+00:04:02,000 --> 00:04:07,000
+Since we're inside the index action of the reviews controller the MVC runtime went
+
+53
+00:04:07,000 --> 00:04:10,000
+to the reviews folder and looked for something called index,
+
+54
+00:04:10,000 --> 00:04:12,000
+that has the same name as the action.
+
+55
+00:04:12,000 --> 00:04:15,000
+And it looks for a couple of different types of index files
+
+56
+00:04:15,000 --> 00:04:20,000
+because there's actually two view engines that are registered by default in the MVC runtime.
+
+57
+00:04:20,000 --> 00:04:27,000
+One view engine is the web forms view engine and web form views have the extension ASPX or ASCX.
+
+58
+00:04:27,000 --> 00:04:31,000
+The other view engine is the Razor view engine with the CSHTML extension,
+
+59
+00:04:31,000 --> 00:04:35,000
+and since both of these view engines are around by default, the runtime is looking
+
+60
+00:04:35,000 --> 00:04:37,000
+for all these different types of files.
+
+61
+00:04:37,000 --> 00:04:42,000
+And it looks for these files in the Views slash reviews folder
+
+62
+00:04:42,000 --> 00:04:44,000
+since we are in the reviews controller.
+
+63
+00:04:44,000 --> 00:04:49,000
+The convention is to have a views folder with the same name as your controller,
+
+64
+00:04:49,000 --> 00:04:53,000
+but the runtime also went looking in the Shared folder because views on the Shared folder are
+
+65
+00:04:53,000 --> 00:04:58,000
+as you might have guessed from the name, shared among all of the controllers.
+
+66
+00:04:58,000 --> 00:05:01,000
+But the runtime didn't find that view anywhere, we need to create that view.
+
+67
+00:05:01,000 --> 00:05:06,000
+An easy way to add a view is just to right click inside of a controller action
+
+68
+00:05:06,000 --> 00:05:09,000
+like this Index action and select the Add View.
+
+69
+00:05:09,000 --> 00:05:13,000
+You can also hit control M control V. This will launch a dialog box
+
+70
+00:05:13,000 --> 00:05:17,000
+and the dialog is rather smart, it knows on inside the index action.
+
+71
+00:05:17,000 --> 00:05:20,000
+So it wants to create an index view which is perfect.
+
+72
+00:05:20,000 --> 00:05:25,000
+I do want to use the Razor view engine and I want to create a strongly-typed view.
+
+73
+00:05:25,000 --> 00:05:28,000
+Remember in the introduction, we talked about strongly-typed views.
+
+74
+00:05:28,000 --> 00:05:33,000
+This is where the view knows the exact type of model object that you are passing into it.
+
+75
+00:05:33,000 --> 00:05:36,000
+I'm going to tell it that my model is a RestaurantReview.
+
+76
+00:05:36,000 --> 00:05:39,000
+In fact, I'm going to have a list of RestaurantReviews.
+
+77
+00:05:39,000 --> 00:05:43,000
+And I'm also going to pick a scaffolding template of list.
+
+78
+00:05:43,000 --> 00:05:48,000
+What scaffolding in Visual Studio will do is reflect upon your model object,
+
+79
+00:05:48,000 --> 00:05:52,000
+figure out what properties are interesting and then build out a basic UI for you.
+
+80
+00:05:52,000 --> 00:05:57,000
+It will create a view and it's something that you can go in and modify and customize.
+
+81
+00:05:57,000 --> 00:06:01,000
+But it gives you a starting point and the list scaffold template assumes
+
+82
+00:06:01,000 --> 00:06:04,000
+that you have multiple model objects that you need to display.
+
+83
+00:06:04,000 --> 00:06:07,000
+There's also a scaffolding to create, and edit, and delete,
+
+84
+00:06:07,000 --> 00:06:09,000
+we'll be looking at those in this course too.
+
+85
+00:06:09,000 --> 00:06:13,000
+I'm going to leave all the other settings in place and just click Add,
+
+86
+00:06:13,000 --> 00:06:19,000
+and you'll see what happens as we now have a Reviews folder in the views folder.
+
+87
+00:06:19,000 --> 00:06:22,000
+That reviews folder has an index view.
+
+88
+00:06:22,000 --> 00:06:26,000
+The index view itself is strongly-typed against the IEnumerable of RestaurantReview
+
+89
+00:06:26,000 --> 00:06:29,000
+so it expects a collection of RestaurantReviews.
+
+90
+00:06:29,000 --> 00:06:33,000
+And it's going to build a table to display those multiple reviews.
+
+91
+00:06:33,000 --> 00:06:38,000
+The table will have header cells with the name the City, the Country, the Rating,
+
+92
+00:06:38,000 --> 00:06:44,000
+and then for each item in the model, we'll be writing out a table row with cells
+
+93
+00:06:44,000 --> 00:06:48,000
+that show the name, the City, the Country, the Rating and then a whole bunch of links.
+
+94
+00:06:48,000 --> 00:06:52,000
+We're going to come back and talk about the syntax and what this HTML thing is.
+
+95
+00:06:52,000 --> 00:06:57,000
+For now, let me just save everything, do a build to make sure everything is up to date
+
+96
+00:06:57,000 --> 00:06:59,000
+and I should be able to refresh my view.
+
+97
+00:06:59,000 --> 00:59:00,000
+And now, we have a list of reviews on the screen.
+

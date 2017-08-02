@@ -1,0 +1,208 @@
+1
+00:00:02,000 --> 00:00:06,000
+When the mvc framework is selecting one of your controllers public methods to invoke
+
+2
+00:00:06,000 --> 00:00:10,000
+as an action it will use any action selector attributes that might be present
+
+3
+00:00:10,000 --> 00:00:13,000
+to find the correct action to invoke.
+
+4
+00:00:13,000 --> 00:00:17,000
+One such selector is the action name selector, when you apply this attribute
+
+5
+00:00:17,000 --> 00:00:21,000
+to a controller action it specifies the action name for the method or the edit method
+
+6
+00:00:21,000 --> 00:00:26,000
+that we see here we can no longer reach this method as an action named edit we have
+
+7
+00:00:26,000 --> 00:00:31,000
+to reach it as an action named modify, action name is an attribute you can use when you went
+
+8
+00:00:31,000 --> 00:00:33,000
+to alias, the name of your action methods.
+
+9
+00:00:33,000 --> 00:00:38,000
+Accept verbs on the other hand will specify the http verb that is allowed
+
+10
+00:00:38,000 --> 00:00:43,000
+to reach a particular action, you can say that an action method is only reachable
+
+11
+00:00:43,000 --> 00:00:49,000
+with an http get request or an http post request or delete or put
+
+12
+00:00:49,000 --> 00:00:51,000
+or some combination of those verbs.
+
+13
+00:00:51,000 --> 00:00:56,000
+The accept attribute will become extremely important later when we start modifying data,
+
+14
+00:00:56,000 --> 00:01:00,000
+we'll be using both get and post then but right now we're just using get
+
+15
+00:01:00,000 --> 00:01:03,000
+but I'm introducing this topic now so you're ahead of the game.
+
+16
+00:01:03,000 --> 00:01:07,000
+Let's see how this works in visual studio.
+
+17
+00:01:07,000 --> 00:01:13,000
+Inside of our search action let's change it back to returning a simple content result
+
+18
+00:01:13,000 --> 00:01:15,000
+with a message that we've computed
+
+19
+00:01:15,000 --> 00:01:19,000
+but I will make one more change I will add an attribute here that says
+
+20
+00:01:19,000 --> 00:01:24,000
+that you can only invoke this during an http post message and now if I do a build
+
+21
+00:01:24,000 --> 00:01:29,000
+and refresh the browser on slash cuisine I'll get the 404 error message,
+
+22
+00:01:29,000 --> 00:01:33,000
+essentially the mvc framework could not find an action it could invoke
+
+23
+00:01:33,000 --> 00:01:35,000
+in response to this get request.
+
+24
+00:01:35,000 --> 00:01:38,000
+A get request is what a browser sends off by default if you just type some something
+
+25
+00:01:38,000 --> 00:01:41,000
+into the address bar and hit enter.
+
+26
+00:01:41,000 --> 00:01:47,000
+On the other hand if I had specified http get and now do a build
+
+27
+00:01:47,000 --> 00:01:52,000
+and a refresh everything should work just fine because now the mvc framework can find an action
+
+28
+00:01:52,000 --> 00:01:58,000
+to invoke and we see French again because that's the default value for this parameter.
+
+29
+00:01:58,000 --> 00:02:02,000
+Let me give you a preview of why this is extremely useful.
+
+30
+00:02:02,000 --> 00:02:08,000
+What happens if we had two actions both with the name of search, the first problem here is
+
+31
+00:02:08,000 --> 00:02:10,000
+that the c sharp compiler will be unhappy
+
+32
+00:02:10,000 --> 00:02:14,000
+because these methods have the exact same signature, the same name or the same number
+
+33
+00:02:14,000 --> 00:02:18,000
+of parameters we wouldn't be able to get this to build but let's take the parameter off
+
+34
+00:02:18,000 --> 00:02:25,000
+and instead of returning content with the message, let me just return content
+
+35
+00:02:25,000 --> 00:02:32,000
+that says search and now do a build and come out and refresh the browser.
+
+36
+00:02:32,000 --> 00:02:35,000
+We'll get a different sort of error, the mvc framework sees
+
+37
+00:02:35,000 --> 00:02:39,000
+that it should invoke a search action but it's not going to try to distinguish
+
+38
+00:02:39,000 --> 00:02:42,000
+between the two search actions that we have, one that takes a string,
+
+39
+00:02:42,000 --> 00:02:45,000
+one that doesn't have any parameters it's just going to throw
+
+40
+00:02:45,000 --> 00:02:48,000
+up its hands and throw an exception.
+
+41
+00:02:48,000 --> 00:02:51,000
+There's some scenarios later in this course where it's going to be very useful
+
+42
+00:02:51,000 --> 00:02:58,000
+to have two different versions of an action and have one respond to an http get request only
+
+43
+00:02:58,000 --> 00:03:03,000
+and have the other one respond only to an http post request
+
+44
+00:03:03,000 --> 00:03:08,000
+and now by placing these attributes here the mvc framework can clearly see
+
+45
+00:03:08,000 --> 00:03:13,000
+that if it's a get request for search it should go to this action and display research,
+
+46
+00:03:13,000 --> 00:03:16,000
+if it's a post request for search it will come over to this one.
+
+47
+00:03:16,000 --> 00:03:19,000
+So I just did a build and if I refresh now we should get rid
+
+48
+00:03:19,000 --> 00:03:24,000
+of the error and we get a search text.
+
+49
+00:03:24,000 --> 00:03:28,000
+Again that's because the mcv framework chose this one, it was an http get request,
+
+50
+00:03:28,000 --> 00:03:32,000
+it saw the search action...it saw
+
+51
+00:03:32,000 --> 00:03:36,000
+that this first one was only legal during a post so it selected the second one.
+
+52
+00:03:36,000 --> 00:59:00,000
+Just remember this discussion when we come back to modifying data later.
+

@@ -1,0 +1,360 @@
+1
+00:00:01,000 --> 00:00:05,000
+One of the questions that we left unanswered in the introduction was this,
+
+2
+00:00:05,000 --> 00:00:09,000
+how does the sp dot net know how to deliver a request like slash home,
+
+3
+00:00:09,000 --> 00:00:11,000
+slash about to our home controller.
+
+4
+00:00:11,000 --> 00:00:14,000
+And the answer to that question is in the routing engine.
+
+5
+00:00:14,000 --> 00:00:19,000
+The routing engine is a core part of asp dot net, it's not tied to the mvc framework,
+
+6
+00:00:19,000 --> 00:00:24,000
+you can use the routing engine to route requests for web forms, WCF services,
+
+7
+00:00:24,000 --> 00:00:28,000
+really any type of resource but in mvc we use this routing engine
+
+8
+00:00:28,000 --> 00:00:30,000
+to direct requests to our controllers.
+
+9
+00:00:30,000 --> 00:00:35,000
+To do this we give the routing engine a map to follow using a map route API.
+
+10
+00:00:35,000 --> 00:00:40,000
+A route map allows us to provide a friendly name for the route, a pattern for the route
+
+11
+00:00:40,000 --> 00:00:44,000
+and default parameters for the route, the most important pieces to look
+
+12
+00:00:44,000 --> 00:00:46,000
+at are the pattern and the default.
+
+13
+00:00:46,000 --> 00:00:51,000
+Think about the goal of the routing engine, its job is to examine a URL and figure
+
+14
+00:00:51,000 --> 00:00:53,000
+out where to send it for processing.
+
+15
+00:00:53,000 --> 00:00:57,000
+When it examines the URL it needs to pick put pieces of data from that URL,
+
+16
+00:00:57,000 --> 00:01:01,000
+little hints about where to send the request.
+
+17
+00:01:01,000 --> 00:01:06,000
+In an MVC application we want the URL to specify the controller and action to invoke
+
+18
+00:01:06,000 --> 00:01:11,000
+and perhaps some other data so we give the routing engine a pattern it can use
+
+19
+00:01:11,000 --> 00:01:14,000
+and apply to find parameters in the URL.
+
+20
+00:01:14,000 --> 00:01:17,000
+The words inside those curly braces will be the parameter names,
+
+21
+00:01:17,000 --> 00:01:20,000
+if the routing engine doesn't find the specific piece of data in the URL
+
+22
+00:01:20,000 --> 00:01:25,000
+like the controller name or the action name it can use one of the default values
+
+23
+00:01:25,000 --> 00:01:28,000
+that we specify in the parameter defaults.
+
+24
+00:01:28,000 --> 00:01:33,000
+Let switch into visual studio and experiment with this.
+
+25
+00:01:33,000 --> 00:01:39,000
+Inside a visual studio let me introduce you to the global dot asax dot cs file.
+
+26
+00:01:39,000 --> 00:01:42,000
+This is a bit of a magical file in asp dot net.
+
+27
+00:01:42,000 --> 00:01:49,000
+If I open it up you can see we have a class here derived from http application and this allows us
+
+28
+00:01:49,000 --> 00:01:53,000
+to hook into hook into some application level events like application start,
+
+29
+00:01:53,000 --> 00:01:59,000
+this method will be magically invoked by asp dot net before you process the first http request.
+
+30
+00:01:59,000 --> 00:02:03,000
+So when your application starts running the code here will execute one time before any
+
+31
+00:02:03,000 --> 00:02:07,000
+of your controllers start executing and so this is where we put in some configuration
+
+32
+00:02:07,000 --> 00:02:11,000
+that the application needs like the routing configuration.
+
+33
+00:02:11,000 --> 00:02:15,000
+The routing configuration is done by this line of code, route config dot register route,
+
+34
+00:02:15,000 --> 00:02:19,000
+what we pass in is the global routing table the table
+
+35
+00:02:19,000 --> 00:02:22,000
+that contains all the routs for the entire application.
+
+36
+00:02:22,000 --> 00:02:26,000
+It will be empty initially but when we call register routes
+
+37
+00:02:26,000 --> 00:02:28,000
+that will add entries into the routing table.
+
+38
+00:02:28,000 --> 00:02:30,000
+I can get into the definition of this method
+
+39
+00:02:30,000 --> 00:02:36,000
+if I just put my cursor tight here on the method and press F12.
+
+40
+00:02:36,000 --> 00:02:40,000
+Now we are inside of a class called route config, this class actually lives
+
+41
+00:02:40,000 --> 00:02:43,000
+in the app start folder, you can find it right here.
+
+42
+00:02:43,000 --> 00:02:47,000
+It's given to me by default by visual studio when I created this application
+
+43
+00:02:47,000 --> 00:02:50,000
+so all this code was already written for me and if you've been working
+
+44
+00:02:50,000 --> 00:02:54,000
+with mvc previously this is a little bit different in mvc 4 than it was
+
+45
+00:02:54,000 --> 00:02:58,000
+in previous versions because all of the start up code that used to be inside
+
+46
+00:02:58,000 --> 00:03:05,000
+of global dot asax dot cs has now been factored into classes that are in this app start folder.
+
+47
+00:03:05,000 --> 00:03:06,000
+All these classes are called
+
+48
+00:03:06,000 --> 00:03:11,000
+from the application start method in global dot asax dot cs.
+
+49
+00:03:11,000 --> 00:03:15,000
+Here's the code that you saw on that previous slide, we're walking up to the route collection
+
+50
+00:03:15,000 --> 00:03:20,000
+and saying let's add a new route, we'll call it default and here's the type of URL you're going
+
+51
+00:03:20,000 --> 00:03:28,000
+to look for so if you see something that looks like slash home slash index,
+
+52
+00:03:28,000 --> 00:03:33,000
+treat home as the controller name, index as the action name and you can also look for an ID
+
+53
+00:03:33,000 --> 00:03:37,000
+but if there's not one that's okay we've provided a default value for it.
+
+54
+00:03:37,000 --> 00:03:44,000
+And in fact if you don't see an action name just treat the default action name as index.
+
+55
+00:03:44,000 --> 00:03:48,000
+When the routing engine picks apart a URL into these pieces it builds up a data structure
+
+56
+00:03:48,000 --> 00:03:52,000
+that it passes along to the mvc framework and then the framework can look
+
+57
+00:03:52,000 --> 00:03:56,000
+at that data structure and say what did you find for a controller and what did you find
+
+58
+00:03:56,000 --> 00:03:59,000
+for an action and it uses that information
+
+59
+00:03:59,000 --> 00:04:02,000
+to direct the request tour controller like the home controller.
+
+60
+00:04:02,000 --> 00:04:08,000
+In fact that information is available to us, it's available any where throughout the request.
+
+61
+00:04:08,000 --> 00:04:12,000
+Let's swing over to the home controller and see if we can inspect these values.
+
+62
+00:04:12,000 --> 00:04:15,000
+Instead of building a message that says something about modify this template,
+
+63
+00:04:15,000 --> 00:04:18,000
+let me build a different sort of message.
+
+64
+00:04:18,000 --> 00:04:22,000
+What I want to do is see what kind of controller we're inside of and I can do that by going
+
+65
+00:04:22,000 --> 00:04:26,000
+to the route data data structure, this is the data structure that's built
+
+66
+00:04:26,000 --> 00:04:30,000
+by the routing engine, it'll have a collection of values inside and I can basically walk
+
+67
+00:04:30,000 --> 00:04:35,000
+up to the values and say what do you have for a controller value,
+
+68
+00:04:35,000 --> 00:04:43,000
+I could also ask it what it has for an action value and finally I can say what do you have
+
+69
+00:04:43,000 --> 00:04:51,000
+for an ID value if any route data dot value sub ID and I can put all these pieces together
+
+70
+00:04:51,000 --> 00:04:56,000
+into a message, let's use string dot format and I want parameter 0
+
+71
+00:04:56,000 --> 00:05:00,000
+which will be the controller name, parameter 1 which is the action name
+
+72
+00:05:00,000 --> 00:05:02,000
+and parameter 2 which will be the ID.
+
+73
+00:05:02,000 --> 00:05:11,000
+So controller action ID and this is now the message that I'll display on the home page
+
+74
+00:05:11,000 --> 00:05:17,000
+so instead of modify this template we'll put a message here and let me run the application.
+
+75
+00:05:17,000 --> 00:05:23,000
+And what we should be able to see that just by going to the root of the application,
+
+76
+00:05:23,000 --> 00:05:28,000
+just local host slash we get a value of whom for controller and a value of index for the action
+
+77
+00:05:28,000 --> 00:05:34,000
+and what happens if we go to slash home, same values, home and index.
+
+78
+00:05:34,000 --> 00:05:39,000
+So I can go to slash home slash index slash 5 1 2
+
+79
+00:05:39,000 --> 00:05:43,000
+and you can see you get the value 5 1 2 for an ID.
+
+80
+00:05:43,000 --> 00:05:47,000
+What we're going to see in just a little bit is that it is actually very easy to get
+
+81
+00:05:47,000 --> 00:05:51,000
+that ID parameter, we do not have to look inside of route data explicitly
+
+82
+00:05:51,000 --> 00:05:55,000
+but for just right now I want to demonstrate the whole goal of the routing engine is
+
+83
+00:05:55,000 --> 00:06:00,000
+to pick apart that URL and then build this data structure that is available not only
+
+84
+00:06:00,000 --> 00:06:04,000
+to the mvc framework to figure out where it's going to go but also to us,
+
+85
+00:06:04,000 --> 00:06:09,000
+it's available inside of controllers, route data is also available inside of a view.
+
+86
+00:06:09,000 --> 00:06:14,000
+Typically our code is not going to be looking into route values like this,
+
+87
+00:06:14,000 --> 00:06:18,000
+it's the mvc framework that does that to find a controller and you'll notice that the value
+
+88
+00:06:18,000 --> 00:06:24,000
+of the controller which is home tells the mvc framework to go out and append controller
+
+89
+00:06:24,000 --> 00:06:27,000
+to that word home controller and look for a class by that name.
+
+90
+00:06:27,000 --> 00:59:00,000
+It's a case and sensitive search.
+

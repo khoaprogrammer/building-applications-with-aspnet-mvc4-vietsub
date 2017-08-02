@@ -1,0 +1,532 @@
+1
+00:00:01,000 --> 00:00:04,000
+Now that we know how to get scripts down to the client,
+
+2
+00:00:04,000 --> 00:00:07,000
+let's add some AJAXy features to the application.
+
+3
+00:00:07,000 --> 00:00:08,000
+We'll start with a homepage.
+
+4
+00:00:08,000 --> 00:00:11,000
+We currently have a search here which is working just fine,
+
+5
+00:00:11,000 --> 00:00:13,000
+but let's make things a little bit harder.
+
+6
+00:00:13,000 --> 00:00:16,000
+Instead of three restaurants, let's use 1,000 restaurants.
+
+7
+00:00:16,000 --> 00:00:21,000
+And the easiest way to do this is to see the database with a thousand restaurants.
+
+8
+00:00:21,000 --> 00:00:27,000
+I'll swing over into our Migrations folder and open up Configuration.cs.
+
+9
+00:00:27,000 --> 00:00:29,000
+Inside of here, you remember, is our Seed method.
+
+10
+00:00:29,000 --> 00:00:35,000
+And what I can do inside of here is just add a loop from 0 to less than 1,000.
+
+11
+00:00:35,000 --> 00:00:38,000
+And for each iteration of the loop, we'll just add another restaurant
+
+12
+00:00:38,000 --> 00:00:41,000
+that just has a name like 1, 2, 3, and 4.
+
+13
+00:00:41,000 --> 00:00:43,000
+All these restaurants are in no where USA.
+
+14
+00:00:43,000 --> 00:00:49,000
+Just having that code in place, if I open up the Package Manager Console,
+
+15
+00:00:49,000 --> 00:00:55,000
+I should be able to update the database which will execute that Seed method
+
+16
+00:00:55,000 --> 00:01:01,000
+and will have a lot more restaurant in the database.
+
+17
+00:01:01,000 --> 00:01:04,000
+Now, the Seed method is complete, so let's swing back into the application.
+
+18
+00:01:04,000 --> 00:01:10,000
+And now that we have all these restaurants, we're currently only taking the top ten.
+
+19
+00:01:10,000 --> 00:01:13,000
+It becomes much more important to be able to search.
+
+20
+00:01:13,000 --> 00:01:16,000
+We'll also need some paging, but we'll worry about that later.
+
+21
+00:01:16,000 --> 00:01:20,000
+Let's say I scroll halfway down the page and I search for restaurants.
+
+22
+00:01:20,000 --> 00:01:22,000
+Let's start with 77.
+
+23
+00:01:22,000 --> 00:01:27,000
+And the search still works, I can find restaurant 77 and 770.
+
+24
+00:01:27,000 --> 00:01:31,000
+But you'll notice what happens when I do the search, when I scrolled down into the page,
+
+25
+00:01:31,000 --> 00:01:33,000
+is I completely lose my scroll position.
+
+26
+00:01:33,000 --> 00:01:36,000
+And that's because we're doing a full request back
+
+27
+00:01:36,000 --> 00:01:40,000
+to the server withdrawing the entire page and it starts fresh.
+
+28
+00:01:40,000 --> 00:01:45,000
+It would be nice if I could search for restaurants and not lose my scroll position.
+
+29
+00:01:45,000 --> 00:01:48,000
+In other words, I just type in a search term, click Search,
+
+30
+00:01:48,000 --> 00:01:51,000
+and just this portion of the page refreshes.
+
+31
+00:01:51,000 --> 00:01:54,000
+You could think of this is a partial page update very similar
+
+32
+00:01:54,000 --> 00:01:57,000
+to what update panel could do in ASP.NET.
+
+33
+00:01:57,000 --> 00:02:00,000
+Let's add that feature, but first, I want to fix somethings up the way
+
+34
+00:02:00,000 --> 00:02:04,000
+that scripts are managed in this application right now.
+
+35
+00:02:04,000 --> 00:02:08,000
+What I want to do to simplify things is have a single script bundle that's rendered
+
+36
+00:02:08,000 --> 00:02:10,000
+at the bottom of every page from the Layout view.
+
+37
+00:02:10,000 --> 00:02:14,000
+And in order to do that, I'm going to need to fix up a few things that I've been scaffolded
+
+38
+00:02:14,000 --> 00:02:20,000
+into the data modification views like the view to edit a restaurant.
+
+39
+00:02:20,000 --> 00:02:23,000
+When we've been scaffolding up these views, we've been allowing the scaffolder
+
+40
+00:02:23,000 --> 00:02:29,000
+to include Scripts.Render at the bottom of this views or inside of the scripts section.
+
+41
+00:02:29,000 --> 00:02:33,000
+And it's rendering the scripts for everything that's needed for jQuery validation
+
+42
+00:02:33,000 --> 00:02:35,000
+and the clients side validation to work.
+
+43
+00:02:35,000 --> 00:02:37,000
+Basically, I want to take those scripts out of here.
+
+44
+00:02:37,000 --> 00:02:45,000
+If I just do a Search and Find in Files for section Scripts,
+
+45
+00:02:45,000 --> 00:02:47,000
+I'll find all the files where this is in place.
+
+46
+00:02:47,000 --> 00:02:53,000
+And what I'm going to do is coming to each one, and I'll leave the script section in place,
+
+47
+00:02:53,000 --> 00:02:55,000
+but I want to delete that Scripts.Render from each one.
+
+48
+00:02:55,000 --> 00:03:01,000
+And now that I've deleted eight instances of that script bundle,
+
+49
+00:03:01,000 --> 00:03:07,000
+let's close out all the documents that I opened, and come in to out App_Start folder.
+
+50
+00:03:07,000 --> 00:03:11,000
+It's inside of here where we will define a new bundle in BundleConfig.cs
+
+51
+00:03:11,000 --> 00:03:14,000
+that will take care of all our script needs.
+
+52
+00:03:14,000 --> 00:03:17,000
+I'll paste the code in here at the top of the class.
+
+53
+00:03:17,000 --> 00:03:22,000
+We're essentially going to create bundles under ~/bundles/otf or OdeToFood.
+
+54
+00:03:22,000 --> 00:03:26,000
+And we'll include jquery, jquery-ui and all of the scripts we need
+
+55
+00:03:26,000 --> 00:03:29,000
+for unobtrusive JavaScript and jQuery validation.
+
+56
+00:03:29,000 --> 00:03:32,000
+And now, I can come in to the Layout view.
+
+57
+00:03:32,000 --> 00:03:39,000
+And at the bottom of the page, instead of rendering just jQuery,
+
+58
+00:03:39,000 --> 00:03:40,000
+we will render that script bundle.
+
+59
+00:03:40,000 --> 00:03:43,000
+And now, the application should behave the same.
+
+60
+00:03:43,000 --> 00:03:45,000
+We're just going to have more scripts inside of every page.
+
+61
+00:03:45,000 --> 00:03:48,000
+It's going to simplify things for us in this application.
+
+62
+00:03:48,000 --> 00:03:55,000
+And now, we can work on this feature in the Index view for the HomeController.
+
+63
+00:03:55,000 --> 00:03:59,000
+Inside of here, let me comment out the simple form that we have in place
+
+64
+00:03:59,000 --> 00:04:03,000
+and replace it with the call to Ajax.BeginForm.
+
+65
+00:04:03,000 --> 00:04:07,000
+Ajax.BeginForm is very similar to Html.BeginForm.
+
+66
+00:04:07,000 --> 00:04:12,000
+It writes out to form tag and you can tell what controller and action and route values to use.
+
+67
+00:04:12,000 --> 00:04:17,000
+But Ajax.BeginForm will make an asynchronous request to the server.
+
+68
+00:04:17,000 --> 00:04:22,000
+Html.BeginForm makes a synchronous request to the server that withdraws the entire screen.
+
+69
+00:04:22,000 --> 00:04:28,000
+Ajax.BeginForm makes an async request and it can withdraw just a portion of the screen.
+
+70
+00:04:28,000 --> 00:04:32,000
+All you need to do is tell the helper what to update on the page, and you could do this
+
+71
+00:04:32,000 --> 00:04:34,000
+with the AjaxOptions object that we pass it.
+
+72
+00:04:34,000 --> 00:04:39,000
+We tell the helper to make a get request and whatever comes back should replace the content
+
+73
+00:04:39,000 --> 00:04:42,000
+in the page that's currently identified by this UpdateTargetId.
+
+74
+00:04:42,000 --> 00:04:48,000
+We don't have an HTML element by that name, so I need to add one.
+
+75
+00:04:48,000 --> 00:04:52,000
+This element will delimit essentially the area that we want updated.
+
+76
+00:04:52,000 --> 00:04:57,000
+So I want to update all of the restaurant information and all of that is now inside
+
+77
+00:04:57,000 --> 00:05:00,000
+of a div with an id of restaurantList.
+
+78
+00:05:00,000 --> 00:05:04,000
+And with just this code in place, let me press F5 to run this application with the debugger.
+
+79
+00:05:04,000 --> 00:05:08,000
+That will prompt me to change by Web.config back.
+
+80
+00:05:08,000 --> 00:05:12,000
+If you remember, we went into Web.config and set debug equals false.
+
+81
+00:05:12,000 --> 00:05:15,000
+This is going to set that back to true which makes things a little bit easier
+
+82
+00:05:15,000 --> 00:05:17,000
+to debug if something goes wrong.
+
+83
+00:05:17,000 --> 00:05:19,000
+I'll just click Okay and let it make that change.
+
+84
+00:05:19,000 --> 00:05:24,000
+And now, in the application, let's search for 23.
+
+85
+00:05:24,000 --> 00:05:28,000
+And you can see this kind of works.
+
+86
+00:05:28,000 --> 00:05:32,000
+Asynchronous form made a request back to the server, got back a response,
+
+87
+00:05:32,000 --> 00:05:36,000
+and then we're after that into the page where the restaurant list used to be.
+
+88
+00:05:36,000 --> 00:05:40,000
+So we now we have a page inside of a page that has a restaurant list
+
+89
+00:05:40,000 --> 00:05:42,000
+and I could continue doing that infinitely.
+
+90
+00:05:42,000 --> 00:05:47,000
+So the problem in here is that the client side stuff all worked, we need this server
+
+91
+00:05:47,000 --> 00:05:49,000
+to respond differently when we do a search.
+
+92
+00:05:49,000 --> 00:05:54,000
+We need it to return just updated restaurants that should be displayed on the page.
+
+93
+00:05:54,000 --> 00:05:59,000
+And that means this restaurantList needs to display in two ways.
+
+94
+00:05:59,000 --> 00:06:01,000
+First of all, it needs to display on the homepage
+
+95
+00:06:01,000 --> 00:06:03,000
+when the user first comes to the homepage.
+
+96
+00:06:03,000 --> 00:06:04,000
+We need the restaurant list there.
+
+97
+00:06:04,000 --> 00:06:07,000
+And then, when we do a search, we need the restaurant list
+
+98
+00:06:07,000 --> 00:06:09,000
+to display and just the restaurant list.
+
+99
+00:06:09,000 --> 00:06:12,000
+And since we're going to need to this in two places,
+
+100
+00:06:12,000 --> 00:06:14,000
+that means we'll be using a partial view.
+
+101
+00:06:14,000 --> 00:06:20,000
+Let me cut the restaurantList out of the Index view and come into the views
+
+102
+00:06:20,000 --> 00:06:27,000
+for the HomeController and add a view called _Restaurants.
+
+103
+00:06:27,000 --> 00:06:29,000
+This will be a Razor view.
+
+104
+00:06:29,000 --> 00:06:30,000
+It's going to be a partial view.
+
+105
+00:06:30,000 --> 00:06:34,000
+And I'll just click Add and paste in our HTML.
+
+106
+00:06:34,000 --> 00:06:37,000
+We can also make this strongly typed.
+
+107
+00:06:37,000 --> 00:06:42,000
+It's going to have the same model is the Index view, so I'll just copy the model directive
+
+108
+00:06:42,000 --> 00:06:48,000
+out of the Index view, paste it into _Restaurants, that's our partial view.
+
+109
+00:06:48,000 --> 00:06:50,000
+That's part of what we have to do.
+
+110
+00:06:50,000 --> 00:06:55,000
+Now, we can render this when someone renders the Index view, so that we get a full page
+
+111
+00:06:55,000 --> 00:06:59,000
+with the restaurants and the header and the login and everything.
+
+112
+00:06:59,000 --> 00:07:06,000
+So we'll render Restaurants and we'll send the model along to be rendered.
+
+113
+00:07:06,000 --> 00:07:12,000
+And now, it's really going to be up to the controller to decide how to render a response
+
+114
+00:07:12,000 --> 00:07:15,000
+to the indexed action because this is all happening through the index action,
+
+115
+00:07:15,000 --> 00:07:18,000
+the homepage, the search results.
+
+116
+00:07:18,000 --> 00:07:23,000
+Let's open up the HomeController and I'll show you how easy it is
+
+117
+00:07:23,000 --> 00:07:26,000
+to make this decision inside of the HomeController.
+
+118
+00:07:26,000 --> 00:07:29,000
+What I'll do is stop debugging, shift F5.
+
+119
+00:07:29,000 --> 00:07:35,000
+And then paste in a little bit of code that can determine if a request arriving
+
+120
+00:07:35,000 --> 00:07:38,000
+to the server is in an asynchronous request.
+
+121
+00:07:38,000 --> 00:07:41,000
+It does this behind the scenes by looking into the HTTP headers.
+
+122
+00:07:41,000 --> 00:07:44,000
+There'll be a special flag there that you can find
+
+123
+00:07:44,000 --> 00:07:48,000
+out easily just by asking Request.IsAjaxRequest.
+
+124
+00:07:48,000 --> 00:07:52,000
+So if it is an asynchronous request, we'll return just that partial view
+
+125
+00:07:52,000 --> 00:07:57,000
+with the restaurant information, otherwise, we'll return the full view.
+
+126
+00:07:57,000 --> 00:08:00,000
+Use the same model object for both views.
+
+127
+00:08:00,000 --> 00:08:08,000
+But now, if I run the application again, we should have the result we're looking for.
+
+128
+00:08:08,000 --> 00:08:12,000
+I'll scroll down the page just a little bit and search for 24.
+
+129
+00:08:12,000 --> 00:08:17,000
+And you can see that bottom portion of the screen just updates instantly.
+
+130
+00:08:17,000 --> 00:08:19,000
+We don't lose our scroll position.
+
+131
+00:08:19,000 --> 00:08:23,000
+In fact, it's sometimes hard to tell that the screen changed.
+
+132
+00:08:23,000 --> 00:08:26,000
+We might need to add a little animation or fade-in, fade-out effect,
+
+133
+00:08:26,000 --> 00:59:00,000
+just to draw the user's attention to the fact that the screen has in fact updated.
+

@@ -1,0 +1,600 @@
+1
+00:00:00,000 --> 00:00:02,000
+( Silence )
+
+2
+00:00:02,000 --> 00:00:05,000
+To localize the text, I went to display in this application.
+
+3
+00:00:05,000 --> 00:00:07,000
+I'm going to rely on resource files.
+
+4
+00:00:07,000 --> 00:00:10,000
+A resource file is an XML with a resx extension,
+
+5
+00:00:10,000 --> 00:00:14,000
+r e s x and it stores localized strings for a culture.
+
+6
+00:00:14,000 --> 00:00:17,000
+It can also contain binary assets like images
+
+7
+00:00:17,000 --> 00:00:20,000
+but we'll just be using text in this application.
+
+8
+00:00:20,000 --> 00:00:23,000
+To support different languages, I'll need at least one resource file
+
+9
+00:00:23,000 --> 00:00:26,000
+for each language that I explicitly support.
+
+10
+00:00:26,000 --> 00:00:29,000
+The first resource file I create will be the base resource file
+
+11
+00:00:29,000 --> 00:00:33,000
+and this might have a name like strings.resx.
+
+12
+00:00:33,000 --> 00:00:36,000
+If I want to produce a version of strings.resx that works with Spanish,
+
+13
+00:00:36,000 --> 00:00:38,000
+I'd also create a strings.es.resx.
+
+14
+00:00:38,000 --> 00:00:44,000
+So you can see the language the resx supports, it's embedded in the file name
+
+15
+00:00:44,000 --> 00:00:48,000
+and it follows a naming convention to describe to the dot.net runtime what language
+
+16
+00:00:48,000 --> 00:00:51,000
+and what culture a particularly resx file supports.
+
+17
+00:00:51,000 --> 00:00:53,000
+You can also be very specific about the culture.
+
+18
+00:00:53,000 --> 00:00:58,000
+So es dash mx would be Spanish Mexico.
+
+19
+00:00:58,000 --> 00:01:01,000
+In dot.net there's a resource manager that will load the appropriate resource file
+
+20
+00:01:01,000 --> 00:01:06,000
+for the current UI culture that's set but we generally do not have to interact
+
+21
+00:01:06,000 --> 00:01:08,000
+with this resource manager directly
+
+22
+00:01:08,000 --> 00:01:12,000
+because Visual Studio will automatically compile these resources into our project
+
+23
+00:01:12,000 --> 00:01:17,000
+and generate code to access the resources with a strongly typed class.
+
+24
+00:01:17,000 --> 00:01:20,000
+If you go to the properties window for a resx file,
+
+25
+00:01:20,000 --> 00:01:25,000
+you'll see Visual Studio has the build action set to embedded resource.
+
+26
+00:01:25,000 --> 00:01:28,000
+We'll talk about some of the other settings here when we get to the demonstration
+
+27
+00:01:28,000 --> 00:01:30,000
+but to use a resource is very simple.
+
+28
+00:01:30,000 --> 00:01:33,000
+In a view, I can get to a resource with a greeting property inside by going
+
+29
+00:01:33,000 --> 00:01:37,000
+to the generated class and asking for the greeting property.
+
+30
+00:01:37,000 --> 00:01:41,000
+This might return the string hello for English but it could also return hola
+
+31
+00:01:41,000 --> 00:01:46,000
+if the current UI culture is set to Spanish and a Spanish resource exists.
+
+32
+00:01:46,000 --> 00:01:49,000
+If a resource doesn't exist for the current UI settings,
+
+33
+00:01:49,000 --> 00:01:52,000
+the resource manager will fall back to the base resource.
+
+34
+00:01:52,000 --> 00:01:57,000
+Let's go into Visual Studio and see how all of this works.
+
+35
+00:01:57,000 --> 00:02:01,000
+Inside the index view for the home controller, let me add a greeting to this view just
+
+36
+00:02:01,000 --> 00:02:05,000
+above the other culturally sensitive information that we're displaying.
+
+37
+00:02:05,000 --> 00:02:10,000
+And now what I want to do is localize this so it's not a hard coded string in English.
+
+38
+00:02:10,000 --> 00:02:15,000
+We could display English or French or any other language that we create a resource file for.
+
+39
+00:02:15,000 --> 00:02:17,000
+So the first step is to create that resource file.
+
+40
+00:02:17,000 --> 00:02:21,000
+And one of the decisions you'll have to make when creating a resource file is where to create
+
+41
+00:02:21,000 --> 00:02:27,000
+that because you can have multiple resource files and these resource files could live
+
+42
+00:02:27,000 --> 00:02:29,000
+in the web project, in this ode to food (phonetic) project.
+
+43
+00:02:29,000 --> 00:02:33,000
+You could also put them in a separate class library if that was more maintainable for you
+
+44
+00:02:33,000 --> 00:02:38,000
+and you also need to select what folder these resource files are going to go into.
+
+45
+00:02:38,000 --> 00:02:41,000
+To keep things simple, I think I might need a resource file just
+
+46
+00:02:41,000 --> 00:02:43,000
+for the views for the home controller.
+
+47
+00:02:43,000 --> 00:02:50,000
+And so what I might do in that situation is come into the home views folder and add a new item.
+
+48
+00:02:50,000 --> 00:02:55,000
+I'll search for res and that should bring up resources file.
+
+49
+00:02:55,000 --> 00:03:03,000
+I will call this just resources.resx and this will be my base resource file.
+
+50
+00:03:03,000 --> 00:03:06,000
+It opens up in a Visual Studio resx file editor.
+
+51
+00:03:06,000 --> 00:03:09,000
+One of the changes that I have to make sure I do inside
+
+52
+00:03:09,000 --> 00:03:11,000
+of here is to change this access modifier.
+
+53
+00:03:11,000 --> 00:03:13,000
+It's currently internal.
+
+54
+00:03:13,000 --> 00:03:16,000
+I'm going to change that over to be public.
+
+55
+00:03:16,000 --> 00:03:19,000
+This is just required because of the compilation model.
+
+56
+00:03:19,000 --> 00:03:25,000
+It turns out that razor views are compiled into a different assembly, a different dll file
+
+57
+00:03:25,000 --> 00:03:29,000
+than our ode to food assembly and without having these resource files be generated
+
+58
+00:03:29,000 --> 00:03:33,000
+as public classes, we wouldn't be able to see them from our razor views but just changing
+
+59
+00:03:33,000 --> 00:03:36,000
+that access modifier will set that for you.
+
+60
+00:03:36,000 --> 00:03:40,000
+Behind the scenes what's happening is there is a class being generated for you.
+
+61
+00:03:40,000 --> 00:03:45,000
+You can see it if you expand a resources.resx, there's a generated .cs file behind here
+
+62
+00:03:45,000 --> 00:03:47,000
+and we'll take a look at that in just a second.
+
+63
+00:03:47,000 --> 00:03:50,000
+First, let me come in and add a name.
+
+64
+00:03:50,000 --> 00:03:53,000
+So this is how I want to reach a specific resource.
+
+65
+00:03:53,000 --> 00:03:58,000
+I want to have the greeting resource and this is where I would give it a value like hello.
+
+66
+00:03:58,000 --> 00:04:03,000
+And now if I save this resources file and open up the generated code,
+
+67
+00:04:03,000 --> 00:04:07,000
+you'll see there's a class that's generated in the odetofood.views.home name space.
+
+68
+00:04:07,000 --> 00:04:13,000
+It's called resources and all the way down here at the bottom --
+
+69
+00:04:13,000 --> 00:04:15,000
+( Silence )
+
+70
+00:04:15,000 --> 00:04:20,000
+-- there will be a greeting property that I can get to and all the other code that is inside
+
+71
+00:04:20,000 --> 00:04:22,000
+of here is just code that is required
+
+72
+00:04:22,000 --> 00:04:26,000
+to have the .net resource manager load the appropriate resource file.
+
+73
+00:04:26,000 --> 00:04:30,000
+And if I wanted to use this code from an index view,
+
+74
+00:04:30,000 --> 00:04:37,000
+all I need to do now is replace my hard coded text with the name spaces, the class name,
+
+75
+00:04:37,000 --> 00:04:40,000
+and the name of the resource that I want to display.
+
+76
+00:04:40,000 --> 00:04:42,000
+In this case, greeting and at this point,
+
+77
+00:04:42,000 --> 00:04:47,000
+if anyone comes to the site specifying any language, we're always going to display hello
+
+78
+00:04:47,000 --> 00:04:49,000
+because this our base resource file.
+
+79
+00:04:49,000 --> 00:04:54,000
+We don't have a resource file specified for any other languages so everyone gets English.
+
+80
+00:04:54,000 --> 00:04:58,000
+If I wanted to customize this for say, French, that's when I could come
+
+81
+00:04:58,000 --> 00:05:01,000
+in and add a second resource file.
+
+82
+00:05:01,000 --> 00:05:03,000
+So let's add a new item --
+
+83
+00:05:03,000 --> 00:05:05,000
+( Silence )
+
+84
+00:05:05,000 --> 00:05:12,000
+-- with the same name, resources.fr.resx and inside
+
+85
+00:05:12,000 --> 00:05:15,000
+of here I would duplicate the name value pairs.
+
+86
+00:05:15,000 --> 00:05:20,000
+You can obviously have as many name value pairs as you want but we just have one.
+
+87
+00:05:20,000 --> 00:05:27,000
+The name is always greeting but this would be the French translation, bonjour.
+
+88
+00:05:27,000 --> 00:05:30,000
+Notice there is no code generation for this resource file.
+
+89
+00:05:30,000 --> 00:05:35,000
+Code generation only needs to happen on the base resource file, resources.resx.
+
+90
+00:05:35,000 --> 00:05:40,000
+All of these files get embedded into my assembly by Visual Studio when it builds.
+
+91
+00:05:40,000 --> 00:05:42,000
+That's why the build action is set to embedded resource.
+
+92
+00:05:42,000 --> 00:05:46,000
+So you can think of all this information getting compiled right alongside with your C sharp code
+
+93
+00:05:46,000 --> 00:05:50,000
+that goes with your application wherever you copy the dll file to.
+
+94
+00:05:50,000 --> 00:05:55,000
+Well, let's run this and see how it behaves.
+
+95
+00:05:55,000 --> 00:05:57,000
+( Silence )
+
+96
+00:05:57,000 --> 00:06:03,000
+On the home page of the application, I'm still configured to prefer the French language.
+
+97
+00:06:03,000 --> 00:06:04,000
+So I see bonjour.
+
+98
+00:06:04,000 --> 00:06:05,000
+I see Euros.
+
+99
+00:06:05,000 --> 00:06:11,000
+Now let me go into tools, internet options, languages, set language preferences,
+
+100
+00:06:11,000 --> 00:06:16,000
+and move English back up to the top.
+
+101
+00:06:16,000 --> 00:06:20,000
+Then close all these windows and refresh Internet Explorer
+
+102
+00:06:20,000 --> 00:06:28,000
+and refresh Internet Explorer and nothing happens.
+
+103
+00:06:28,000 --> 00:06:30,000
+I'm still seeing bonjour.
+
+104
+00:06:30,000 --> 00:06:33,000
+Is this a problem with the way I created my resource files?
+
+105
+00:06:33,000 --> 00:06:35,000
+Is this a problem with Internet Explorer?
+
+106
+00:06:35,000 --> 00:06:37,000
+Well no, none of the above.
+
+107
+00:06:37,000 --> 00:06:43,000
+It turns out, once again that we have to be very careful with something that we added earlier
+
+108
+00:06:43,000 --> 00:06:48,000
+which is the output cache attribute.
+
+109
+00:06:48,000 --> 00:06:51,000
+In this case, what is probably happening now is I'm making this request
+
+110
+00:06:51,000 --> 00:06:56,000
+but all the MVC run time caching cares about is that all the parameters are the same,
+
+111
+00:06:56,000 --> 00:06:58,000
+the x requested with hasn't changed.
+
+112
+00:06:58,000 --> 00:07:02,000
+It's going to return a cached response that was built for the French language.
+
+113
+00:07:02,000 --> 00:07:06,000
+I need to tell ASP.net that there's another header that it's need to vary the cache with
+
+114
+00:07:06,000 --> 00:07:11,000
+and that is the accept language header.
+
+115
+00:07:11,000 --> 00:07:13,000
+And we actually don't separate these with commas.
+
+116
+00:07:13,000 --> 00:07:15,000
+We separate these with semicolons.
+
+117
+00:07:15,000 --> 00:07:19,000
+And now if I build the application, let's try this again.
+
+118
+00:07:19,000 --> 00:07:24,000
+I'll refresh this page and now we're displaying hello.
+
+119
+00:07:24,000 --> 00:07:26,000
+That seems good.
+
+120
+00:07:26,000 --> 00:07:31,000
+And let me go into tools, internet options, languages, set language preferences,
+
+121
+00:07:31,000 --> 00:07:33,000
+move French back to the top, close one window.
+
+122
+00:07:33,000 --> 00:07:34,000
+Close two windows.
+
+123
+00:07:34,000 --> 00:07:39,000
+Close three windows and refresh and now we display bonjour.
+
+124
+00:07:39,000 --> 00:07:42,000
+So caching isn't interfering with our localization anymore.
+
+125
+00:07:42,000 --> 00:07:45,000
+And while we're here at the home controller there's something else you should know
+
+126
+00:07:45,000 --> 00:07:46,000
+about resource files.
+
+127
+00:07:46,000 --> 00:07:50,000
+There's really nothing that restricts you to using them only from a view.
+
+128
+00:07:50,000 --> 00:07:54,000
+So I could have a greeting string defined here that is set
+
+129
+00:07:54,000 --> 00:08:02,000
+to odetofood.views.home.resources.greeting and that would work just as well.
+
+130
+00:08:02,000 --> 00:08:06,000
+The correct string will be loaded on the UI culture setting and in fact,
+
+131
+00:08:06,000 --> 00:08:10,000
+you can also use these resources if you want
+
+132
+00:08:10,000 --> 00:08:13,000
+to build custom error messages for your data annotations.
+
+133
+00:08:13,000 --> 00:08:20,000
+So let's look at the restaurant review model that we built and we had things like required.
+
+134
+00:08:20,000 --> 00:08:23,000
+And if the user doesn't fill something out here,
+
+135
+00:08:23,000 --> 00:08:26,000
+they'll get an error message like the body field is required.
+
+136
+00:08:26,000 --> 00:08:30,000
+Let's say you wanted to customize that and also customize it for different languages.
+
+137
+00:08:30,000 --> 00:08:33,000
+In that case, you could come in and you wouldn't use error message.
+
+138
+00:08:33,000 --> 00:08:38,000
+Error message would just be hard coded text on what you wanted the error message to be.
+
+139
+00:08:38,000 --> 00:08:46,000
+We want this to be localized so I would specify error message resource type and I would set this
+
+140
+00:08:46,000 --> 00:08:50,000
+to the type of my resource class, the generated class that was given to me
+
+141
+00:08:50,000 --> 00:08:54,000
+and I would also specify the error message resource name.
+
+142
+00:08:54,000 --> 00:08:57,000
+That is what to look up inside of that resource file.
+
+143
+00:08:57,000 --> 00:09:01,000
+This is where I would provide one of the names that's inside of my resource file.
+
+144
+00:09:01,000 --> 00:09:05,000
+Greeting, obviously, wouldn't make any sense as an error message but it's the only one I have
+
+145
+00:09:05,000 --> 00:09:07,000
+in there now so I'm adding it here.
+
+146
+00:09:07,000 --> 00:09:09,000
+You'd obviously have to create some error messages.
+
+147
+00:09:09,000 --> 00:09:13,000
+Maybe they would be in a different resource file somewhere in your project
+
+148
+00:09:13,000 --> 00:09:16,000
+but you could just specify the type of the resource and the name to pull out of
+
+149
+00:09:16,000 --> 00:09:21,000
+that resource file and then you can have localized error messages too.
+
+150
+00:09:21,000 --> 00:59:00,000
+( Silence )
+

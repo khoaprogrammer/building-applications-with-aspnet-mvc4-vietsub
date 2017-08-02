@@ -1,0 +1,704 @@
+1
+00:00:01,000 --> 00:00:04,000
+I've added a second test to the "Test Fixture".
+
+2
+00:00:04,000 --> 00:00:07,000
+This one passes in two "Restaurant Reviews" to the "Restaurant Rater".
+
+3
+00:00:07,000 --> 00:00:12,000
+Since the code is starting to take some form, I've also given the tests some names,
+
+4
+00:00:12,000 --> 00:00:16,000
+"Computes Result for One Review", and "Computes Results for Two Reviews".
+
+5
+00:00:16,000 --> 00:00:21,000
+I've also changed the implementation inside of the "Restaurant Rater".
+
+6
+00:00:21,000 --> 00:00:24,000
+The simplest possible thing I've found to work is a very simple link statement.
+
+7
+00:00:24,000 --> 00:00:26,000
+It averages the reviews.
+
+8
+00:00:26,000 --> 00:00:31,000
+The good news is both of the tests now pass and I'm in a re-factoring stage.
+
+9
+00:00:31,000 --> 00:00:34,000
+I think the "Restaurant Rater" is in good shape so far.
+
+10
+00:00:34,000 --> 00:00:37,000
+It's actually the tests that are bothering me.
+
+11
+00:00:37,000 --> 00:00:40,000
+One thing you'll learn about unit testing in general is that the tests are just
+
+12
+00:00:40,000 --> 00:00:42,000
+as important as the application code.
+
+13
+00:00:42,000 --> 00:00:47,000
+And it bothers me that I have so much setup work inside of each test to make a restaurant
+
+14
+00:00:47,000 --> 00:00:50,000
+and make the reviews for that restaurant, so in this re-factoring phase,
+
+15
+00:00:50,000 --> 00:00:54,000
+I'm going to re-factor the tests to make the setup a little bit easier.
+
+16
+00:00:54,000 --> 00:00:59,000
+( Silence )
+
+17
+00:00:59,000 --> 00:01:02,000
+What I've done to re-factor the tests is to add a method, a private method,
+
+18
+00:01:02,000 --> 00:01:05,000
+named "Build Restaurants and Reviews".
+
+19
+00:01:05,000 --> 00:01:09,000
+This is not a test method that the "Test Runner" will invoke to see if something passes or fails.
+
+20
+00:01:09,000 --> 00:01:11,000
+It doesn't have a "Test Method Attribute".
+
+21
+00:01:11,000 --> 00:01:15,000
+This is a helper method I can use for my other tests, to keep them simple.
+
+22
+00:01:15,000 --> 00:01:18,000
+When you look at a test, it's a little easier to see that "Arrange, Act,
+
+23
+00:01:18,000 --> 00:01:22,000
+Assert" pattern that we talked about in the introduction to this course.
+
+24
+00:01:22,000 --> 00:01:27,000
+This new method takes a variable number of integer parameters, and uses some link operators
+
+25
+00:01:27,000 --> 00:01:30,000
+to transform the integers into a list of reviews.
+
+26
+00:01:30,000 --> 00:01:32,000
+Those reviews are attached to the restaurant.
+
+27
+00:01:32,000 --> 00:01:33,000
+We just return the "Restaurant" then.
+
+28
+00:01:33,000 --> 00:01:38,000
+I can use this method in my tests by either creating an array of integers and passing them
+
+29
+00:01:38,000 --> 00:01:43,000
+into this method, as we did here with the values four and eight, or I can use the params ability
+
+30
+00:01:43,000 --> 00:01:45,000
+of "C Sharp" to just pass them in one by one.
+
+31
+00:01:45,000 --> 00:01:48,000
+And now I'm feeling a bit better about these tests.
+
+32
+00:01:48,000 --> 00:01:52,000
+They look a little bit cleaner, and both the tests are still passing, which is good.
+
+33
+00:01:52,000 --> 00:01:55,000
+For the next step, I might want to start to test boundary conditions.
+
+34
+00:01:55,000 --> 00:01:58,000
+What happens when we rate a restaurant with zero reviews,
+
+35
+00:01:58,000 --> 00:02:01,000
+or if we rate a restaurant that has a negative review?
+
+36
+00:02:01,000 --> 00:02:03,000
+Should we throw exceptions?
+
+37
+00:02:03,000 --> 00:02:04,000
+How do we deal with odd numbers?
+
+38
+00:02:04,000 --> 00:02:08,000
+Those would all be good tests to write, but I'm sure I can come up with an implementation
+
+39
+00:02:08,000 --> 00:02:11,000
+to satisfy all those odd scenarios.
+
+40
+00:02:11,000 --> 00:02:14,000
+They don't feel like they'd be high risk or difficult to implement.
+
+41
+00:02:14,000 --> 00:02:18,000
+And at this early point, I'm really trying to focus on design issues first because, remember,
+
+42
+00:02:18,000 --> 00:02:23,000
+TDD is primarily about design, and if I look at these requirements again,
+
+43
+00:02:23,000 --> 00:02:27,000
+they say we have to support at least two different types of averaging.
+
+44
+00:02:27,000 --> 00:02:32,000
+There's the simple average and the weighted average, and the business people also hinted
+
+45
+00:02:32,000 --> 00:02:33,000
+that there might be more in the future.
+
+46
+00:02:33,000 --> 00:02:37,000
+They want to try, and experiment, and find out what will work the best.
+
+47
+00:02:37,000 --> 00:02:40,000
+I want to see what happens if I introduce the second form of averaging,
+
+48
+00:02:40,000 --> 00:02:42,000
+and see how it impacts my design.
+
+49
+00:02:42,000 --> 00:02:47,000
+( Silence )
+
+50
+00:02:47,000 --> 00:02:51,000
+I have now added a new test, the "Test the Weighted Average of Two Reviews".
+
+51
+00:02:51,000 --> 00:02:55,000
+Remember, the requirements also said I need to weight the most recent reviews twice
+
+52
+00:02:55,000 --> 00:02:56,000
+as heavily as the oldest reviews.
+
+53
+00:02:56,000 --> 00:02:58,000
+And we haven't worked with review dates.
+
+54
+00:02:58,000 --> 00:03:02,000
+We haven't sorted anything yet, but in the future, again, I know I can write some tests
+
+55
+00:03:02,000 --> 00:03:06,000
+to make sure that the reviews are properly sorted before I compute the rating.
+
+56
+00:03:06,000 --> 00:03:07,000
+I can do that later.
+
+57
+00:03:07,000 --> 00:03:10,000
+Sorting is another implementation detail I know I can figure out,
+
+58
+00:03:10,000 --> 00:03:15,000
+and I'm not finished writing tests yet but I am still focused on design.
+
+59
+00:03:15,000 --> 00:03:19,000
+In this weighting test, the rating for a restaurant with review ratings of three
+
+60
+00:03:19,000 --> 00:03:23,000
+and nine is five because the value three is more heavily weighted than the value nine.
+
+61
+00:03:23,000 --> 00:03:26,000
+It comes before the value nine in order.
+
+62
+00:03:26,000 --> 00:03:31,000
+I've put together a quick and dirty implementation that will pass the test, and,
+
+63
+00:03:31,000 --> 00:03:34,000
+of course, I did this after I watched the test fail.
+
+64
+00:03:34,000 --> 00:03:36,000
+And this is what the implementation looks like.
+
+65
+00:03:36,000 --> 00:03:38,000
+I'm not in the re-factoring phase again.
+
+66
+00:03:38,000 --> 00:03:40,000
+I just want to show you some of the things
+
+67
+00:03:40,000 --> 00:03:44,000
+that tests will make you think about, for instance, rounding.
+
+68
+00:03:44,000 --> 00:03:47,000
+Right now, I'm truncating the average rating,
+
+69
+00:03:47,000 --> 00:03:51,000
+so the link statement computes the average rating and casts the result to an int.
+
+70
+00:03:51,000 --> 00:03:54,000
+The weighted average also performs division
+
+71
+00:03:54,000 --> 00:03:57,000
+between two integer values, which will result in truncation.
+
+72
+00:03:57,000 --> 00:04:00,000
+So the question is, is truncating the right behavior?
+
+73
+00:04:00,000 --> 00:04:04,000
+This is one of those scenarios that tests will make you think about, and many times you'll need
+
+74
+00:04:04,000 --> 00:04:08,000
+to go back to the business people and ask for clarification.
+
+75
+00:04:08,000 --> 00:04:11,000
+All I know so far is that they told me that the rating should be a whole number like six
+
+76
+00:04:11,000 --> 00:04:14,000
+or seven so I need to clarify the exact behavior.
+
+77
+00:04:14,000 --> 00:04:15,000
+Do I need to round?
+
+78
+00:04:15,000 --> 00:04:17,000
+Do I need to truncate?
+
+79
+00:04:17,000 --> 00:04:20,000
+Once I have an answer, I can write the tests that make sure that the rounding
+
+80
+00:04:20,000 --> 00:04:23,000
+or the truncating happens correctly.
+
+81
+00:04:23,000 --> 00:04:25,000
+But for right now, I still want to think about high level design issues,
+
+82
+00:04:25,000 --> 00:04:29,000
+and come back to handling simple averages versus weighted averages.
+
+83
+00:04:29,000 --> 00:04:34,000
+One thing that bothers me about this "Restaurant Rater" right now is how it is responsible
+
+84
+00:04:34,000 --> 00:04:39,000
+for computing a simple rating, which I would probably rename if it was going
+
+85
+00:04:39,000 --> 00:04:42,000
+to stay here, and computing a weighted rate.
+
+86
+00:04:42,000 --> 00:04:48,000
+But I know, based on my notes, that this is an area where I can anticipate change.
+
+87
+00:04:48,000 --> 00:04:53,000
+The business is going to want to add new algorithms, and change algorithms all the time
+
+88
+00:04:53,000 --> 00:04:55,000
+in search for something that works the best.
+
+89
+00:04:55,000 --> 00:05:00,000
+If we had to go into the "Restaurant Rater" and add a new method every time the business came
+
+90
+00:05:00,000 --> 00:05:03,000
+up with a new algorithm, I think that would make things difficult to change.
+
+91
+00:05:03,000 --> 00:05:07,000
+I want to make things easy to change, make them as easy as possible.
+
+92
+00:05:07,000 --> 00:05:10,000
+Let me do a bit more re-factoring, and I'll see if I can make it easy
+
+93
+00:05:10,000 --> 00:05:14,000
+to change algorithms while still having my tests pass.
+
+94
+00:05:14,000 --> 00:05:17,000
+It's wonderful having these passing tests now because I can rip code apart,
+
+95
+00:05:17,000 --> 00:05:20,000
+rebuild everything, and my tests will tell me if I did anything wrong.
+
+96
+00:05:20,000 --> 00:05:24,000
+( Silence )
+
+97
+00:05:24,000 --> 00:05:26,000
+I've done a bit more re-factoring, and I've decided that the
+
+98
+00:05:26,000 --> 00:05:30,000
+"Restaurant Rater" should not be responsible for computing the actual result.
+
+99
+00:05:30,000 --> 00:05:32,000
+You'll notice the class is much smaller now.
+
+100
+00:05:32,000 --> 00:05:36,000
+Instead of computing the result directly, the rater is going to rely on an algorithm
+
+101
+00:05:36,000 --> 00:05:40,000
+that is passed in and abstracted behind an interface definition.
+
+102
+00:05:40,000 --> 00:05:45,000
+The interface definition is "I-Rating algorithm", and it looks like this.
+
+103
+00:05:45,000 --> 00:05:48,000
+Any object that implements this interface you can call
+
+104
+00:05:48,000 --> 00:05:52,000
+"Compute on" and pass in a list of reviews.
+
+105
+00:05:52,000 --> 00:05:55,000
+It will then return the proper new rating result.
+
+106
+00:05:55,000 --> 00:05:58,000
+I've made two concrete implementations of this interface.
+
+107
+00:05:58,000 --> 00:06:00,000
+They're both in the same file.
+
+108
+00:06:00,000 --> 00:06:02,000
+That's something that I'd want to change later on, move these classes
+
+109
+00:06:02,000 --> 00:06:05,000
+to their own files perhaps, but we can worry about that later.
+
+110
+00:06:05,000 --> 00:06:09,000
+The first implementation performs a "Simple Averaging of Reviews".
+
+111
+00:06:09,000 --> 00:06:15,000
+The second implementation performs a "Weighted Averaging of the Reviews".
+
+112
+00:06:15,000 --> 00:06:22,000
+You might have noticed that the code inside the algorithms is the same code I had before inside
+
+113
+00:06:22,000 --> 00:06:25,000
+of the "Restaurant Rater" itself, so I just moved code around.
+
+114
+00:06:25,000 --> 00:06:29,000
+I took code out of the "Restaurant Rater" and pasted it into these algorithm classes.
+
+115
+00:06:29,000 --> 00:06:30,000
+Is that good?
+
+116
+00:06:30,000 --> 00:06:35,000
+I think so, because it's assigning specific responsibilities to different classes now.
+
+117
+00:06:35,000 --> 00:06:40,000
+I now have algorithms that are dedicated to and focused on computing a rating result,
+
+118
+00:06:40,000 --> 00:06:44,000
+and I have a "Restaurant Rater" that is now going to be focused on coordinating all
+
+119
+00:06:44,000 --> 00:06:47,000
+of the pieces together needed to produce that result.
+
+120
+00:06:47,000 --> 00:06:51,000
+And now when a client needs to determine a rating, like if we looked inside
+
+121
+00:06:51,000 --> 00:06:55,000
+of our tests now, we don't need to figure out which method to call on the "Restaurant Rater".
+
+122
+00:06:55,000 --> 00:06:58,000
+We always call "Compute Result", but we pass
+
+123
+00:06:58,000 --> 00:07:01,000
+in the algorithm that's required to perform the computation.
+
+124
+00:07:01,000 --> 00:07:04,000
+This is the Strategy Design pattern for you pattern fans out there.
+
+125
+00:07:04,000 --> 00:07:08,000
+What's important about this pattern is how I can now introduce new algorithms
+
+126
+00:07:08,000 --> 00:07:11,000
+without changing any of the code inside the "Restaurant Rater" or inside
+
+127
+00:07:11,000 --> 00:07:13,000
+of any of the existing algorithms.
+
+128
+00:07:13,000 --> 00:07:17,000
+I've made the system much easier to extend, and we should be able to keep
+
+129
+00:07:17,000 --> 00:07:21,000
+up with all the changes that the business wants to introduce in this area as they experiment
+
+130
+00:07:21,000 --> 00:07:23,000
+with different ways to rate restaurants.
+
+131
+00:07:23,000 --> 00:07:27,000
+All I need to do is write a class that implements "I-Rating algorithm".
+
+132
+00:07:27,000 --> 00:07:31,000
+The good news is, after I've ripped all this code apart, all of the tests still pass,
+
+133
+00:07:31,000 --> 00:07:33,000
+so I know I haven't broken anything.
+
+134
+00:07:33,000 --> 00:07:36,000
+And you might be wondering, if all I did was move code around,
+
+135
+00:07:36,000 --> 00:07:39,000
+then why couldn't I just call this algorithm directly instead
+
+136
+00:07:39,000 --> 00:07:41,000
+of going through this rater class?
+
+137
+00:07:41,000 --> 00:07:45,000
+If I'm a client, like our unit tests are clients for this code,
+
+138
+00:07:45,000 --> 00:07:48,000
+why do I instantiate a "Restaurant Rater" and call "Compute Rate"?
+
+139
+00:07:48,000 --> 00:07:50,000
+Why don't I just instantiate an algorithm and call "Compute Rate"?
+
+140
+00:07:50,000 --> 00:07:54,000
+And the answer is that we haven't given the "Restaurant Rater" all
+
+141
+00:07:54,000 --> 00:07:57,000
+of the responsibilities it needs to take care of just yet.
+
+142
+00:07:57,000 --> 00:07:59,000
+Let me write another test and come right back.
+
+143
+00:07:59,000 --> 00:08:01,000
+I've written a new test, this one to make sure that the
+
+144
+00:08:01,000 --> 00:08:06,000
+"Restaurant Rater" only uses the top N number of reviews in the calculation.
+
+145
+00:08:06,000 --> 00:08:10,000
+To test this scenario, I've built a restaurant with six reviews, one, one, one followed by 10,
+
+146
+00:08:10,000 --> 00:08:15,000
+10, 10, and I expect if I tell the rater to only use the first three reviews,
+
+147
+00:08:15,000 --> 00:08:18,000
+it should produce an average of one.
+
+148
+00:08:18,000 --> 00:08:24,000
+If I run the tests with this new test in place, I'll discover that this test fails
+
+149
+00:08:24,000 --> 00:08:27,000
+because I haven't implemented the logic for this to work yet.
+
+150
+00:08:27,000 --> 00:08:33,000
+Let me go into the "Restaurant Rater", and get a list of filtered reviews.
+
+151
+00:08:33,000 --> 00:08:43,000
+And I think what I can do is just take "Restaurant.reviews", and take the first number
+
+152
+00:08:43,000 --> 00:08:47,000
+of reviews to use, and that should satisfy the logic.
+
+153
+00:08:47,000 --> 00:08:54,000
+This should make the test pass, but let me do a "Filtered Reviews.to List", run the test again,
+
+154
+00:08:54,000 --> 00:08:59,000
+and I can see that that test now passes.
+
+155
+00:08:59,000 --> 00:09:04,000
+And now you can see that the "Restaurant Rater" is going to have a purpose in life.
+
+156
+00:09:04,000 --> 00:09:06,000
+It's going to massage the data, and set everything
+
+157
+00:09:06,000 --> 00:09:09,000
+up properly so the algorithm can work.
+
+158
+00:09:09,000 --> 00:09:13,000
+It's still the algorithm that does the computations and leaves us open
+
+159
+00:09:13,000 --> 00:09:15,000
+to extending the software with new algorithms.
+
+160
+00:09:15,000 --> 00:09:19,000
+And at this point, I'm sure we could think of many more tests to write.
+
+161
+00:09:19,000 --> 00:09:21,000
+We could write tests that check for rounding errors and truncating errors,
+
+162
+00:09:21,000 --> 00:09:23,000
+tests for restaurants with no reviews,
+
+163
+00:09:23,000 --> 00:09:26,000
+tests to make sure the reviews are sorted properly, and the list goes on.
+
+164
+00:09:26,000 --> 00:09:29,000
+I'm not going to write those tests for you in this video.
+
+165
+00:09:29,000 --> 00:09:32,000
+I'll leave that as an exercise for you.
+
+166
+00:09:32,000 --> 00:09:36,000
+Instead, we're going to move on and look at more MVC-specific issues around unit testing.
+
+167
+00:09:36,000 --> 00:09:39,000
+But the goal of this was that I hope I've shown you some of the benefits
+
+168
+00:09:39,000 --> 00:09:42,000
+of test-first development and how to apply TDD.
+
+169
+00:09:42,000 --> 00:09:44,000
+It has a real learning curve.
+
+170
+00:09:44,000 --> 00:09:48,000
+You need to keep trying, and then learning, and then trying again.
+
+171
+00:09:48,000 --> 00:09:52,000
+You might think this example was too simplistic, but I assure you that after many years
+
+172
+00:09:52,000 --> 00:09:56,000
+of doing this if you can make your code easy to test, like in this example,
+
+173
+00:09:56,000 --> 00:10:01,000
+and there's always a way to make code easier to test, then you're going to have success,
+
+174
+00:10:01,000 --> 00:10:03,000
+not only with test-driven development but also
+
+175
+00:10:03,000 --> 00:10:06,000
+in writing maintainable code and building software.
+
+176
+00:10:06,000 --> 00:59:00,000
+( Silence )
+

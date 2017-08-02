@@ -1,0 +1,452 @@
+1
+00:00:00,000 --> 00:00:07,000
+As I mentioned previously, one of the goals of the MVC framework is to be testable.
+
+2
+00:00:07,000 --> 00:00:10,000
+Specifically, your controller should be testable.
+
+3
+00:00:10,000 --> 00:00:15,000
+I should be able to exercise the logic inside of the controller action from a unit test
+
+4
+00:00:15,000 --> 00:00:18,000
+and be able to write assert to make sure that the logic is behaving correctly
+
+5
+00:00:18,000 --> 00:00:23,000
+and I should be able to do that without involving a web server or HTTP messages,
+
+6
+00:00:23,000 --> 00:00:27,000
+or my network card or other things that make testing complicated.
+
+7
+00:00:27,000 --> 00:00:31,000
+Fortunately, when I created this application, we told Visual Studio
+
+8
+00:00:31,000 --> 00:00:33,000
+to create a unit test project for us.
+
+9
+00:00:33,000 --> 00:00:35,000
+And if I look in the solution explorer window,
+
+10
+00:00:35,000 --> 00:00:39,000
+I'll see there are actually two projects in my application solution.
+
+11
+00:00:39,000 --> 00:00:42,000
+The first one is OdeToFood that's the web application
+
+12
+00:00:42,000 --> 00:00:45,000
+and the second one is OdeToFood.test.
+
+13
+00:00:45,000 --> 00:00:48,000
+This is my testing project.
+
+14
+00:00:48,000 --> 00:00:51,000
+Inside of the testing project are some test the Visual Studio added
+
+15
+00:00:51,000 --> 00:00:55,000
+when I created this application, these aren't the most fantastic tests in the world,
+
+16
+00:00:55,000 --> 00:00:58,000
+but they do demonstrate how to implement unit test.
+
+17
+00:00:58,000 --> 00:01:02,000
+This is a new feature for Visual Studio 2012 by the way.
+
+18
+00:01:02,000 --> 00:01:07,000
+In previous versions of Visual Studio the free express edition did not include a unit testing
+
+19
+00:01:07,000 --> 00:01:10,000
+tool, but it 2012 we have the framework known as MS test.
+
+20
+00:01:10,000 --> 00:01:16,000
+So, let me open up the one set of test that it's inside of here the home controllers test.
+
+21
+00:01:16,000 --> 00:01:21,000
+And you can see that tests are identified by attributes.
+
+22
+00:01:21,000 --> 00:01:24,000
+With MS test you need an attribute on every class that contains a test,
+
+23
+00:01:24,000 --> 00:01:27,000
+that's the test class attribute that you see.
+
+24
+00:01:27,000 --> 00:01:30,000
+This attribute helps the test runner which we'll use in just a bit
+
+25
+00:01:30,000 --> 00:01:33,000
+to find all the test inside of this project.
+
+26
+00:01:33,000 --> 00:01:40,000
+And then every individual tests inside of a test class has a test method attribute.
+
+27
+00:01:40,000 --> 00:01:43,000
+What a test runner is going to do is once it finds your test,
+
+28
+00:01:43,000 --> 00:01:45,000
+it will instantiate every test class
+
+29
+00:01:45,000 --> 00:01:49,000
+and then invoke every method that's a test method inside of that class.
+
+30
+00:01:49,000 --> 00:01:52,000
+It will then check to see if each of those test passes or fails.
+
+31
+00:01:52,000 --> 00:01:55,000
+You can tell the test runner when something fails.
+
+32
+00:01:55,000 --> 00:01:58,000
+Inside of every unit test, you typically have three steps.
+
+33
+00:01:58,000 --> 00:02:01,000
+Each step can have one or more lines of code.
+
+34
+00:02:01,000 --> 00:02:03,000
+The first step in the arrange step.
+
+35
+00:02:03,000 --> 00:02:06,000
+This is where you create objects that you want to test.
+
+36
+00:02:06,000 --> 00:02:10,000
+In this index test, we're looking at the arrange act just consisting
+
+37
+00:02:10,000 --> 00:02:12,000
+of just instantiating the home controller.
+
+38
+00:02:12,000 --> 00:02:14,000
+That's the object that we want to test.
+
+39
+00:02:14,000 --> 00:02:19,000
+Thanks to the testability of ASP.NET that we see we can instantiate our controllers from anywhere
+
+40
+00:02:19,000 --> 00:02:24,000
+and not have them fail just because they aren't processing a real HTTP request.
+
+41
+00:02:24,000 --> 00:02:28,000
+After the arrange step comes the act step.
+
+42
+00:02:28,000 --> 00:02:29,000
+This is where you set things in motion.
+
+43
+00:02:29,000 --> 00:02:35,000
+You usually invoke a method or set a property, do something to the object that you want to test
+
+44
+00:02:35,000 --> 00:02:38,000
+and have it produce a result which you'll capture and examine
+
+45
+00:02:38,000 --> 00:02:41,000
+in the third step which is the assert step.
+
+46
+00:02:41,000 --> 00:02:45,000
+This is where you rate an assertion that should prove whether or not something work correctly.
+
+47
+00:02:45,000 --> 00:02:50,000
+In this test we're just asserting that the home controller produced a result
+
+48
+00:02:50,000 --> 00:02:57,000
+or the result .ViewBag.Message was equal to some specific string that's here.
+
+49
+00:02:57,000 --> 00:02:58,000
+The test is just making sure
+
+50
+00:02:58,000 --> 00:03:01,000
+that ViewBag.Message property is set the way it expects it.
+
+51
+00:03:01,000 --> 00:03:03,000
+As I said, this isn't the greatest in the world.
+
+52
+00:03:03,000 --> 00:03:08,000
+There is no real logic or need to test it that exact string as a match,
+
+53
+00:03:08,000 --> 00:03:12,000
+but it does demonstrate how to use the test framework and to test API
+
+54
+00:03:12,000 --> 00:03:18,000
+and you can see the arrange act assert steps that are common to almost every unit test.
+
+55
+00:03:18,000 --> 00:03:22,000
+The assert API by the way includes a number of different assertions you can write.
+
+56
+00:03:22,000 --> 00:03:25,000
+This assert is the R equal assert.
+
+57
+00:03:25,000 --> 00:03:27,000
+It's to make sure that two objects are equal.
+
+58
+00:03:27,000 --> 00:03:32,000
+But you can also assert that something is true or something is false or something is not null.
+
+59
+00:03:32,000 --> 00:03:34,000
+There are many different types of assert.
+
+60
+00:03:34,000 --> 00:03:38,000
+If the assertion fails, the test will fail.
+
+61
+00:03:38,000 --> 00:03:41,000
+To see what test are passing and what test are failing.
+
+62
+00:03:41,000 --> 00:03:44,000
+I just need to get the test runner going.
+
+63
+00:03:44,000 --> 00:03:48,000
+I can do that by going to the test menu and saying run all the tests,
+
+64
+00:03:48,000 --> 00:03:52,000
+the shortcut key there is control R followed by an A and when I do
+
+65
+00:03:52,000 --> 00:03:56,000
+that I'll see the test explorer appear, test that have a green icon next
+
+66
+00:03:56,000 --> 00:03:59,000
+to them are passing test that's good.
+
+67
+00:03:59,000 --> 00:04:03,000
+Test that have a red icon next to them are failing test that would be bad.
+
+68
+00:04:03,000 --> 00:04:07,000
+Let's see if we can get a failing test, right now we only have three tests
+
+69
+00:04:07,000 --> 00:04:10,000
+and they are all passing but I can break something easily.
+
+70
+00:04:10,000 --> 00:04:14,000
+I'll come over into the home controller and remove this bit of code
+
+71
+00:04:14,000 --> 00:04:17,000
+that is passing the model in to build the view result.
+
+72
+00:04:17,000 --> 00:04:22,000
+That means my view will not receive a model object and if I run the application when it's
+
+73
+00:04:22,000 --> 00:04:30,000
+in this state, and go to that about action, we'll get a runtime error because the view needs
+
+74
+00:04:30,000 --> 00:04:33,000
+that model when we don't pass a model
+
+75
+00:04:33,000 --> 00:04:36,000
+in to build the view result we'll get a null model property and when we try to--
+
+76
+00:04:36,000 --> 00:04:41,000
+dereference that by doing model.name we'll get the object reference not set
+
+77
+00:04:41,000 --> 00:04:44,000
+to an instance of an object exception.
+
+78
+00:04:44,000 --> 00:04:50,000
+I could avoid this with a unit test, a unit test that makes sure that the about action
+
+79
+00:04:50,000 --> 00:04:55,000
+of the home controller sets a model object and that the model object is of the right type
+
+80
+00:04:55,000 --> 00:04:59,000
+and having a unit test in place for that will mean I can see
+
+81
+00:04:59,000 --> 00:05:03,000
+that it's failing before it ever try to push this somewhere where someone will see it,
+
+82
+00:05:03,000 --> 00:05:07,000
+I'll catch this error before the application ever runs.
+
+83
+00:05:07,000 --> 00:05:08,000
+Let's try to do that.
+
+84
+00:05:08,000 --> 00:05:15,000
+If I come over into the home controller test, I can see there already is an about test here.
+
+85
+00:05:15,000 --> 00:05:19,000
+But the about test is just making sure that the about action is producing a result,
+
+86
+00:05:19,000 --> 00:05:23,000
+any result and that the result is not null.
+
+87
+00:05:23,000 --> 00:05:27,000
+And so, the change I made in the home controller will still not break this test.
+
+88
+00:05:27,000 --> 00:05:29,000
+Let's run all the test again.
+
+89
+00:05:29,000 --> 00:05:31,000
+All the test are still passing.
+
+90
+00:05:31,000 --> 00:05:33,000
+I need to do a little more in this test.
+
+91
+00:05:33,000 --> 00:05:38,000
+I need to really assert that result.model is not null.
+
+92
+00:05:38,000 --> 00:05:40,000
+That's the important part that the view needs.
+
+93
+00:05:40,000 --> 00:05:44,000
+We need a result but that result also needs a model associated with it.
+
+94
+00:05:44,000 --> 00:05:49,000
+So with that change in the test and we run all the test again, now we have a failing test.
+
+95
+00:05:49,000 --> 00:05:55,000
+If I click on the failing test, I'll get down here in the bottom of the test explorer window,
+
+96
+00:05:55,000 --> 00:06:01,000
+a StackTrace I can click on the top link here, it will take me right to the line of code
+
+97
+00:06:01,000 --> 00:06:05,000
+that failed, in this case it failed because result.model is null
+
+98
+00:06:05,000 --> 00:06:10,000
+and the assertion is making sure that it's not null and to fix that, I just need to go back
+
+99
+00:06:10,000 --> 00:06:17,000
+to the controller and put the code back in place so I actually pass a model along,
+
+100
+00:06:17,000 --> 00:06:20,000
+now I can hit control RA to run all the test again.
+
+101
+00:06:20,000 --> 00:06:24,000
+And we should come out with three passing tests.
+
+102
+00:06:24,000 --> 00:06:28,000
+So this is all the time we have to talk about testing right now but we'll return
+
+103
+00:06:28,000 --> 00:06:30,000
+to this topic later in the course.
+
+104
+00:06:30,000 --> 00:06:34,000
+This is just a quick demonstration that was intended to show you how easy it can be
+
+105
+00:06:34,000 --> 00:06:39,000
+to test the logic in your presentation layer, specifically the logic
+
+106
+00:06:39,000 --> 00:06:41,000
+that you have inside of your controllers.
+
+107
+00:06:41,000 --> 00:06:44,000
+Controllers are relatively plain C sharp classes.
+
+108
+00:06:44,000 --> 00:06:47,000
+We can instantiate them without having a web server
+
+109
+00:06:47,000 --> 00:06:50,000
+or a web browser or an HTTP request running.
+
+110
+00:06:50,000 --> 00:06:54,000
+And compared to the view, it's the controllers that are doing all the hard work.
+
+111
+00:06:54,000 --> 00:06:59,000
+Views are just simple in the MVC design pattern we use them just as templates
+
+112
+00:06:59,000 --> 00:07:04,000
+to control the placement of data to most of the unit testing effort in an MVC application,
+
+113
+00:07:04,000 --> 00:59:00,000
+it was against the controllers and the models.
+

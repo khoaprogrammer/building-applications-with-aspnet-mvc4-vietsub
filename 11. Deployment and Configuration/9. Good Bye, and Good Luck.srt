@@ -1,0 +1,68 @@
+1
+00:00:01,000 --> 00:00:05,000
+This concludes this module on configuration and deployment where we looked
+
+2
+00:00:05,000 --> 00:00:09,000
+at all the configuration files that are in effect when running a web application,
+
+3
+00:00:09,000 --> 00:00:13,000
+and we also deployed to IIS both locally and in Windows Azure.
+
+4
+00:00:13,000 --> 00:00:16,000
+This also concludes my ASP.NET MVC 4 course.
+
+5
+00:00:16,000 --> 00:00:20,000
+We've seen how to work with routing, controllers, and razor views.
+
+6
+00:00:20,000 --> 00:00:25,000
+We added javascript and used jQuery and jQuery UI to add Ajax features to the application.
+
+7
+00:00:25,000 --> 00:00:28,000
+And we also saw how to work with foreign authentication and the membership provider
+
+8
+00:00:28,000 --> 00:00:31,000
+that comes with our MVC application.
+
+9
+00:00:31,000 --> 00:00:33,000
+I hope you enjoyed this course and were able to use the videos
+
+10
+00:00:33,000 --> 00:00:37,000
+to either jumpstart your MVC development or solidify your existing knowledge
+
+11
+00:00:37,000 --> 00:00:39,000
+of the framework, just a reminder that all the code
+
+12
+00:00:39,000 --> 00:00:42,000
+that we've been working on is published on codeplex.
+
+13
+00:00:42,000 --> 00:00:45,000
+If you look at the history of the check-ins you'll see I did one check-in for each module.
+
+14
+00:00:45,000 --> 00:00:48,000
+So if you want to go back in time to a specific point and work along
+
+15
+00:00:48,000 --> 00:00:51,000
+with the video, you should be able to do that.
+
+16
+00:00:51,000 --> 00:00:54,000
+And now that we are finished I'd just like to say thanks for listening,
+
+17
+00:00:54,000 --> 00:59:00,000
+and good luck with your software development endeavors.
+

@@ -1,0 +1,36 @@
+1
+00:00:02,000 --> 00:00:06,000
+Hi, this is Scott Allen and in this module I'll show you how to use some
+
+2
+00:00:06,000 --> 00:00:11,000
+of the infrastructure features of ASP.net inside an MVC application.
+
+3
+00:00:11,000 --> 00:00:14,000
+In this module, I'll show you how to use the underlying ASP.net caching engine
+
+4
+00:00:14,000 --> 00:00:17,000
+to improve the performance of an application.
+
+5
+00:00:17,000 --> 00:00:21,000
+We'll also see how to work with ASP.net resource files to globalize
+
+6
+00:00:21,000 --> 00:00:24,000
+and localize some application to support multiple cultures.
+
+7
+00:00:24,000 --> 00:00:27,000
+Finally I'll show you some techniques you can use to enable diagnostics
+
+8
+00:00:27,000 --> 00:00:31,000
+and logging inside of an MVC application.
+
+9
+00:00:31,000 --> 00:59:00,000
+( Silence )
+

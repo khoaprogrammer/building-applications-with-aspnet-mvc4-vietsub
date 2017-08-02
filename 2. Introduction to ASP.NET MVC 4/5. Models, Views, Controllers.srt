@@ -1,0 +1,316 @@
+1
+00:00:02,000 --> 00:00:06,000
+Here inside the Visual Studio you'll have a window with the title Solution Explorer.
+
+2
+00:00:06,000 --> 00:00:11,000
+It is the Solution Explorer window that allows you to get to all of your files, C sharp files,
+
+3
+00:00:11,000 --> 00:00:18,000
+JavaScript files, CSS files, icons, images and everything that goes into your application.
+
+4
+00:00:18,000 --> 00:00:21,000
+When we created this application using the internet project template,
+
+5
+00:00:21,000 --> 00:00:24,000
+Visual Studio went ahead and populated our application with all
+
+6
+00:00:24,000 --> 00:00:26,000
+of the folders and files that you see here.
+
+7
+00:00:26,000 --> 00:00:31,000
+That's why we already have a running application with contact in about links working.
+
+8
+00:00:31,000 --> 00:00:34,000
+Three of these folders have a special significance, the controllers,
+
+9
+00:00:34,000 --> 00:00:37,000
+the models and the views folders.
+
+10
+00:00:37,000 --> 00:00:39,000
+Let's talk about those names for a minute.
+
+11
+00:00:39,000 --> 00:00:46,000
+The ASP.NET MVC framework derives its name from the model view controller design pattern.
+
+12
+00:00:46,000 --> 00:00:51,000
+This design pattern has been present in software applications for several decades at this point
+
+13
+00:00:51,000 --> 00:00:55,000
+and it's a design pattern to follow when you want to separate the responsibilities
+
+14
+00:00:55,000 --> 00:00:58,000
+of the components in your user interface layer.
+
+15
+00:00:58,000 --> 00:01:00,000
+The C and MVC is for controller.
+
+16
+00:01:00,000 --> 00:01:05,000
+A controller is a software component that will be the target for some external stimulus.
+
+17
+00:01:05,000 --> 00:01:11,000
+In the case of a web application that external stimulus is usually an incoming HTTP request.
+
+18
+00:01:11,000 --> 00:01:14,000
+So, when someone launches a web browser and points it to the slash home slash
+
+19
+00:01:14,000 --> 00:01:17,000
+about location of my application.
+
+20
+00:01:17,000 --> 00:01:22,000
+That incoming request needs to go to a controller that is in my application.
+
+21
+00:01:22,000 --> 00:01:27,000
+When the controller receives the request, it's responsible for building a model that M in MVC.
+
+22
+00:01:27,000 --> 00:01:32,000
+It's the model that contains all the information that you need to present to the user
+
+23
+00:01:32,000 --> 00:01:34,000
+to satisfy that incoming request.
+
+24
+00:01:34,000 --> 00:01:38,000
+In the case, of slash home slash about, the model might just be some information
+
+25
+00:01:38,000 --> 00:01:43,000
+about the website or about the company or the people behind the website.
+
+26
+00:01:43,000 --> 00:01:47,000
+Another example would be a controller for handling request to view recipes.
+
+27
+00:01:47,000 --> 00:01:51,000
+You might have a recipe controller that builds a list of the most popular recipes.
+
+28
+00:01:51,000 --> 00:01:54,000
+That list would be the model.
+
+29
+00:01:54,000 --> 00:01:57,000
+The controller then selects a view to display the model.
+
+30
+00:01:57,000 --> 00:02:00,000
+Views in the MVC design pattern are very simple objects.
+
+31
+00:02:00,000 --> 00:02:02,000
+Think of them as templates.
+
+32
+00:02:02,000 --> 00:02:07,000
+They take pieces of data from the model and they place them into a proper location on the page.
+
+33
+00:02:07,000 --> 00:02:11,000
+If the model was a list of recipes, then the controller might select a view that will take
+
+34
+00:02:11,000 --> 00:02:14,000
+that list and display the recipes inside an HTML table.
+
+35
+00:02:14,000 --> 00:02:19,000
+That end result is that you isolate the behaviors in your UI into one
+
+36
+00:02:19,000 --> 00:02:22,000
+of these three categories, model, view or controller.
+
+37
+00:02:22,000 --> 00:02:26,000
+A view would never need to know how to call into the data access layer
+
+38
+00:02:26,000 --> 00:02:29,000
+because the model already contains all the data it needs.
+
+39
+00:02:29,000 --> 00:02:34,000
+Meanwhile, a controller would never need to know about where to place an error message
+
+40
+00:02:34,000 --> 00:02:37,000
+or how to color it because that's the responsibility of the view.
+
+41
+00:02:37,000 --> 00:02:41,000
+That isolation that you achieve with the MVC pattern makes it easy to maintain
+
+42
+00:02:41,000 --> 00:02:45,000
+and change your application moving forward because the code inside of each
+
+43
+00:02:45,000 --> 00:02:48,000
+of these pieces is very focused and easier to understand.
+
+44
+00:02:48,000 --> 00:02:53,000
+You can make a change in the controller about where to get your list of recipes
+
+45
+00:02:53,000 --> 00:02:57,000
+or how to calculate what the best recipes are and that shouldn't impact the view
+
+46
+00:02:57,000 --> 00:03:00,000
+which is only worried about displaying the recipes.
+
+47
+00:03:00,000 --> 00:03:04,000
+I do want to point out that the MVC design pattern doesn't dictate what type
+
+48
+00:03:04,000 --> 00:03:06,000
+of data access you use.
+
+49
+00:03:06,000 --> 00:03:11,000
+You can use web services, relational databases, file system, document databases,
+
+50
+00:03:11,000 --> 00:03:12,000
+any form of storage behind the scenes.
+
+51
+00:03:12,000 --> 00:03:17,000
+And it also doesn't dictate what your business objects or domain layer should look like.
+
+52
+00:03:17,000 --> 00:03:21,000
+In fact, the MVC design pattern doesn't care if your application has layers or not.
+
+53
+00:03:21,000 --> 00:03:26,000
+It's simply a design pattern for building a user interface and nothing more.
+
+54
+00:03:26,000 --> 00:03:30,000
+So the MVC framework is designed to help you follow this MVC design pattern
+
+55
+00:03:30,000 --> 00:03:35,000
+by giving you tools and classes to build models, views and controllers.
+
+56
+00:03:35,000 --> 00:03:38,000
+The MVC framework also has some additional goals.
+
+57
+00:03:38,000 --> 00:03:42,000
+One of these goals is to embrace the web and to be able to work very closely
+
+58
+00:03:42,000 --> 00:03:45,000
+with web technologies like JavaScript, HTML and CSS.
+
+59
+00:03:45,000 --> 00:03:50,000
+There is no large obstructions here that try to shield you from knowing things
+
+60
+00:03:50,000 --> 00:03:54,000
+like what HTTP verb is being used to place a request.
+
+61
+00:03:54,000 --> 00:03:56,000
+We'll learn about those things in this course.
+
+62
+00:03:56,000 --> 00:04:00,000
+There is also nothing that makes it harder for you to work with the designer
+
+63
+00:04:00,000 --> 00:04:04,000
+who can help you style and make your site look good using CSS.
+
+64
+00:04:04,000 --> 00:04:09,000
+Another goal for MVC is to run on top of the core ASP.NET run time.
+
+65
+00:04:09,000 --> 00:04:12,000
+The ASP.NET run time is been around for over ten years now.
+
+66
+00:04:12,000 --> 00:04:16,000
+And it's proven itself to be secure and stable and optimized for performance.
+
+67
+00:04:16,000 --> 00:04:21,000
+If you're already familiar with ASP.NET and you know how to work with HTTP modules and handlers
+
+68
+00:04:21,000 --> 00:04:26,000
+and caching and diagnostics, then you'll feel right at home in the MVC environment.
+
+69
+00:04:26,000 --> 00:04:28,000
+A third goal for the framework is to be extensible.
+
+70
+00:04:28,000 --> 00:04:32,000
+We'll look at many extensibility points as we work through this course.
+
+71
+00:04:32,000 --> 00:04:36,000
+If you do not like how the MVC framework behaves in some certain area, chances are,
+
+72
+00:04:36,000 --> 00:04:38,000
+all you need to do is plug in the right component
+
+73
+00:04:38,000 --> 00:04:40,000
+to make it behave a little bit differently.
+
+74
+00:04:40,000 --> 00:04:45,000
+And finally the last goal of the MVC framework is to be testable.
+
+75
+00:04:45,000 --> 00:04:48,000
+We will look at unit testing and tester and development techniques in this course
+
+76
+00:04:48,000 --> 00:04:53,000
+and we'll see that MVC framework went to a lot of trouble to try and obstruct the ways of some
+
+77
+00:04:53,000 --> 00:04:57,000
+of the thornier issues in testing user interface-oriented code.
+
+78
+00:04:57,000 --> 00:05:00,000
+But right now what I want to do is return the Visual Studio and make some
+
+79
+00:05:00,000 --> 00:59:00,000
+of these concepts a little more concrete.
+

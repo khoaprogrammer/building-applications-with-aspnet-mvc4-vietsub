@@ -1,0 +1,576 @@
+1
+00:00:02,000 --> 00:00:07,000
+So far in the application, we've been using some in-memory data and this Restaurant Review class
+
+2
+00:00:07,000 --> 00:00:11,000
+to get some things done and experiment with razor and controllers.
+
+3
+00:00:11,000 --> 00:00:15,000
+But this restaurant review really combines a restaurant, the restaurant name and a review
+
+4
+00:00:15,000 --> 00:00:18,000
+which is the rating, I really need to separate those out
+
+5
+00:00:18,000 --> 00:00:21,000
+and form a relationship if we're going to move forward.
+
+6
+00:00:21,000 --> 00:00:24,000
+So there should be a restaurant class which I can create right now.
+
+7
+00:00:24,000 --> 00:00:32,000
+And that restaurant class will have multiple reviews associated with it.
+
+8
+00:00:32,000 --> 00:00:34,000
+We'll give a couple of properties to the restaurant,
+
+9
+00:00:34,000 --> 00:00:40,000
+there's going to be a primary key fields so we'll give it an ID property.
+
+10
+00:00:40,000 --> 00:00:43,000
+We'll give it a name.
+
+11
+00:00:43,000 --> 00:00:49,000
+We'll also store the city that the restaurant is in and the country.
+
+12
+00:00:49,000 --> 00:00:56,000
+And then every restaurant can have some associated reviews.
+
+13
+00:00:56,000 --> 00:01:01,000
+We'll put that in ICollection, a collection of restaurant reviews.
+
+14
+00:01:01,000 --> 00:01:06,000
+And this seems like a good definition for a restaurant.
+
+15
+00:01:06,000 --> 00:01:09,000
+Let's go over into the review class and change some things around.
+
+16
+00:01:09,000 --> 00:01:13,000
+A restaurant review will still have an ID, the name, city and country,
+
+17
+00:01:13,000 --> 00:01:15,000
+that's really restaurant information.
+
+18
+00:01:15,000 --> 00:01:17,000
+We don't need that.
+
+19
+00:01:17,000 --> 00:01:19,000
+We'll have the rating.
+
+20
+00:01:19,000 --> 00:01:24,000
+Perhaps we want the body of the review, so if a person wants to type out some text,
+
+21
+00:01:24,000 --> 00:01:27,000
+what they really thought about the restaurant, they can put that in here.
+
+22
+00:01:27,000 --> 00:01:30,000
+And although it's not entirely necessary,
+
+23
+00:01:30,000 --> 00:01:37,000
+it does make some scenarios easier if I add a restaurant ID field.
+
+24
+00:01:37,000 --> 00:01:42,000
+And this restaurant ID will point back to the restaurant that this review is associated with.
+
+25
+00:01:42,000 --> 00:01:48,000
+And now restaurant review and restaurant are my two entities, these are going to be objects
+
+26
+00:01:48,000 --> 00:01:53,000
+that I expect to instantiate and save in a database and retrieve from a database.
+
+27
+00:01:53,000 --> 00:01:56,000
+But right now, I'm leaving their definition in the models folder.
+
+28
+00:01:56,000 --> 00:01:59,000
+But if you continue down this path on larger applications,
+
+29
+00:01:59,000 --> 00:02:01,000
+the model's folder becomes way too big.
+
+30
+00:02:01,000 --> 00:02:03,000
+There's too many classes inside of it.
+
+31
+00:02:03,000 --> 00:02:06,000
+You might consider having a separate folder or even a separate project
+
+32
+00:02:06,000 --> 00:02:09,000
+where you define entities like this.
+
+33
+00:02:09,000 --> 00:02:12,000
+But this is good enough for our purposes to get started with.
+
+34
+00:02:12,000 --> 00:02:16,000
+Now let me also add a class that will use the Entity Framework
+
+35
+00:02:16,000 --> 00:02:19,000
+to persist and retrieve this data.
+
+36
+00:02:19,000 --> 00:02:22,000
+We'll call it OdeToFoodDb.
+
+37
+00:02:22,000 --> 00:02:30,000
+OdeToFoodDb needs to derive from an Entity Framework class known as the DbContext.
+
+38
+00:02:30,000 --> 00:02:35,000
+To use DbContext, I'll need to bring the System.Data.Entity name space
+
+39
+00:02:35,000 --> 00:02:37,000
+and the scope, so I'll add that using.
+
+40
+00:02:37,000 --> 00:02:44,000
+And then a DbContext, you can have properties of type DbSet that represent the entities
+
+41
+00:02:44,000 --> 00:02:46,000
+that you want to query and persist.
+
+42
+00:02:46,000 --> 00:02:49,000
+So we'll have a DbSet of restaurant called Restaurants.
+
+43
+00:02:49,000 --> 00:02:52,000
+And walking up to that DbSet and asking
+
+44
+00:02:52,000 --> 00:02:55,000
+for all the restaurants would essentially do a select star
+
+45
+00:02:55,000 --> 00:02:58,000
+from a restaurant table in SQL Server.
+
+46
+00:02:58,000 --> 00:03:04,000
+We'll have Restaurants and we'll have a DbSet of RestaurantReview.
+
+47
+00:03:04,000 --> 00:03:08,000
+RestaurantReviews is not something that I absolutely must have,
+
+48
+00:03:08,000 --> 00:03:13,000
+I can always get to reviews through a restaurant but I'm going to add it as a DbSet here.
+
+49
+00:03:13,000 --> 00:03:17,000
+Again, it makes some things easier.
+
+50
+00:03:17,000 --> 00:03:21,000
+To see how easy this is to use, let's say that we want the home page of the application now
+
+51
+00:03:21,000 --> 00:03:24,000
+to display a list of restaurants that we have in the database.
+
+52
+00:03:24,000 --> 00:03:27,000
+So let me swing over into the home controller and we're going to change
+
+53
+00:03:27,000 --> 00:03:31,000
+around the index action and also the view for this controller.
+
+54
+00:03:31,000 --> 00:03:36,000
+We don't really want to show the controller and the action and the ID anymore,
+
+55
+00:03:36,000 --> 00:03:38,000
+instead, we want to show restaurants.
+
+56
+00:03:38,000 --> 00:03:43,000
+So here I can instantiate OdeToFoodDb and I'll also point
+
+57
+00:03:43,000 --> 00:03:49,000
+out the sense this is a disposable resource, I should override dispose.
+
+58
+00:03:49,000 --> 00:03:59,000
+And if this is not null, tell it to dispose itself.
+
+59
+00:03:59,000 --> 00:04:03,000
+To dispose API and .NET is just a way to clean up resources that might be open.
+
+60
+00:04:03,000 --> 00:04:08,000
+Anything that implements the IDisposable interface or has a dispose method,
+
+61
+00:04:08,000 --> 00:04:09,000
+you should call it as soon as possible
+
+62
+00:04:09,000 --> 00:04:12,000
+to make sure everything is cleaned up as early as possible.
+
+63
+00:04:12,000 --> 00:04:17,000
+But with this bit of code in place, let's come into the home index action
+
+64
+00:04:17,000 --> 00:04:22,000
+and say that our model is equal to db.Restaurants.ToList.
+
+65
+00:04:22,000 --> 00:04:28,000
+What the Entity Framework will do when I execute that line of code is go into SQL Server,
+
+66
+00:04:28,000 --> 00:04:33,000
+find where it stored all the restaurants, retrieve all of them and put them into a list.
+
+67
+00:04:33,000 --> 00:04:37,000
+Eventually, if this application grows, we will need to provide some search facilities,
+
+68
+00:04:37,000 --> 00:04:41,000
+we'll need to provide some paging facilities but this should be enough to build a screen
+
+69
+00:04:41,000 --> 00:04:43,000
+that has a list of all our restaurants.
+
+70
+00:04:43,000 --> 00:04:48,000
+And now let's swing over into the index action for the home controller.
+
+71
+00:04:48,000 --> 00:04:50,000
+And let's clean some things up.
+
+72
+00:04:50,000 --> 00:04:57,000
+Let's get rid of the feature section and also the information about what we suggest
+
+73
+00:04:57,000 --> 00:05:00,000
+because we really just want to show restaurants on this page.
+
+74
+00:05:00,000 --> 00:05:07,000
+And because this view is already created, I'll add a model directive here manually to say
+
+75
+00:05:07,000 --> 00:05:11,000
+that this is strongly typed against IEnumerable of restaurant.
+
+76
+00:05:11,000 --> 00:05:17,000
+And I need to fully name space qualify that as OdeToFood.Models.Restaurant.
+
+77
+00:05:17,000 --> 00:05:20,000
+Again, just control period will give you that drop down menu
+
+78
+00:05:20,000 --> 00:05:23,000
+and you can have Visual Studio add that for you.
+
+79
+00:05:23,000 --> 00:05:25,000
+And now let's write those restaurants out.
+
+80
+00:05:25,000 --> 00:05:35,000
+So for each item in my model or each item as a restaurant, let's write out a div.
+
+81
+00:05:35,000 --> 00:05:41,000
+It has an h4 inside with the restaurant name.
+
+82
+00:05:41,000 --> 00:05:48,000
+And we can also write out the city and the country.
+
+83
+00:05:48,000 --> 00:05:53,000
+And then perhaps just put in a little horizontal line
+
+84
+00:05:53,000 --> 00:05:55,000
+to distinguish one restaurant from the other.
+
+85
+00:05:55,000 --> 00:06:01,000
+Now at this point, we don't have any data in a database because we don't even have a database
+
+86
+00:06:01,000 --> 00:06:02,000
+but we're very close to doing that.
+
+87
+00:06:02,000 --> 00:06:08,000
+Just by having a DbContext derived class, if I instantiate this class and ask it for data,
+
+88
+00:06:08,000 --> 00:06:10,000
+it will go out and see if a database exist.
+
+89
+00:06:10,000 --> 00:06:14,000
+And if that database doesn't exist, it will be created for me.
+
+90
+00:06:14,000 --> 00:06:16,000
+So I should be able to do a build.
+
+91
+00:06:16,000 --> 00:06:21,000
+And, of course, we'll have some compiler areas because we already had some code inside
+
+92
+00:06:21,000 --> 00:06:26,000
+of the reviews controller that was depending on a different definition of restaurant review.
+
+93
+00:06:26,000 --> 00:06:32,000
+So for right now, I'm going to hit Control A to highlight all the code inside
+
+94
+00:06:32,000 --> 00:06:37,000
+of our reviews controller and then hit Control K, control C to just comment it out.
+
+95
+00:06:37,000 --> 00:06:40,000
+We'll come back to the reviews controller later and rebuild it
+
+96
+00:06:40,000 --> 00:06:45,000
+so that it actually displays reviews that are associated with our restaurant instead
+
+97
+00:06:45,000 --> 00:06:48,000
+of using this in-memory data that we had here before.
+
+98
+00:06:48,000 --> 00:06:51,000
+There's another change that I want to make because that's commented out.
+
+99
+00:06:51,000 --> 00:06:56,000
+We're also going to have to change the layout view because if you remember,
+
+100
+00:06:56,000 --> 00:07:01,000
+caught into the reviews controller to list the best review but we don't really need that.
+
+101
+00:07:01,000 --> 00:07:03,000
+I'm going to delete that bit of code from the layout view.
+
+102
+00:07:03,000 --> 00:07:08,000
+And since the definition of our restaurant review has changed so dramatically,
+
+103
+00:07:08,000 --> 00:07:11,000
+I'm going to go ahead into the Reviews' views folder
+
+104
+00:07:11,000 --> 00:07:14,000
+and just delete our existing views from inside of here.
+
+105
+00:07:14,000 --> 00:07:17,000
+And this is all okay.
+
+106
+00:07:17,000 --> 00:07:20,000
+We're just taking in an iterative approach here to building an application
+
+107
+00:07:20,000 --> 00:07:22,000
+and learning MVC at the same time.
+
+108
+00:07:22,000 --> 00:07:27,000
+But I should have done enough now to be able to do a build and run the application.
+
+109
+00:07:27,000 --> 00:07:30,000
+And on the home page, it will try to list our restaurants
+
+110
+00:07:30,000 --> 00:07:32,000
+but of course we have no restaurants.
+
+111
+00:07:32,000 --> 00:07:36,000
+But the question here is, we didn't get an error so the Entity Framework talked
+
+112
+00:07:36,000 --> 00:07:41,000
+to some database, where is that database?
+
+113
+00:07:41,000 --> 00:07:49,000
+And to answer that question, let's go to view Database Explorer and add a connection.
+
+114
+00:07:49,000 --> 00:07:51,000
+This is going to be a SQL Server connection.
+
+115
+00:07:51,000 --> 00:07:59,000
+And I'm going to specify LocalDB v11.0 as the server I want to connect to.
+
+116
+00:07:59,000 --> 00:08:06,000
+This is a special connection string for SQL Server 2012 Express, the LocalDB edition.
+
+117
+00:08:06,000 --> 00:08:10,000
+So if you haven't heard of SQL Server LocalDB, it's a new edition
+
+118
+00:08:10,000 --> 00:08:13,000
+of SQL Server that's primarily targeted towards developers.
+
+119
+00:08:13,000 --> 00:08:17,000
+The big difference between this and SQL Server Express which you might have used
+
+120
+00:08:17,000 --> 00:08:20,000
+in the past during development is that LocalDB runs
+
+121
+00:08:20,000 --> 00:08:23,000
+with your identity and it doesn't run as a service.
+
+122
+00:08:23,000 --> 00:08:26,000
+It's launched on-demand when you need to get to it.
+
+123
+00:08:26,000 --> 00:08:29,000
+Other than that, it's very much like SQL Server.
+
+124
+00:08:29,000 --> 00:08:33,000
+And now let's pull down this drop down list to see what databases are available there.
+
+125
+00:08:33,000 --> 00:08:39,000
+And I can see that one of the databases is OdeToFood.Models.OdeToFoodDb.
+
+126
+00:08:39,000 --> 00:08:45,000
+I know this is the database that the Entity Framework just created because the name
+
+127
+00:08:45,000 --> 00:08:51,000
+of that database exactly matches the name of the OdeToFoodDb class that we created.
+
+128
+00:08:51,000 --> 00:08:54,000
+So by default, when you instantiate one of these and try to query data,
+
+129
+00:08:54,000 --> 00:08:59,000
+if the Entity Framework doesn't find a database and you have no other configuration in place
+
+130
+00:08:59,000 --> 00:09:05,000
+that tells the Entity Framework where to go, it will just look at LocalDB and create a database
+
+131
+00:09:05,000 --> 00:09:07,000
+that has the same name as your DBContext class.
+
+132
+00:09:07,000 --> 00:09:10,000
+And if we come in here, indeed we can see Restaurants.
+
+133
+00:09:10,000 --> 00:09:11,000
+We can see the RestaurantReviews.
+
+134
+00:09:11,000 --> 00:09:15,000
+We can see that RestaurantReviews have a primary key.
+
+135
+00:09:15,000 --> 00:09:16,000
+That's the ID column.
+
+136
+00:09:16,000 --> 00:09:19,000
+We can see that Restaurants also have an ID column.
+
+137
+00:09:19,000 --> 00:09:26,000
+And just to prove that this is working, if I go in and I say, show table data,
+
+138
+00:09:26,000 --> 00:09:36,000
+what I should be able to do here is add some new restaurant into the database manually.
+
+139
+00:09:36,000 --> 00:09:37,000
+Save that in the database.
+
+140
+00:09:37,000 --> 00:09:42,000
+And if I come up to the home page of the application again and refresh,
+
+141
+00:09:42,000 --> 00:09:44,000
+that restaurant is displaying on the home page.
+
+142
+00:09:44,000 --> 00:09:50,000
+So we are querying SQL Server and we've created our first database.
+
+143
+00:09:50,000 --> 00:09:53,000
+All this was taken care of by the Entity Framework just using the definitions
+
+144
+00:09:53,000 --> 00:59:00,000
+of our C Sharp classes, Restaurant and RestaurantReview.
+

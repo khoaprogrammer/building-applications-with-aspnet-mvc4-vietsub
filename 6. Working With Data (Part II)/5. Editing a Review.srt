@@ -1,0 +1,240 @@
+1
+00:00:03,000 --> 00:00:07,000
+For editing a review, we already have a link specified here that will take us
+
+2
+00:00:07,000 --> 00:00:12,000
+to an edit action and pass along the ID of the review to edit.
+
+3
+00:00:12,000 --> 00:00:15,000
+All we need to do to respond politely to that request is
+
+4
+00:00:15,000 --> 00:00:21,000
+to implement an Edit Action that responds to an HttpGet.
+
+5
+00:00:21,000 --> 00:00:25,000
+All we need to do here is take that ID parameter, lookup a review using
+
+6
+00:00:25,000 --> 00:00:29,000
+that primary key and then return a view that will allow the user to edit that.
+
+7
+00:00:29,000 --> 00:00:34,000
+We need the view so I will right click and add a view called Edit using Razor,
+
+8
+00:00:34,000 --> 00:00:36,000
+strongly type to a RestaurantReview.
+
+9
+00:00:36,000 --> 00:00:40,000
+This time the Scaffold template will be Edit.
+
+10
+00:00:40,000 --> 00:00:43,000
+This is going to look very similar to the Create View.
+
+11
+00:00:43,000 --> 00:00:44,000
+It still has a BeginForm.
+
+12
+00:00:44,000 --> 00:00:46,000
+It still has validation summaries.
+
+13
+00:00:46,000 --> 00:00:50,000
+It still has a legend that we don't quite like so we can say Edit Review.
+
+14
+00:00:50,000 --> 00:00:53,000
+It does have something a little bit different here.
+
+15
+00:00:53,000 --> 00:00:55,000
+It has a hidden input for the model.
+
+16
+00:00:55,000 --> 00:01:00,000
+That hidden input will allow us to track the ID of the review that's being edited
+
+17
+00:01:00,000 --> 00:01:03,000
+and it's hidden because the user doesn't need to see it.
+
+18
+00:01:03,000 --> 00:01:06,000
+We just need to preserve that piece of state between the requests,
+
+19
+00:01:06,000 --> 00:01:11,000
+and then we have the labels and the editors for Rating, Body, Reviewer Name
+
+20
+00:01:11,000 --> 00:01:13,000
+and ah, here again is restaurant ID.
+
+21
+00:01:13,000 --> 00:01:19,000
+This time I'm going to delete it again but we also need to keep track of this restaurant ID
+
+22
+00:01:19,000 --> 00:01:22,000
+because when we update this review, we're going to need
+
+23
+00:01:22,000 --> 00:01:25,000
+to properly populate the restaurant ID field.
+
+24
+00:01:25,000 --> 00:01:32,000
+What I can do is just add another Html.HiddenFor that says given a model called Model,
+
+25
+00:01:32,000 --> 00:01:37,000
+please give me a hidden input for restaurant ID.
+
+26
+00:01:37,000 --> 00:01:40,000
+There are some other approaches that we could use for this but this makes it easy
+
+27
+00:01:40,000 --> 00:01:43,000
+and now when the user clicks on the Submit button,
+
+28
+00:01:43,000 --> 00:01:46,000
+we will have to respond to that post request.
+
+29
+00:01:46,000 --> 00:01:53,000
+So back in the Reviews Controller, I'll implement an edit action that responds
+
+30
+00:01:53,000 --> 00:01:57,000
+to a post that's very similar to create but it has one little difference.
+
+31
+00:01:57,000 --> 00:01:59,000
+It's still going to take a RestaurantReview.
+
+32
+00:01:59,000 --> 00:02:02,000
+The MVC model binder is still going to populate that object
+
+33
+00:02:02,000 --> 00:02:04,000
+with things that it finds in the request.
+
+34
+00:02:04,000 --> 00:02:08,000
+So again, we don't have to look in the query strings or post of form values ourselves.
+
+35
+00:02:08,000 --> 00:02:11,000
+The model binder will take care of all that for us.
+
+36
+00:02:11,000 --> 00:02:13,000
+We'll still check if ModelState is valid.
+
+37
+00:02:13,000 --> 00:02:17,000
+Return to Edit View if ModelState is not valid because that will allow the user
+
+38
+00:02:17,000 --> 00:02:22,000
+to fix any problems that they have but if it is valid, we're going to come in
+
+39
+00:02:22,000 --> 00:02:25,000
+and use a slightly different API and I do need to bring in a namespace here,
+
+40
+00:02:25,000 --> 00:02:28,000
+System.Data, for this to be legal C# code.
+
+41
+00:02:28,000 --> 00:02:34,000
+But now that it's legal, I can tell you about this entry API on the db context.
+
+42
+00:02:34,000 --> 00:02:39,000
+The entry API is a way to tell the Entity Framework, "Here is a review that I want you
+
+43
+00:02:39,000 --> 00:02:42,000
+to start tracking so you can make changes in the database
+
+44
+00:02:42,000 --> 00:02:45,000
+for this review but it's not a new review.
+
+45
+00:02:45,000 --> 00:02:48,000
+I don't want it inserted into the database.
+
+46
+00:02:48,000 --> 00:02:51,000
+Instead, this is a review that's already in the database.
+
+47
+00:02:51,000 --> 00:02:55,000
+I just want you to take ownership of this object and treat it as if it had some new data inside."
+
+48
+00:02:55,000 --> 00:02:59,000
+That's the purpose of EntityState.Modified.
+
+49
+00:02:59,000 --> 00:03:02,000
+Now, when I call SavesChanges, you will update that record
+
+50
+00:03:02,000 --> 00:03:04,000
+in the database, the record that has the same ID.
+
+51
+00:03:04,000 --> 00:03:10,000
+In the Create Action, we add a review and EF will insert the record.
+
+52
+00:03:10,000 --> 00:03:16,000
+In the Edit Action, we attach an existing review with that entry, set the state to modified
+
+53
+00:03:16,000 --> 00:03:23,000
+and EF will update the record, and once that is successful, again, we'll redirect the user back
+
+54
+00:03:23,000 --> 00:03:27,000
+to the index action where they should be able to see the effect of their edit.
+
+55
+00:03:27,000 --> 00:03:35,000
+So after a build, let me come in and edit this review and because I'm really excited
+
+56
+00:03:35,000 --> 00:03:40,000
+about this restaurant, I will add extra exclamation points and click Save
+
+57
+00:03:40,000 --> 00:03:42,000
+and I can see that the edit worked.
+
+58
+00:03:42,000 --> 00:03:45,000
+And we're not going to go into validation just yet.
+
+59
+00:03:45,000 --> 00:03:50,000
+Before we do that, I want to tell you about some serious security implications of model binding,
+
+60
+00:03:50,000 --> 00:59:00,000
+some things that you need to know about.
+

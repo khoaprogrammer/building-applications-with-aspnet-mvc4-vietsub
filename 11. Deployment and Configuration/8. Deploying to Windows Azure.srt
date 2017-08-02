@@ -1,0 +1,388 @@
+1
+00:00:00,000 --> 00:00:04,000
+Now that we've deployed to IIS on a local server,
+
+2
+00:00:04,000 --> 00:00:09,000
+let's deploy to IIS running in the cloud with Windows Azure.
+
+3
+00:00:09,000 --> 00:00:13,000
+To get started, I'll to go the Windows Azure website; WindowsAzure.com.
+
+4
+00:00:13,000 --> 00:00:16,000
+And if you haven't heard of Azure, it is Microsoft's Cloud platform
+
+5
+00:00:16,000 --> 00:00:20,000
+where you can host websites, databases and virtual machines.
+
+6
+00:00:20,000 --> 00:00:24,000
+You can run Windows or Linux, and you can start small and scale up really big just
+
+7
+00:00:24,000 --> 00:00:27,000
+by adding more resources for Microsoft's global data centers.
+
+8
+00:00:27,000 --> 00:00:33,000
+If I want to put a new website into Azure, I would first log into the Azure portal.
+
+9
+00:00:33,000 --> 00:00:37,000
+This is currently in preview, but by the time you watch this video it might be live.
+
+10
+00:00:37,000 --> 00:00:40,000
+I'll first need to sign in with my live ID.
+
+11
+00:00:40,000 --> 00:00:46,000
+( Silence )
+
+12
+00:00:46,000 --> 00:00:48,000
+And the first screen that is about to come up will be a screen
+
+13
+00:00:48,000 --> 00:00:52,000
+where I can see everything I have deployed in Azure under this account.
+
+14
+00:00:52,000 --> 00:00:55,000
+It's my portal where I can add new databases, new websites,
+
+15
+00:00:55,000 --> 00:00:58,000
+new virtual machines, new media services.
+
+16
+00:00:58,000 --> 00:01:03,000
+It's also where I can manage my existing services, and where I can create new services,
+
+17
+00:01:03,000 --> 00:01:05,000
+which is what I'll want to do when this is finished loading.
+
+18
+00:01:05,000 --> 00:01:09,000
+We want to add a new website and give the website a database for storage.
+
+19
+00:01:09,000 --> 00:01:13,000
+And you can see I have a few things out there already; couple websites, couple databases,
+
+20
+00:01:13,000 --> 00:01:15,000
+a virtual machine, a storage account.
+
+21
+00:01:15,000 --> 00:01:24,000
+But I want to create a new website with a database to host Ode To Food.
+
+22
+00:01:24,000 --> 00:01:26,000
+First I'll need to give my website a URL.
+
+23
+00:01:26,000 --> 00:01:33,000
+What will happen is that my website will be OdeToFood.AzureWebsites.net.
+
+24
+00:01:33,000 --> 00:01:37,000
+I can also get a DNS and point this to my website in Azure,
+
+25
+00:01:37,000 --> 00:01:42,000
+so it could just be OdeToFood.com; but we'll leave it as AzureWebsites.net for right now.
+
+26
+00:01:42,000 --> 00:01:44,000
+I get to pick a region for the data center.
+
+27
+00:01:44,000 --> 00:01:46,000
+I'll pick the eastern United States.
+
+28
+00:01:46,000 --> 00:01:49,000
+I want to create a new sequel database.
+
+29
+00:01:49,000 --> 00:01:54,000
+My connection string name -- let's call it OdeToFoodDB.
+
+30
+00:01:54,000 --> 00:01:59,000
+And in the next step I'll need to specify my database settings.
+
+31
+00:01:59,000 --> 00:02:01,000
+This is the name that I want to use.
+
+32
+00:02:01,000 --> 00:02:06,000
+The server will be a sql server that I already have in Azure; I just need to log in properly.
+
+33
+00:02:06,000 --> 00:02:14,000
+And I can show you what the advanced database settings look like.
+
+34
+00:02:14,000 --> 00:02:18,000
+This is where I can select my addition wherever business The maximum database size one gigabyte
+
+35
+00:02:18,000 --> 00:02:21,000
+will be good enough to start, and my collation.
+
+36
+00:02:21,000 --> 00:02:24,000
+And with all that in place I can select okay,
+
+37
+00:02:24,000 --> 00:02:27,000
+and Azure will go off and start creating this website.
+
+38
+00:02:27,000 --> 00:02:32,000
+As soon as it's done creating that I'll have a website on the internet that I can go to.
+
+39
+00:02:32,000 --> 00:02:34,000
+It'll have just the blank Azure template.
+
+40
+00:02:34,000 --> 00:02:45,000
+And what we'll need to do is publish our website now, and set it to local IIS to this website.
+
+41
+00:02:45,000 --> 00:02:49,000
+There are a number of publishing options available with Azure websites.
+
+42
+00:02:49,000 --> 00:02:50,000
+You can see them in the list here.
+
+43
+00:02:50,000 --> 00:02:55,000
+You can use GIT, you can use TFS, you can use Visual Studio or WebMatrix.
+
+44
+00:02:55,000 --> 00:02:57,000
+We're going to be using Visual Studio; it's very simple.
+
+45
+00:02:57,000 --> 00:03:01,000
+First I'll go to this website.
+
+46
+00:03:01,000 --> 00:03:06,000
+This brings up the dashboard where I can look at things like how much CPU has been used
+
+47
+00:03:06,000 --> 00:03:09,000
+by the website over the last 24 hours or over the last week.
+
+48
+00:03:09,000 --> 00:03:16,000
+But it's also where I can download a publishing profile.
+
+49
+00:03:16,000 --> 00:03:19,000
+Remember when we were publishing to IIS we created a publishing profile.
+
+50
+00:03:19,000 --> 00:03:22,000
+This is going to download one for me that I could just plug into Visual Studio,
+
+51
+00:03:22,000 --> 00:03:26,000
+and it will have all the settings that it needs to upload my website here.
+
+52
+00:03:26,000 --> 00:03:30,000
+And we just downloaded it into my downloads folder.
+
+53
+00:03:30,000 --> 00:03:35,000
+And now, let me go into Visual Studio, and let's publish this website again.
+
+54
+00:03:35,000 --> 00:03:41,000
+I'm going to go to the profile tab, because I want to import this new profile.
+
+55
+00:03:41,000 --> 00:03:44,000
+And there it is; the publish settings file.
+
+56
+00:03:44,000 --> 00:03:48,000
+If you open that up, it's just a big scary amount of XML inside, but it has everything
+
+57
+00:03:48,000 --> 00:03:51,000
+that I need to get this to the right server.
+
+58
+00:03:51,000 --> 00:03:55,000
+So it already includes the URL, the site name, the user name, passwords.
+
+59
+00:03:55,000 --> 00:03:59,000
+All you need to do is -- I can validate the connection; make sure this is going to work.
+
+60
+00:03:59,000 --> 00:04:02,000
+And that looks good.
+
+61
+00:04:02,000 --> 00:04:05,000
+So let's go to the next phase where you can see we're going
+
+62
+00:04:05,000 --> 00:04:08,000
+to again deploy a release mode build.
+
+63
+00:04:08,000 --> 00:04:11,000
+It is already understood that my default connections string will probably want
+
+64
+00:04:11,000 --> 00:04:13,000
+to point to that sql server in the cloud.
+
+65
+00:04:13,000 --> 00:04:16,000
+It will have populated the server name and the user name
+
+66
+00:04:16,000 --> 00:04:18,000
+and the password, and everything I need.
+
+67
+00:04:18,000 --> 00:04:20,000
+We're not going to run the entity code first migrations.
+
+68
+00:04:20,000 --> 00:04:23,000
+We're taking explicit control of our migrations in the code.
+
+69
+00:04:23,000 --> 00:04:25,000
+I'll just go to next.
+
+70
+00:04:25,000 --> 00:04:28,000
+This allows me to preview what it is going to push out.
+
+71
+00:04:28,000 --> 00:04:31,000
+But I'm feeling lucky, so I'm just going to click publish.
+
+72
+00:04:31,000 --> 00:04:34,000
+Since this is going over the internet, it might take a little bit of time.
+
+73
+00:04:34,000 --> 00:04:38,000
+The first time you need to publish it needs to push out a lot of assemblies,
+
+74
+00:04:38,000 --> 00:04:40,000
+a lot of data going over the network.
+
+75
+00:04:40,000 --> 00:04:43,000
+We'll come back in a second when it's finished pushing everything up into the cloud.
+
+76
+00:04:43,000 --> 00:04:50,000
+And the publishing operation has just succeeded.
+
+77
+00:04:50,000 --> 00:04:52,000
+I should now be able to go back into the browser.
+
+78
+00:04:52,000 --> 00:04:56,000
+Let's refresh this website.
+
+79
+00:04:56,000 --> 00:05:01,000
+And I'm now running on AzureWebsites.net, very simple to deploy.
+
+80
+00:05:01,000 --> 00:05:03,000
+All my functionality should be there.
+
+81
+00:05:03,000 --> 00:05:04,000
+The database is working.
+
+82
+00:05:04,000 --> 00:05:05,000
+We see the database.
+
+83
+00:05:05,000 --> 00:05:08,000
+That means I should be able to log into this application.
+
+84
+00:05:08,000 --> 00:05:13,000
+( Silence )
+
+85
+00:05:13,000 --> 00:05:14,000
+That was successful.
+
+86
+00:05:14,000 --> 00:05:19,000
+I should also be able to go and create new restaurant at this point.
+
+87
+00:05:19,000 --> 00:05:22,000
+And since I just launched, I don't expect a lot of traffic.
+
+88
+00:05:22,000 --> 00:05:26,000
+The wonderful thing about ager is that this is now in someone else's data center.
+
+89
+00:05:26,000 --> 00:05:27,000
+They make sure the electricity stays on.
+
+90
+00:05:27,000 --> 00:05:30,000
+They're making sure they take backups at all the right time.
+
+91
+00:05:30,000 --> 00:05:34,000
+And as this grows in popularity, I can come in and scale this thing out.
+
+92
+00:05:34,000 --> 00:05:37,000
+I can reserve my own machine, crank up the number of instances,
+
+93
+00:05:37,000 --> 00:05:42,000
+so I have more instances available to serve up all the requests that are coming in.
+
+94
+00:05:42,000 --> 00:05:47,000
+And of course, you'll pay for the resources that you use, but hopefully you'll be making money
+
+95
+00:05:47,000 --> 00:05:49,000
+from all of the customers that come to the website,
+
+96
+00:05:49,000 --> 00:05:52,000
+and that will pay for everything that you need in Azure.
+
+97
+00:05:52,000 --> 00:59:00,000
+( Silence )
+

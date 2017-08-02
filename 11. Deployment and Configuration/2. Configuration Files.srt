@@ -1,0 +1,192 @@
+1
+00:00:02,000 --> 00:00:06,000
+Configuration files and .NET are XML files that control everything
+
+2
+00:00:06,000 --> 00:00:09,000
+about the environment your code will execute inside of.
+
+3
+00:00:09,000 --> 00:00:12,000
+For web applications, this includes the authentication settings as we saw
+
+4
+00:00:12,000 --> 00:00:16,000
+in the security module of this course, but config files also control the compilation
+
+5
+00:00:16,000 --> 00:00:20,000
+of use, database connection strings, cryptography settings,
+
+6
+00:00:20,000 --> 00:00:22,000
+custom errors settings, and much, much more.
+
+7
+00:00:22,000 --> 00:00:26,000
+The configuration system in .NET is also extensible,
+
+8
+00:00:26,000 --> 00:00:29,000
+so if you want to build your own custom configuration section,
+
+9
+00:00:29,000 --> 00:00:31,000
+all you need to do is write some classes to support that.
+
+10
+00:00:31,000 --> 00:00:34,000
+I'm not going to show you that specific scenario in this module,
+
+11
+00:00:34,000 --> 00:00:38,000
+but I will demonstrate an easy way for you to store custom settings in a configuration file.
+
+12
+00:00:38,000 --> 00:00:44,000
+Inside of Visual Studio I'm going to open up the web.config file that's in the root
+
+13
+00:00:44,000 --> 00:00:48,000
+of this project; the one we've been using repeatedly throughout this course.
+
+14
+00:00:48,000 --> 00:00:53,000
+This is where we specify the connection string for the database that we want to use.
+
+15
+00:00:53,000 --> 00:00:58,000
+We've also looked at the globalization settings in here, we've created some cash profiles,
+
+16
+00:00:58,000 --> 00:01:02,000
+we've configured custom errors, and we've looked at authentication.
+
+17
+00:01:02,000 --> 00:01:08,000
+So there are various components of ASP.NET and ASP.NET MVC, and also of the webserver itself
+
+18
+00:01:08,000 --> 00:01:11,000
+that look in this configuration file for settings.
+
+19
+00:01:11,000 --> 00:01:13,000
+And so, the obvious question might be what if I want
+
+20
+00:01:13,000 --> 00:01:16,000
+to keep my own settings inside of web.config?
+
+21
+00:01:16,000 --> 00:01:21,000
+One of the easiest things to do if you just have a simple value that you want to store is
+
+22
+00:01:21,000 --> 00:01:24,000
+to add it to the app settings section.
+
+23
+00:01:24,000 --> 00:01:29,000
+Right here I can add a new setting with a key of mail server and give it a value.
+
+24
+00:01:29,000 --> 00:01:36,000
+And now, I want to be able to retrieve that value inside of my MVC application; let's say,
+
+25
+00:01:36,000 --> 00:01:37,000
+somewhere inside of the home controller.
+
+26
+00:01:37,000 --> 00:01:40,000
+Let's just read that value out, and put it into a view.
+
+27
+00:01:40,000 --> 00:01:43,000
+The easiest way to do that would be to just put it into viewbag.
+
+28
+00:01:43,000 --> 00:01:48,000
+And the way I can read that setting is to use configuration manager that's
+
+29
+00:01:48,000 --> 00:01:51,000
+in a namespace system.configuration.
+
+30
+00:01:51,000 --> 00:01:55,000
+Configuration manager will give me access to connection strings, to app settings;
+
+31
+00:01:55,000 --> 00:01:57,000
+really to anything that's in a config file.
+
+32
+00:01:57,000 --> 00:02:02,000
+But here I'm explicitly asking for the mail server app setting.
+
+33
+00:02:02,000 --> 00:02:03,000
+We'll grab that value.
+
+34
+00:02:03,000 --> 00:02:08,000
+We'll put it in viewbag, and in the index view that that action renders.
+
+35
+00:02:08,000 --> 00:02:13,000
+Let's delete some of the culture globalization stuff that we were fiddling with
+
+36
+00:02:13,000 --> 00:02:18,000
+and instead write out viewbag.mailserver to see if we've retrieved this correctly.
+
+37
+00:02:18,000 --> 00:02:22,000
+I'll do a build and refresh the homepage of the application,
+
+38
+00:02:22,000 --> 00:02:28,000
+and there you can see we get out mail.server.com.
+
+39
+00:02:28,000 --> 00:02:28,000
+So that worked.
+
+40
+00:02:28,000 --> 00:02:32,000
+And configuration manager makes it very easy to grab app settings,
+
+41
+00:02:32,000 --> 00:02:34,000
+and really any setting that's in a web.config file.
+
+42
+00:02:34,000 --> 00:02:37,000
+And this is the place where you want to put things
+
+43
+00:02:37,000 --> 00:02:40,000
+that you don't necessarily want to hardcode.
+
+44
+00:02:40,000 --> 00:02:44,000
+So connection strings, server names, file share names; all of those types
+
+45
+00:02:44,000 --> 00:02:46,000
+of things can go into your configuration file.
+
+46
+00:02:46,000 --> 00:02:50,000
+That way, you can change them just by changing the config file and you don't have
+
+47
+00:02:50,000 --> 00:02:53,000
+to recompile and redeploy all your binaries.
+
+48
+00:02:53,000 --> 00:59:00,000
+( Silence )
+

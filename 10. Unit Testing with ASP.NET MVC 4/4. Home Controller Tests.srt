@@ -1,0 +1,584 @@
+1
+00:00:01,000 --> 00:00:05,000
+When you are unit testing an "ASP.NET MVC" application,
+
+2
+00:00:05,000 --> 00:00:07,000
+you'll probably want to unit test your controllers.
+
+3
+00:00:07,000 --> 00:00:11,000
+And one of the first decisions you'll need to make is if you want to isolate your controllers
+
+4
+00:00:11,000 --> 00:00:17,000
+from infrastructure-related services that they use, like web services or mail servers, or,
+
+5
+00:00:17,000 --> 00:00:20,000
+in the case of our application, a database.
+
+6
+00:00:20,000 --> 00:00:21,000
+There are two ways we could go.
+
+7
+00:00:21,000 --> 00:00:24,000
+We could write unit tests that hit the controllers,
+
+8
+00:00:24,000 --> 00:00:26,000
+and the controllers go against the database.
+
+9
+00:00:26,000 --> 00:00:29,000
+This is perfectly reasonable for some people.
+
+10
+00:00:29,000 --> 00:00:31,000
+Other people think it is an atrocity.
+
+11
+00:00:31,000 --> 00:00:34,000
+I just want to let you know there is some debate on this topic.
+
+12
+00:00:34,000 --> 00:00:38,000
+The problem with writing unit tests against your controllers when your controllers need
+
+13
+00:00:38,000 --> 00:00:41,000
+to access a database is that the unit tests can run a little bit slower,
+
+14
+00:00:41,000 --> 00:00:46,000
+and in unit testing you generally want the test to run as fast as possible.
+
+15
+00:00:46,000 --> 00:00:49,000
+But there's actually a bigger problem, and that's usually setup.
+
+16
+00:00:49,000 --> 00:00:52,000
+Because you are writing tests, you want the controllers to behave predictably,
+
+17
+00:00:52,000 --> 00:00:55,000
+and that means you need predictable data.
+
+18
+00:00:55,000 --> 00:00:58,000
+So you need to make sure the database is set up, it has the right data in it,
+
+19
+00:00:58,000 --> 00:01:01,000
+there's nothing new there that could break a test.
+
+20
+00:01:01,000 --> 00:01:04,000
+In the long run, this can actually end up being a lot of work.
+
+21
+00:01:04,000 --> 00:01:06,000
+I would suggest if you go down this path,
+
+22
+00:01:06,000 --> 00:01:10,000
+you might look at an embedded database like "Sequel Server Compact".
+
+23
+00:01:10,000 --> 00:01:14,000
+With the "Entity Framework", you can point the connection string to a Sequel compact database,
+
+24
+00:01:14,000 --> 00:01:18,000
+and it can be a little bit easier to work with compared to a real Sequel server.
+
+25
+00:01:18,000 --> 00:01:21,000
+But "Sequel Compact" doesn't support all the queries, and features that regular
+
+26
+00:01:21,000 --> 00:01:25,000
+"Sequel Server" supports, so you can still run into a little trouble,
+
+27
+00:01:25,000 --> 00:01:30,000
+in which case you might stick with a real Sequel server, but your tests are going to be slower.
+
+28
+00:01:30,000 --> 00:01:32,000
+I want to show you how to isolate your controllers
+
+29
+00:01:32,000 --> 00:01:37,000
+from the database using a simple approach, the simplest approach I can come up with.
+
+30
+00:01:37,000 --> 00:01:40,000
+Right now, a test for the home controller is failing
+
+31
+00:01:40,000 --> 00:01:43,000
+because the entity framework is running inside,
+
+32
+00:01:43,000 --> 00:01:46,000
+and it's looking for a database connection string.
+
+33
+00:01:46,000 --> 00:01:49,000
+It's the index test, and the exception that's being thrown is
+
+34
+00:01:49,000 --> 00:01:54,000
+"no connection string named default connection can be found in the application config file."
+
+35
+00:01:54,000 --> 00:02:00,000
+If I want this test to pass, I can set up a real database for my unit test to use,
+
+36
+00:02:00,000 --> 00:02:03,000
+or I can remove the database from the application when it's under test.
+
+37
+00:02:03,000 --> 00:02:09,000
+And removing the database usually involves some sort of interface definition.
+
+38
+00:02:09,000 --> 00:02:10,000
+Let me show you how this works.
+
+39
+00:02:10,000 --> 00:02:13,000
+First, we'll have an interface "IO Defu DB" (phonetic).
+
+40
+00:02:13,000 --> 00:02:17,000
+This will represent all the operations that I want to do against a real database.
+
+41
+00:02:17,000 --> 00:02:18,000
+Not everything is there yet.
+
+42
+00:02:18,000 --> 00:02:21,000
+All we have so far is just a "Query of T" method.
+
+43
+00:02:21,000 --> 00:02:25,000
+I want to be able to query different objects, restaurants and reviews.
+
+44
+00:02:25,000 --> 00:02:31,000
+The "Ode to Food DB" class that we've been using all along now implements "IO Defu DB".
+
+45
+00:02:31,000 --> 00:02:37,000
+It implements that query method explicitly, meaning you can only get to this query method
+
+46
+00:02:37,000 --> 00:02:40,000
+through an "IO Defu DB" reference.
+
+47
+00:02:40,000 --> 00:02:45,000
+All this method needs to do is turn around and call into the DB context that it derives from.
+
+48
+00:02:45,000 --> 00:02:49,000
+There's a set method on that DB context that would essentially be asking
+
+49
+00:02:49,000 --> 00:02:52,000
+for the queryable set of entities.
+
+50
+00:02:52,000 --> 00:02:56,000
+So if someone wants a query of "Restaurant", all we need to do is turn around
+
+51
+00:02:56,000 --> 00:02:59,000
+and return a set of "Restaurant".
+
+52
+00:02:59,000 --> 00:03:05,000
+Then inside the "Home Controller", I can have it work against an
+
+53
+00:03:05,000 --> 00:03:09,000
+"IO Defu DB" reference instead of a real "Ode to Food DB".
+
+54
+00:03:09,000 --> 00:03:14,000
+At runtime, when it's actually running on a web server, we'll give it a real "Ode to Food DB",
+
+55
+00:03:14,000 --> 00:03:17,000
+so when it says "DB.query Restaurants",
+
+56
+00:03:17,000 --> 00:03:19,000
+that'll actually be something that goes to "Sequel Server".
+
+57
+00:03:19,000 --> 00:03:23,000
+But when it's under test, the beautiful thing about an interface is the
+
+58
+00:03:23,000 --> 00:03:27,000
+"Home Controller" really doesn't know what it's talking to, and under test we can have
+
+59
+00:03:27,000 --> 00:03:32,000
+"IO Defu DB" point to something that just contains some in-memory data.
+
+60
+00:03:32,000 --> 00:03:35,000
+We do just have to make a couple changes to the "Home Controller".
+
+61
+00:03:35,000 --> 00:03:38,000
+One is that we can no longer say, "DB.restaurants".
+
+62
+00:03:38,000 --> 00:03:44,000
+Now we have to say, "I want to query restaurant," and we'll need to do
+
+63
+00:03:44,000 --> 00:03:51,000
+that in two places, once in the "Auto-Complete" and once in the "Index".
+
+64
+00:03:51,000 --> 00:03:55,000
+The other change that we'll have to make is that when the controller is constructed,
+
+65
+00:03:55,000 --> 00:03:58,000
+we'll need to initialize this to point to something.
+
+66
+00:03:58,000 --> 00:04:02,000
+When we're in a test, we want it to point to something fake that the test passes in.
+
+67
+00:04:02,000 --> 00:04:05,000
+When we're not in a test, we want it to use a real "Ode to Food DB".
+
+68
+00:04:05,000 --> 00:04:10,000
+For right now, let me just define two constructors, one default constructor
+
+69
+00:04:10,000 --> 00:04:14,000
+that will initialize this to the "Ode to Food DB" that we've always been using,
+
+70
+00:04:14,000 --> 00:04:27,000
+and another constructor where you will pass in an "IO Defu DB", and we'll just assign it.
+
+71
+00:04:27,000 --> 00:04:32,000
+That'll give a unit test a chance to pass in something for the "Home Controller" to use
+
+72
+00:04:32,000 --> 00:04:34,000
+that looks like a real database but it isn't.
+
+73
+00:04:34,000 --> 00:04:37,000
+And with that in place, what I can do inside of the test now
+
+74
+00:04:37,000 --> 00:04:41,000
+when we're arranging this controller, I can set up a fake database.
+
+75
+00:04:41,000 --> 00:04:46,000
+So I could say, "DB equals New, Fake Ode Defu DB".
+
+76
+00:04:46,000 --> 00:04:50,000
+This is a class that I've already written.
+
+77
+00:04:50,000 --> 00:04:53,000
+What it does is simply implement the "IO Defu DB" interface.
+
+78
+00:04:53,000 --> 00:04:56,000
+And behind the scenes there's just in-memory data.
+
+79
+00:04:56,000 --> 00:04:59,000
+It's not the prettiest code in the world with all the generics,
+
+80
+00:04:59,000 --> 00:05:03,000
+but essentially behind the scenes there's a dictionary of type.
+
+81
+00:05:03,000 --> 00:05:07,000
+So when you want to query "Restaurant", we'll pull out a bunch of "Restaurant" out of
+
+82
+00:05:07,000 --> 00:05:10,000
+that dictionary, something that's I-queryable, and hand it over to you.
+
+83
+00:05:10,000 --> 00:05:15,000
+And there's a method here called "Add Set", which allows you to program the restaurants
+
+84
+00:05:15,000 --> 00:05:18,000
+that you want inside of this "Fake Ode Defu" database.
+
+85
+00:05:18,000 --> 00:05:24,000
+In fact, I've already defined a class, "Test Data" that has some restaurants
+
+86
+00:05:24,000 --> 00:05:26,000
+that it just conjures up in-memory.
+
+87
+00:05:26,000 --> 00:05:31,000
+So 100 restaurants, every restaurant has a review with a rating of four.
+
+88
+00:05:31,000 --> 00:05:36,000
+And inside the "Home Controller" tests, what I can do is initialize the database with that,
+
+89
+00:05:36,000 --> 00:05:45,000
+to add a set from "Test Data.restaurants", and I can use that "Test Data.restaurant" over
+
+90
+00:05:45,000 --> 00:05:48,000
+and over again for all the controllers that need to query restaurant information.
+
+91
+00:05:48,000 --> 00:05:54,000
+And now when I construct the "Home Controller", I don't want it to use the real database.
+
+92
+00:05:54,000 --> 00:05:56,000
+I want it to use that fake in-memory database.
+
+93
+00:05:56,000 --> 00:06:01,000
+Just with those changes, let's run the test again and see what happens.
+
+94
+00:06:01,000 --> 00:06:06,000
+And now the index method is still failing, but it's a different exception now.
+
+95
+00:06:06,000 --> 00:06:10,000
+The exception now is because of our call to "Is Ajacks (phonetic) Request".
+
+96
+00:06:10,000 --> 00:06:13,000
+We've run into trouble with this before, but I've been leaving it in the
+
+97
+00:06:13,000 --> 00:06:18,000
+"Home Controller" just to make a point, and that is there's nowhere else in the application
+
+98
+00:06:18,000 --> 00:06:23,000
+where we have actually gone up to an "HCDP Context Object" or messed with the query string
+
+99
+00:06:23,000 --> 00:06:25,000
+or cookies or anything like that.
+
+100
+00:06:25,000 --> 00:06:30,000
+And for the most part, with "ASP.NET MVC", you don't need to do any of those things.
+
+101
+00:06:30,000 --> 00:06:32,000
+But when you do, you can almost be certain
+
+102
+00:06:32,000 --> 00:06:35,000
+that it will make the tests a little bit harder to write.
+
+103
+00:06:35,000 --> 00:06:38,000
+To this "Call to Request.is Ajacks Request",
+
+104
+00:06:38,000 --> 00:06:42,000
+what's happening behind the scenes is it's looking at the HCDP request.
+
+105
+00:06:42,000 --> 00:06:47,000
+Well, there isn't one; it sees a NULL reference somewhere, and an exception gets thrown.
+
+106
+00:06:47,000 --> 00:06:51,000
+Fortunately, with "ASP.net" MVC, there is a way to work around this.
+
+107
+00:06:51,000 --> 00:06:57,000
+And I have another class defined, if we come over here into the test project.
+
+108
+00:06:57,000 --> 00:06:59,000
+It is a "Fake Controller Context".
+
+109
+00:06:59,000 --> 00:07:03,000
+A "Fake Controller Context" is something we'll assign to the controller
+
+110
+00:07:03,000 --> 00:07:06,000
+and give it a "Fake HCDP Context".
+
+111
+00:07:06,000 --> 00:07:13,000
+A "Fake HCTP Context", then, is going to have a "Fake Request Object",
+
+112
+00:07:13,000 --> 00:07:16,000
+and this "Fake Request Object", again, really doesn't do anything,
+
+113
+00:07:16,000 --> 00:07:20,000
+just returns nulls, just returns empty collections.
+
+114
+00:07:20,000 --> 00:07:23,000
+All of this is just here so that we don't get that exception.
+
+115
+00:07:23,000 --> 00:07:27,000
+Very simple implementation, but it's a lot of code just to have that one call inside
+
+116
+00:07:27,000 --> 00:07:31,000
+of the index method to check if it's an "Ajacks Request".
+
+117
+00:07:31,000 --> 00:07:36,000
+And using these classes, what I can do is come back into the test and ALSO TELL the controller
+
+118
+00:07:36,000 --> 00:07:42,000
+that its controller context is going to be a "Fake Controller Context".
+
+119
+00:07:42,000 --> 00:07:45,000
+And now let's run this test one more time.
+
+120
+00:07:45,000 --> 00:07:52,000
+It's still going to fail, but at least we've gotten to the "Assert" statement.
+
+121
+00:07:52,000 --> 00:07:56,000
+The "Assert" is failing because we no longer put a message in the VIEW BAG that says,
+
+122
+00:07:56,000 --> 00:08:00,000
+"Modify this template to jump-start your MVC application."
+
+123
+00:08:00,000 --> 00:08:03,000
+We've changed it and gotten away from that starter template,
+
+124
+00:08:03,000 --> 00:08:05,000
+so this "Assert" really isn't valid anymore.
+
+125
+00:08:05,000 --> 00:08:07,000
+But now what could we assert.
+
+126
+00:08:07,000 --> 00:08:12,000
+We just fed the "Home Controller" a fake data source that has 100 restaurants in it.
+
+127
+00:08:12,000 --> 00:08:17,000
+We only want 10 on the home page, so maybe what I should do is look at the model that's in this
+
+128
+00:08:17,000 --> 00:08:21,000
+"View Result" and assert that we have 10 restaurants inside of it.
+
+129
+00:08:21,000 --> 00:08:27,000
+Remember, our "Home Controller" should be returning a sequence
+
+130
+00:08:27,000 --> 00:08:29,000
+of "Restaurant List View Model".
+
+131
+00:08:29,000 --> 00:08:34,000
+So what I could say here is that I expect to have an I-numerable
+
+132
+00:08:34,000 --> 00:08:40,000
+of "Restaurant List View Model", that's my model, and it's equal to "Resolve.model",
+
+133
+00:08:40,000 --> 00:08:44,000
+which is typed as "Object" because "View Result" really doesn't know what type
+
+134
+00:08:44,000 --> 00:08:50,000
+of model you're going to have, so if I just do some type coercion here,
+
+135
+00:08:50,000 --> 00:08:53,000
+then my code should be happy and, now I could write an assert like,
+
+136
+00:08:53,000 --> 00:09:04,000
+"Assert that R equal 10 is the number of those items in the model."
+
+137
+00:09:04,000 --> 00:09:09,000
+And finally, run the test one more time, and finally,
+
+138
+00:09:09,000 --> 00:09:13,000
+we have a passing test that's actually testing something that we want.
+
+139
+00:09:13,000 --> 00:09:17,000
+And this is the kind of path that you'll go down if you want to isolate your controllers
+
+140
+00:09:17,000 --> 00:09:22,000
+from actual infrastructure things, program to interfaces, have fake or stub
+
+141
+00:09:22,000 --> 00:09:25,000
+or mock implementations of those interfaces for your tests.
+
+142
+00:09:25,000 --> 00:09:30,000
+And we can build a whole course around the best testing strategies, and fakes versus mocks.
+
+143
+00:09:30,000 --> 00:09:32,000
+In fact, you'll find those courses on "Pluralsight"
+
+144
+00:09:32,000 --> 00:09:34,000
+if you're a "Pluralsight" subscriber.
+
+145
+00:09:34,000 --> 00:09:37,000
+I'm just trying to give you a sample of what this would look like.
+
+146
+00:09:37,000 --> 00:59:00,000
+( Silence )
+

@@ -1,0 +1,64 @@
+1
+00:00:02,000 --> 00:00:04,000
+In this module, we looked at test-driven development
+
+2
+00:00:04,000 --> 00:00:07,000
+and unit testing with "ASP dot" and "MVC".
+
+3
+00:00:07,000 --> 00:00:09,000
+I demonstrated the test-first development cycle
+
+4
+00:00:09,000 --> 00:00:12,000
+of red-green re-factor to implement a new feature.
+
+5
+00:00:12,000 --> 00:00:17,000
+We saw how TDD is more about design than quality control, but a wonderful side effect
+
+6
+00:00:17,000 --> 00:00:21,000
+of TDD is how we have unit tests in place when we're finished with the implementation,
+
+7
+00:00:21,000 --> 00:00:24,000
+and that allows us to make changes in the future to the code.
+
+8
+00:00:24,000 --> 00:00:26,000
+We also looked at unit testing controllers.
+
+9
+00:00:26,000 --> 00:00:28,000
+"MVC" makes controllers easy to test.
+
+10
+00:00:28,000 --> 00:00:31,000
+For the most part, you just need to instantiate them and pass
+
+11
+00:00:31,000 --> 00:00:34,000
+in parameters, and assert on the result.
+
+12
+00:00:34,000 --> 00:00:37,000
+We just have to make sure the code we write inside the controller is testable.
+
+13
+00:00:37,000 --> 00:00:42,000
+And we looked at using fake testables to give us complete control over the execution environment
+
+14
+00:00:42,000 --> 00:00:46,000
+for a controller, and avoid using a database in our unit tests.
+
+15
+00:00:46,000 --> 00:00:50,000
+If you're new to unit testing, I really hope this module has given you some inspiration
+
+16
+00:00:50,000 --> 00:59:00,000
+to try it out.
+

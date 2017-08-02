@@ -1,0 +1,60 @@
+1
+00:00:02,000 --> 00:00:05,000
+In this module, we covered a number of different topics related
+
+2
+00:00:05,000 --> 00:00:07,000
+to building views in an MVC application.
+
+3
+00:00:07,000 --> 00:00:10,000
+We look at the Razor syntax, and learned about implicit
+
+4
+00:00:10,000 --> 00:00:13,000
+and explicit code expressions as well as code blocks.
+
+5
+00:00:13,000 --> 00:00:16,000
+We talked about HTML Helpers and I showed you how helpers
+
+6
+00:00:16,000 --> 00:00:19,000
+like EditorFor will help you build form inputs.
+
+7
+00:00:19,000 --> 00:00:22,000
+But I haven't told you the whole story there yet.
+
+8
+00:00:22,000 --> 00:00:25,000
+We'll see more when we start validating incoming data.
+
+9
+00:00:25,000 --> 00:00:30,000
+We did look at layout views and how they can define the UI structure for our application
+
+10
+00:00:30,000 --> 00:00:34,000
+and I demonstrated how Razor does HTML encoding for us
+
+11
+00:00:34,000 --> 00:00:36,000
+to help avoid cross-site scripting attacks.
+
+12
+00:00:36,000 --> 00:00:39,000
+Finally, I showed you a couple of scenarios where PartialViews can be your friend.
+
+13
+00:00:39,000 --> 00:00:44,000
+You can use partials to render a portion of your model in a reasonable way
+
+14
+00:00:44,000 --> 00:00:48,000
+and you can also use partials and child requests with HTML.Action
+
+15
+00:00:48,000 --> 00:59:00,000
+to delegate work to another controller.
+

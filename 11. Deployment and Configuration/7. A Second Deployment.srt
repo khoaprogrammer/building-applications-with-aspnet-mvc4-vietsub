@@ -1,0 +1,164 @@
+1
+00:00:01,000 --> 00:00:05,000
+Now once you've completed all this work and you're done with the single deployment,
+
+2
+00:00:05,000 --> 00:00:07,000
+subsequent deployments are much smoother.
+
+3
+00:00:07,000 --> 00:00:09,000
+For instance, I'm looking at the home page.
+
+4
+00:00:09,000 --> 00:00:12,000
+I'm seeing it's displaying mail.server.com on the home page.
+
+5
+00:00:12,000 --> 00:00:17,000
+I don't necessarily want that there.
+
+6
+00:00:17,000 --> 00:00:19,000
+That was just an experiment we were doing to make sure
+
+7
+00:00:19,000 --> 00:00:24,000
+that we could read the configuration file that was in the home index view.
+
+8
+00:00:24,000 --> 00:00:30,000
+Let me open up and remove that, save the view, come back out to the project, and say publish.
+
+9
+00:00:30,000 --> 00:00:34,000
+It has already selected by release package that we created earlier.
+
+10
+00:00:34,000 --> 00:00:36,000
+So let me go ahead and click publish.
+
+11
+00:00:36,000 --> 00:00:37,000
+That will rebuild the zip file.
+
+12
+00:00:37,000 --> 00:00:43,000
+I can come out here to the command line, re-execute to the deploy.
+
+13
+00:00:43,000 --> 00:00:45,000
+Notice that it's smart enough to understand what's
+
+14
+00:00:45,000 --> 00:00:47,000
+on the server; what's new, what's changed.
+
+15
+00:00:47,000 --> 00:00:50,000
+It only copied over the files that needed change.
+
+16
+00:00:50,000 --> 00:01:00,000
+And now if I refresh the application, then that text is gone and we just made a small tweak
+
+17
+00:01:00,000 --> 00:01:01,000
+to the deployed version of the application.
+
+18
+00:01:01,000 --> 00:01:04,000
+And let's just see what's happening behind the scenes.
+
+19
+00:01:04,000 --> 00:01:08,000
+If I open up the IIS manager, I'll be able to come into the default website,
+
+20
+00:01:08,000 --> 00:01:10,000
+and switch over into content view.
+
+21
+00:01:10,000 --> 00:01:13,000
+That actually shows me the files that are sitting out here.
+
+22
+00:01:13,000 --> 00:01:15,000
+It does need to be refreshed.
+
+23
+00:01:15,000 --> 00:01:19,000
+And now I can see my views folder, my scripts folder,
+
+24
+00:01:19,000 --> 00:01:22,000
+my content folder with site.css inside of it.
+
+25
+00:01:22,000 --> 00:01:25,000
+You might be wondering what happened to the controllers folder.
+
+26
+00:01:25,000 --> 00:01:30,000
+This all looks like exactly like it did in my solution except there's some things missing.
+
+27
+00:01:30,000 --> 00:01:33,000
+Well the controllers folder is all C sharp code.
+
+28
+00:01:33,000 --> 00:01:36,000
+Visual Studio compiles all that code into a DLL.
+
+29
+00:01:36,000 --> 00:01:40,000
+Remember I said that when you build a web application you produce a DLL,
+
+30
+00:01:40,000 --> 00:01:42,000
+and that goes into this bin folder.
+
+31
+00:01:42,000 --> 00:01:47,000
+Here we can see OdeToFood.DLL that will have all the controller code compiled inside
+
+32
+00:01:47,000 --> 00:01:48,000
+of that assembly.
+
+33
+00:01:48,000 --> 00:01:51,000
+We also have a lot of other assemblies.
+
+34
+00:01:51,000 --> 00:01:54,000
+These are all things that we reference and that we need to run.
+
+35
+00:01:54,000 --> 00:01:57,000
+Assemblies like DotNetOpenAuth, which as I described
+
+36
+00:01:57,000 --> 00:02:03,000
+in the security module is what helps users log in using OpenAuth and OpenId.
+
+37
+00:02:03,000 --> 00:02:08,000
+And when a request arise or the default website -- aka local host --
+
+38
+00:02:08,000 --> 00:02:14,000
+IIS will spin up that W3WP.EXE process, load our assemblies into it,
+
+39
+00:02:14,000 --> 00:02:17,000
+and start sending us requests to process.
+
+40
+00:02:17,000 --> 00:02:21,000
+That's when MVC takes over, calls into our controller, which renders a view.
+
+41
+00:02:21,000 --> 00:59:00,000
+That's how the application all works.
+

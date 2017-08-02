@@ -1,0 +1,60 @@
+1
+00:00:00,000 --> 00:00:10,000
+Hi, this is Scott Allen, and welcome to my course on ASP.NET MVC 4.
+
+2
+00:00:10,000 --> 00:00:14,000
+In this course, we'll start building an application from scratch, and throughout the course we will see how
+
+3
+00:00:14,000 --> 00:00:18,000
+to build an entire application using the C# language
+
+4
+00:00:18,000 --> 00:00:24,000
+that stores data in a SQL Server database. Since this is a web application, we'll also be using JavaScript,
+
+5
+00:00:24,000 --> 00:00:32,000
+HTML, and CSS. But the primary focus is on ASP.NET MVC, so we will spend our time learning about the M and V
+
+6
+00:00:32,000 --> 00:00:38,000
+and C in MVC, that is models, views, and controllers. We'll see how controllers can respond to a user's
+
+7
+00:00:38,000 --> 00:00:43,000
+request, and how that controller can build a model, and how they can send the model to a view when we build
+
+8
+00:00:43,000 --> 00:00:49,000
+the UI for our web page. We'll also be using models to update data in the database, and that's the part of
+
+9
+00:00:49,000 --> 00:00:55,000
+the course where we can learn how to work with HTML forms and validate the data a user has entered.
+
+10
+00:00:55,000 --> 00:01:01,000
+By the end of the course, you'll be in a good position to work on your own ASP.NET MVC applications and build
+
+11
+00:01:01,000 --> 00:01:06,000
+a web application for your users. I do expect that you are already familiar with the C# language and know
+
+12
+00:01:06,000 --> 00:01:11,000
+some of the basics of a web application, like how to use HTML.
+
+13
+00:01:11,000 --> 00:01:17,000
+If not, we have plenty of courses on Pluralsight that cover everything from the HTTP protocol itself to using
+
+14
+00:01:17,000 --> 00:01:23,000
+JavaScript, CSS, and HTML together, as well as courses on the C# language.
+
+15
+00:01:23,000 --> 00:59:00,000
+I hope you enjoy the course.
+

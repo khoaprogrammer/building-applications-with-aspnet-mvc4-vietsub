@@ -1,0 +1,568 @@
+1
+00:00:02,000 --> 00:00:04,000
+We've just seen how Ajax.BeginForm works.
+
+2
+00:00:04,000 --> 00:00:08,000
+Although, we haven't really seen how it works behind the scenes.
+
+3
+00:00:08,000 --> 00:00:11,000
+I think, it's interesting to take a look at what is happening there
+
+4
+00:00:11,000 --> 00:00:15,000
+because we'll see some interesting techniques we can apply to our own JavaScript code.
+
+5
+00:00:15,000 --> 00:00:18,000
+There are basically three features MVC provides out of the box
+
+6
+00:00:18,000 --> 00:00:20,000
+that we will consider Ajax related.
+
+7
+00:00:20,000 --> 00:00:26,000
+There's Ajax.BeginForm, which we just used, and there's also an Ajax.ActionLink.
+
+8
+00:00:26,000 --> 00:00:31,000
+Just like Ajax.BeginForm, Ajax.ActionLink creates a link to make an asynchronous request
+
+9
+00:00:31,000 --> 00:00:36,000
+and update the screen instead of navigating the browser to a new page.
+
+10
+00:00:36,000 --> 00:00:38,000
+The third MVC feature is Client Side Validation.
+
+11
+00:00:38,000 --> 00:00:41,000
+All of these features use an approach to JavaScript programming
+
+12
+00:00:41,000 --> 00:00:43,000
+that is known as Unobtrusive JavaScript.
+
+13
+00:00:43,000 --> 00:00:47,000
+Unobtrusive JavaScript means, we don't have JavaScript littered throughout the view
+
+14
+00:00:47,000 --> 00:00:49,000
+on click events.
+
+15
+00:00:49,000 --> 00:00:52,000
+That's obtrusive to other developers who try to read the code.
+
+16
+00:00:52,000 --> 00:00:54,000
+And it's also obtrusive to users
+
+17
+00:00:54,000 --> 00:00:59,000
+because it usually means the content is only available if they have JavaScript enabled.
+
+18
+00:00:59,000 --> 00:01:03,000
+If I were to remove the scripts from this page or turn off JavaScript in IE,
+
+19
+00:01:03,000 --> 00:01:06,000
+the homepage would continue to work and the search would continue to work,
+
+20
+00:01:06,000 --> 00:01:08,000
+it just wouldn't be nice and asynchronous.
+
+21
+00:01:08,000 --> 00:01:10,000
+But it would continue to work and this is
+
+22
+00:01:10,000 --> 00:01:13,000
+because of the way the scripts interact with the page.
+
+23
+00:01:13,000 --> 00:01:18,000
+If we look at the source code, we'll get an idea of how BeginForm works.
+
+24
+00:01:18,000 --> 00:01:24,000
+The AjaxBeginForm helper admits data-attributes into the form tag.
+
+25
+00:01:24,000 --> 00:01:29,000
+Data dash attributes are part of the HTML5 specification and you are allowed to invent
+
+26
+00:01:29,000 --> 00:01:32,000
+as many different data dash attributes as you want.
+
+27
+00:01:32,000 --> 00:01:34,000
+They're basically private data for the application
+
+28
+00:01:34,000 --> 00:01:36,000
+to consume, the browser ignores them.
+
+29
+00:01:36,000 --> 00:01:41,000
+Then in scripts that you load on the page, there will be some JavaScript that will go
+
+30
+00:01:41,000 --> 00:01:44,000
+and interpret those data dash attributes and start attaching events
+
+31
+00:01:44,000 --> 00:01:47,000
+or doing whatever is necessary to add AJAX features,
+
+32
+00:01:47,000 --> 00:01:52,000
+whatever the data dash AJAX instructions tell them to do.
+
+33
+00:01:52,000 --> 00:01:54,000
+Client side validation works the same way.
+
+34
+00:01:54,000 --> 00:02:04,000
+Let's close this view and go out to a Review Edit page and look at the source code to this.
+
+35
+00:02:04,000 --> 00:02:10,000
+And here, you can see data dash attributes that specify all the validation rules for rating.
+
+36
+00:02:10,000 --> 00:02:13,000
+They're on the input for the rating value.
+
+37
+00:02:13,000 --> 00:02:17,000
+They include things like the minimum value, the maximum value, and the error message
+
+38
+00:02:17,000 --> 00:02:19,000
+to show it something is out of range.
+
+39
+00:02:19,000 --> 00:02:23,000
+So there's JavaScript code coming through, finding these data dash attributes,
+
+40
+00:02:23,000 --> 00:02:27,000
+interpreting the values inside and then adding behavior to the page.
+
+41
+00:02:27,000 --> 00:02:32,000
+It also works if JavaScript disabled, we won't have client validation, but nothing will break.
+
+42
+00:02:32,000 --> 00:02:36,000
+The data dash attributes will go unused, but the form will still post
+
+43
+00:02:36,000 --> 00:02:39,000
+and we'll have server side validation.
+
+44
+00:02:39,000 --> 00:02:43,000
+Let me show you how easy it would be to come in to the Index controller.
+
+45
+00:02:43,000 --> 00:02:48,000
+And instead of using Ajax.BeginForm, we'll go back to our simpler form
+
+46
+00:02:48,000 --> 00:02:56,000
+and implement this using just our own JavaScript code with some jQuery.
+
+47
+00:02:56,000 --> 00:03:01,000
+I will add some additional information to this opening form tag.
+
+48
+00:03:01,000 --> 00:03:02,000
+So it's still method equals get.
+
+49
+00:03:02,000 --> 00:03:07,000
+Now, I'm going to explicitly specify an action to make sure this form has an action attribute.
+
+50
+00:03:07,000 --> 00:03:11,000
+I'm using the URL helper to generate a URL to a controller action.
+
+51
+00:03:11,000 --> 00:03:16,000
+In this case, the HomeController index action, and then two data dash attributes.
+
+52
+00:03:16,000 --> 00:03:21,000
+One to identify that this form should be AJAX, (inaudible) to behave asynchronously,
+
+53
+00:03:21,000 --> 00:03:24,000
+and one to ID the DOM element that needs to be updated
+
+54
+00:03:24,000 --> 00:03:27,000
+when data comes back from the form submission.
+
+55
+00:03:27,000 --> 00:03:32,000
+Very similar to what we had in the AjaxOptions that we have to pass into begin form helper.
+
+56
+00:03:32,000 --> 00:03:38,000
+And I'm using a bit of a prefix in here, otf, just so my data dash attributes don't conflict
+
+57
+00:03:38,000 --> 00:03:41,000
+with any data dash attributes defined by the MVC framework.
+
+58
+00:03:41,000 --> 00:03:46,000
+And now, we will need a script to interpret these data dash attributes.
+
+59
+00:03:46,000 --> 00:03:50,000
+Let me come in to the Scripts folder and add a new item.
+
+60
+00:03:50,000 --> 00:03:53,000
+We'll search the installed templates for script,
+
+61
+00:03:53,000 --> 00:03:57,000
+find JavaScript File, and let's just call it otf.js.
+
+62
+00:03:57,000 --> 00:04:02,000
+This will be a JavaScript file that we use throughout the application,
+
+63
+00:04:02,000 --> 00:04:03,000
+so not just on the homepage.
+
+64
+00:04:03,000 --> 00:04:06,000
+And I can have these asynchronous forms anywhere.
+
+65
+00:04:06,000 --> 00:04:10,000
+For this to work everywhere, we will have to add it to our bundle
+
+66
+00:04:10,000 --> 00:04:13,000
+that is rendered on the Layout page.
+
+67
+00:04:13,000 --> 00:04:15,000
+So I'll just add this new script down here at the bottom.
+
+68
+00:04:15,000 --> 00:04:19,000
+It's going to depend on jQuery, so it has to come after jQuery.
+
+69
+00:04:19,000 --> 00:04:20,000
+But right there should be fine.
+
+70
+00:04:20,000 --> 00:04:22,000
+It will now be everywhere in the application.
+
+71
+00:04:22,000 --> 00:04:26,000
+And now, let's add some code to the script.
+
+72
+00:04:26,000 --> 00:04:29,000
+The first thing we'll do is use jQuery to hook up to the DOM ready event.
+
+73
+00:04:29,000 --> 00:04:33,000
+If you haven't used jQuery before, this is when you just invoke the jQuery function
+
+74
+00:04:33,000 --> 00:04:39,000
+which is the dollar sign, and then pass in a function that tells jQuery that you want
+
+75
+00:04:39,000 --> 00:04:41,000
+to execute some code when the DOM is ready.
+
+76
+00:04:41,000 --> 00:04:45,000
+That's the point when all the HTML has been received, has been parsed by the browser,
+
+77
+00:04:45,000 --> 00:04:49,000
+it's been put into memory in the document object model or the DOM.
+
+78
+00:04:49,000 --> 00:04:52,000
+So all the elements are in memory, they're already to be scripted.
+
+79
+00:04:52,000 --> 00:04:56,000
+Then we can use a jQuery selector to go out and find all the forms
+
+80
+00:04:56,000 --> 00:05:00,000
+that have this data attribute present and set to the value true.
+
+81
+00:05:00,000 --> 00:05:04,000
+Another great feature of jQuery is that it lets use css selector syntax
+
+82
+00:05:04,000 --> 00:05:07,000
+like this to select elements on a page.
+
+83
+00:05:07,000 --> 00:05:12,000
+This would select one form element or zero form elements or multiple form elements just as--
+
+84
+00:05:12,000 --> 00:05:17,000
+however, many have the data-otf.ajax attributes set the true inside them.
+
+85
+00:05:17,000 --> 00:05:21,000
+And then the third feature of jQuery is that it's very easy to wire up events.
+
+86
+00:05:21,000 --> 00:05:26,000
+So once I have selected zero or more form elements, I want to wire up to submit events,
+
+87
+00:05:26,000 --> 00:05:30,000
+so that when the user clicks a Save button or a Submit button, instead of that posting back
+
+88
+00:05:30,000 --> 00:05:35,000
+to the server, instead of that going back to the server, it will come into my JavaScript code.
+
+89
+00:05:35,000 --> 00:05:39,000
+In this case, call a function ajaxFormSubmit.
+
+90
+00:05:39,000 --> 00:05:42,000
+We haven't written that function yet, but it's just a normal function
+
+91
+00:05:42,000 --> 00:05:43,000
+that you can write in JavaScript.
+
+92
+00:05:43,000 --> 00:05:48,000
+Inside of this function, it's going to be our responsibilities to handle this form submission.
+
+93
+00:05:48,000 --> 00:05:52,000
+So we'll have to collect all the parameters, send them off to the server, get the result back
+
+94
+00:05:52,000 --> 00:05:55,000
+from the server, and then graph it into the page somewhere.
+
+95
+00:05:55,000 --> 00:06:00,000
+So the first thing I'll do is grab a reference to the form that is being submitted.
+
+96
+00:06:00,000 --> 00:06:04,000
+You can do that because it will be the this reference inside of the event handler.
+
+97
+00:06:04,000 --> 00:06:07,000
+And then, I'm just going to wrap it inside of jQuery
+
+98
+00:06:07,000 --> 00:06:10,000
+so that I can use jQuery functions on that element.
+
+99
+00:06:10,000 --> 00:06:13,000
+I want to use those functions to build an options object
+
+100
+00:06:13,000 --> 00:06:17,000
+that will contain the URL that we're going to go to.
+
+101
+00:06:17,000 --> 00:06:21,000
+I can get that by looking at the action attribute that is on that form.
+
+102
+00:06:21,000 --> 00:06:24,000
+The type of request to make, that would be a get or a post and we can get
+
+103
+00:06:24,000 --> 00:06:29,000
+that from the method attribute on the form, and finally the data to send along to the server.
+
+104
+00:06:29,000 --> 00:06:32,000
+Whatever inputs are in that form, we need to collect them all up
+
+105
+00:06:32,000 --> 00:06:34,000
+and to name value pairs and post them.
+
+106
+00:06:34,000 --> 00:06:38,000
+In the case of a search, that will just contained the search term,
+
+107
+00:06:38,000 --> 00:06:40,000
+but there could be additional data in there too.
+
+108
+00:06:40,000 --> 00:06:45,000
+And then once we have the options together, it's time to make the asynchronous call.
+
+109
+00:06:45,000 --> 00:06:46,000
+There's a number of different ways
+
+110
+00:06:46,000 --> 00:06:48,000
+to make asynchronous calls back to the server, the jQuery.
+
+111
+00:06:48,000 --> 00:06:51,000
+One is with $.ajax.
+
+112
+00:06:51,000 --> 00:06:54,000
+That's the one that gives you the most flexibility in the most options.
+
+113
+00:06:54,000 --> 00:07:00,000
+Here, I can just pass the options object in that will tell jQuery where to call the URL,
+
+114
+00:07:00,000 --> 00:07:03,000
+and also the data to pass along, and whether to do or get or a post.
+
+115
+00:07:03,000 --> 00:07:06,000
+And then when it is done, this is a call back function
+
+116
+00:07:06,000 --> 00:07:09,000
+when that request is complete and successful.
+
+117
+00:07:09,000 --> 00:07:14,000
+This function will be invoked and the response from the server will be in this data object.
+
+118
+00:07:14,000 --> 00:07:17,000
+What I need to do inside of this call back is go out and find the target
+
+119
+00:07:17,000 --> 00:07:21,000
+that is what is the DOM element on the page that I wanted to update with this data,
+
+120
+00:07:21,000 --> 00:07:26,000
+so we will go out and find that by digging the identifier out of the data dash attribute.
+
+121
+00:07:26,000 --> 00:07:32,000
+And then using the jQuery HTML method or rather what we could do is use the replace method,
+
+122
+00:07:32,000 --> 00:07:38,000
+we could say replace that target with this hunk of HTML that we got back from the server.
+
+123
+00:07:38,000 --> 00:07:40,000
+That will update the page.
+
+124
+00:07:40,000 --> 00:07:45,000
+And then, one last touch inside of ajaxFormSubmit, we need to prevent the browser
+
+125
+00:07:45,000 --> 00:07:49,000
+from doing its default action which is navigating away and going to the server
+
+126
+00:07:49,000 --> 00:07:51,000
+by itself and redrawing the page.
+
+127
+00:07:51,000 --> 00:07:53,000
+I can do that just by returning false down here.
+
+128
+00:07:53,000 --> 00:08:01,000
+And with all these code in place, I should be able to do a build and run the application.
+
+129
+00:08:01,000 --> 00:08:05,000
+Now, we'll be performing the same action as Ajax.BeginForm,
+
+130
+00:08:05,000 --> 00:08:07,000
+but we'll be doing it with our code.
+
+131
+00:08:07,000 --> 00:08:10,000
+So it's a little more open to customization and flexibility.
+
+132
+00:08:10,000 --> 00:08:16,000
+I should be able to search and I get a JavaScript error which happens occasionally.
+
+133
+00:08:16,000 --> 00:08:19,000
+I picked the wrong method to update screen with.
+
+134
+00:08:19,000 --> 00:08:25,000
+Let's try replaceWith to replace this element with what is inside of this data.
+
+135
+00:08:25,000 --> 00:08:27,000
+Save everything again, let's refresh the page.
+
+136
+00:08:27,000 --> 00:08:32,000
+And scroll down a little bit and try the search again.
+
+137
+00:08:32,000 --> 00:08:34,000
+And now, we're working just fine.
+
+138
+00:08:34,000 --> 00:08:38,000
+And now, we have some code to build on that we can customize
+
+139
+00:08:38,000 --> 00:08:42,000
+for our application using data dash attributes and we could this code,
+
+140
+00:08:42,000 --> 00:08:45,000
+make a loading message visible or log errors into all sorts
+
+141
+00:08:45,000 --> 00:08:49,000
+of interesting things that the application needs.
+
+142
+00:08:49,000 --> 00:59:00,000
+( Pause )
+

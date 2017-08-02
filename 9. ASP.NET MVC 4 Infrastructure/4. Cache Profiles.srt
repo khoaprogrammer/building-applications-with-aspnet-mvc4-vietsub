@@ -1,0 +1,176 @@
+1
+00:00:00,000 --> 00:00:01,000
+( Silence )
+
+2
+00:00:01,000 --> 00:00:05,000
+In reality, it is almost impossible to pick the correct cache duration setting
+
+3
+00:00:05,000 --> 00:00:07,000
+in a development environment.
+
+4
+00:00:07,000 --> 00:00:10,000
+You need to put the application into a production like environment.
+
+5
+00:00:10,000 --> 00:00:13,000
+Put it under load, take some measurements, and then make some adjustments.
+
+6
+00:00:13,000 --> 00:00:16,000
+You might found out that you're using too much memory and caching requests
+
+7
+00:00:16,000 --> 00:00:20,000
+that just aren't being used or you might find that you're not caching enough.
+
+8
+00:00:20,000 --> 00:00:26,000
+For these reasons, ASP.net allows you to specify a cache profile in the output cache attribute.
+
+9
+00:00:26,000 --> 00:00:28,000
+A cache profile then is something that's stored
+
+10
+00:00:28,000 --> 00:00:31,000
+in your web.config file and can specify a duration.
+
+11
+00:00:31,000 --> 00:00:34,000
+It's underneath a section named caching and it's inside of here
+
+12
+00:00:34,000 --> 00:00:35,000
+where you can put duration values.
+
+13
+00:00:35,000 --> 00:00:39,000
+As this example demonstrates, you can have multiple cash profiles
+
+14
+00:00:39,000 --> 00:00:44,000
+and you reference the cache profile by name in the output cache attribute.
+
+15
+00:00:44,000 --> 00:00:48,000
+I generally recommend using cache profiles instead of hard code and cache settings
+
+16
+00:00:48,000 --> 00:00:51,000
+because first of all, it avoids repetition in the cache attributes.
+
+17
+00:00:51,000 --> 00:00:54,000
+If you want to double the duration inside of all of your cache attributes,
+
+18
+00:00:54,000 --> 00:00:57,000
+you don't have to do a search and replace throughout the code.
+
+19
+00:00:57,000 --> 00:01:00,000
+You just go to one location in your web.config file.
+
+20
+00:01:00,000 --> 00:01:04,000
+It's also easier to change the cache settings once the application is deployed
+
+21
+00:01:04,000 --> 00:01:08,000
+because now all you do is edit the config file and then you avoid changing the settings
+
+22
+00:01:08,000 --> 00:01:11,000
+in code, recompiling, and redeploying.
+
+23
+00:01:11,000 --> 00:01:14,000
+And typically when you're doing performance tuning on an application,
+
+24
+00:01:14,000 --> 00:01:16,000
+you need to run it while taking some measurements.
+
+25
+00:01:16,000 --> 00:01:19,000
+Then you tweak the cache settings and then you run it again
+
+26
+00:01:19,000 --> 00:01:22,000
+to make sure you did really get better results and it's not getting worse.
+
+27
+00:01:22,000 --> 00:01:27,000
+And you'll do this over and over again until you reach some goal like reduced memory usage
+
+28
+00:01:27,000 --> 00:01:33,000
+or reduced CPU or an increase in how many requests per second your application handles.
+
+29
+00:01:33,000 --> 00:01:35,000
+( Silence )
+
+30
+00:01:35,000 --> 00:01:38,000
+Inside our application if I wanted to use a cache profile instead of this hard code
+
+31
+00:01:38,000 --> 00:01:45,000
+of duration, all I would need to do is come into the root level web.config and somewhere inside
+
+32
+00:01:45,000 --> 00:01:49,000
+of system.web, create a caching element.
+
+33
+00:01:49,000 --> 00:01:51,000
+We're going to create output cache settings.
+
+34
+00:01:51,000 --> 00:01:55,000
+Notice you get intel sense (phonetic) the entire way through and we're going
+
+35
+00:01:55,000 --> 00:01:57,000
+to create multiple output cache profiles.
+
+36
+00:01:57,000 --> 00:02:06,000
+So let's add one called long that has a duration of 300 seconds and add another one
+
+37
+00:02:06,000 --> 00:02:10,000
+with a duration of 3 seconds called short.
+
+38
+00:02:10,000 --> 00:02:13,000
+And of course, you could have as many of these as you want.
+
+39
+00:02:13,000 --> 00:02:16,000
+Now I just need to reference one of these from the home controller.
+
+40
+00:02:16,000 --> 00:02:25,000
+So instead of having a duration, have cache profile equals long.
+
+41
+00:02:25,000 --> 00:02:29,000
+And the application should behave just like it did before.
+
+42
+00:02:29,000 --> 00:02:31,000
+Just now I have my numbers inside of a config file instead
+
+43
+00:02:31,000 --> 00:02:35,000
+of hard coded inside of the controller.
+
+44
+00:02:35,000 --> 00:59:00,000
+( Silence )
+

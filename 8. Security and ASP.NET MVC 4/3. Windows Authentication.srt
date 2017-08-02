@@ -1,0 +1,328 @@
+1
+00:00:02,000 --> 00:00:05,000
+The OdeToFood application we've been working on was created
+
+2
+00:00:05,000 --> 00:00:07,000
+with the internet application project template.
+
+3
+00:00:07,000 --> 00:00:09,000
+You might remember that from the first module.
+
+4
+00:00:09,000 --> 00:00:13,000
+Internet applications use Forms-Based Authentication by default,
+
+5
+00:00:13,000 --> 00:00:17,000
+but I want to demonstrate Windows Authentication, and changing this application
+
+6
+00:00:17,000 --> 00:00:20,000
+over to use Windows Authentication is a bit messy.
+
+7
+00:00:20,000 --> 00:00:22,000
+It's possible but it's messy.
+
+8
+00:00:22,000 --> 00:00:26,000
+So instead of getting messy I'll launch a second instance of Visual Studio
+
+9
+00:00:26,000 --> 00:00:32,000
+and we'll create a new temporary project just to look at how Windows Authentication works.
+
+10
+00:00:32,000 --> 00:00:36,000
+So a new project using MVC 4, I don't really care about the name
+
+11
+00:00:36,000 --> 00:00:38,000
+because we won't be spending anytime with this.
+
+12
+00:00:38,000 --> 00:00:40,000
+So we don't need a unit test project either.
+
+13
+00:00:40,000 --> 00:00:43,000
+I just want to make sure instead of creating an internet application,
+
+14
+00:00:43,000 --> 00:00:48,000
+I create an intranet application and then I'll click okay and be back
+
+15
+00:00:48,000 --> 00:00:50,000
+in a second once Visual Studio has the setup.
+
+16
+00:00:50,000 --> 00:00:57,000
+Now the project is ready to go and Visual Studio will open up a readme.text file by default
+
+17
+00:00:57,000 --> 00:01:00,000
+when you create an intranet application.
+
+18
+00:01:00,000 --> 00:01:03,000
+It'll list a couple manual steps that you have to go through in order for this to work
+
+19
+00:01:03,000 --> 00:01:08,000
+because many web servers today ship with features turned off by default.
+
+20
+00:01:08,000 --> 00:01:13,000
+And one of the features that is off by default is the ability to do Windows Authentication.
+
+21
+00:01:13,000 --> 00:01:18,000
+To fix that, I need to come into to the MvcApplication and open up the property window.
+
+22
+00:01:18,000 --> 00:01:22,000
+And I do that by going to View, Properties Window.
+
+23
+00:01:22,000 --> 00:01:26,000
+In this case I cannot right-click on the Project and go to Properties.
+
+24
+00:01:26,000 --> 00:01:27,000
+That takes me to the wrong place.
+
+25
+00:01:27,000 --> 00:01:31,000
+I need to open up the Properties Window by clicking this or pressing F4.
+
+26
+00:01:31,000 --> 00:01:35,000
+And that allows me to set some properties on the development server.
+
+27
+00:01:35,000 --> 00:01:37,000
+Remember the development server is IIS Express.
+
+28
+00:01:37,000 --> 00:01:40,000
+That's a little application running down here in the system tray.
+
+29
+00:01:40,000 --> 00:01:42,000
+We've hardly looked at it at all.
+
+30
+00:01:42,000 --> 00:01:45,000
+It just sits there and runs in the background to process our request.
+
+31
+00:01:45,000 --> 00:01:51,000
+We need to come in for IIS Express and tell it to enable Windows Authentication.
+
+32
+00:01:51,000 --> 00:01:55,000
+And that's all the configuration we really need right now.
+
+33
+00:01:55,000 --> 00:01:59,000
+Everything in an intranet application requires authentication by default.
+
+34
+00:01:59,000 --> 00:02:02,000
+So it will not let a user in until it knows who they are.
+
+35
+00:02:02,000 --> 00:02:05,000
+And that means if I run the application,
+
+36
+00:02:05,000 --> 00:02:08,000
+the first thing Internet Explorer will do is pop up a log in box.
+
+37
+00:02:08,000 --> 00:02:12,000
+And you might wonder, well, what's so integrated about Windows Authentication
+
+38
+00:02:12,000 --> 00:02:16,000
+if Internet Explorer is always going to ask me to log in?
+
+39
+00:02:16,000 --> 00:02:19,000
+But this behavior is peculiar to Internet Explorer
+
+40
+00:02:19,000 --> 00:02:24,000
+because Internet Explorer will only automatically log you into a site if it thinks
+
+41
+00:02:24,000 --> 00:02:26,000
+that site is on your local network.
+
+42
+00:02:26,000 --> 00:02:31,000
+And by default, Internet Explorer doesn't consider local host to be on the local network.
+
+43
+00:02:31,000 --> 00:02:36,000
+If I want to change that experience I would have to go into the Tools menu in IE,
+
+44
+00:02:36,000 --> 00:02:42,000
+so Alt T will open up the menu, and then I can go to Internet Options.
+
+45
+00:02:42,000 --> 00:02:44,000
+Go to the Security tab.
+
+46
+00:02:44,000 --> 00:02:48,000
+Click on Local Intranet and then go to sites.
+
+47
+00:02:48,000 --> 00:02:53,000
+Go to Advanced, and finally I reach a dialog where I can tell Internet Explorer
+
+48
+00:02:53,000 --> 00:02:57,000
+that local host should be considered an intranet site.
+
+49
+00:02:57,000 --> 00:03:03,000
+And the reason this is important is because if we look at the custom settings
+
+50
+00:03:03,000 --> 00:03:08,000
+for a local internet, essentially what are all the settings that are applied in this soon,
+
+51
+00:03:08,000 --> 00:03:11,000
+and I explore all the way down, you'll see right here
+
+52
+00:03:11,000 --> 00:03:14,000
+that Internet Explorer will only automatically log
+
+53
+00:03:14,000 --> 00:03:17,000
+on for a website that's in the intranet zone.
+
+54
+00:03:17,000 --> 00:03:21,000
+And it doesn't matter if you've created an internet site or an internet site with MVC,
+
+55
+00:03:21,000 --> 00:03:25,000
+this is completely based on IE's heuristics
+
+56
+00:03:25,000 --> 00:03:29,000
+on determining what's an internet site and what's not an internet site.
+
+57
+00:03:29,000 --> 00:03:32,000
+But now, local host should be considered in the internet zone
+
+58
+00:03:32,000 --> 00:03:40,000
+and if I close all these dialog boxes, and close the browser and press Ctrl F5 to run this again,
+
+59
+00:03:40,000 --> 00:03:44,000
+Internet Explorer will automatically log me in using my current credentials for this machine
+
+60
+00:03:44,000 --> 00:03:47,000
+or my domain if I have a domain controller.
+
+61
+00:03:47,000 --> 00:03:51,000
+The machine is WIN8VPC, my user name is Scott and that can automatically display it
+
+62
+00:03:51,000 --> 00:03:55,000
+because I've been authenticated, even here on the Homepage.
+
+63
+00:03:55,000 --> 00:03:57,000
+And no log in box was required this time.
+
+64
+00:03:57,000 --> 00:03:59,000
+Where does this text come from?
+
+65
+00:03:59,000 --> 00:04:02,000
+That's in the layout view for this application.
+
+66
+00:04:02,000 --> 00:04:09,000
+If we go to Views, Shared, Layout, we'll find there's a section
+
+67
+00:04:09,000 --> 00:04:12,000
+in here using User.Identity.Name.
+
+68
+00:04:12,000 --> 00:04:18,000
+So the user property and User.Identity, they're both available for Windows Authentication
+
+69
+00:04:18,000 --> 00:04:20,000
+and also Forms-based Authentication.
+
+70
+00:04:20,000 --> 00:04:22,000
+You can do things like find out the user's name.
+
+71
+00:04:22,000 --> 00:04:27,000
+You can also use identity to find out if the user has been authenticated
+
+72
+00:04:27,000 --> 00:04:29,000
+or not and how they were authenticated.
+
+73
+00:04:29,000 --> 00:04:34,000
+And we'll see User.Identity again when we come back to Forms-Based Authentication.
+
+74
+00:04:34,000 --> 00:04:37,000
+But for now, this is how Windows Authentication works.
+
+75
+00:04:37,000 --> 00:04:43,000
+And the one other primary difference between this application and the OdeToFood application,
+
+76
+00:04:43,000 --> 00:04:48,000
+if I come into web.config, inside of here there will be a section called "Authentication",
+
+77
+00:04:48,000 --> 00:04:51,000
+and you can see the mode is equal to Windows.
+
+78
+00:04:51,000 --> 00:04:55,000
+Inside the OdeToFood application, we have that same section,
+
+79
+00:04:55,000 --> 00:04:58,000
+authentication section, but the mode is equal to forms.
+
+80
+00:04:58,000 --> 00:05:00,000
+And that's essentially what's telling ASP.NET
+
+81
+00:05:00,000 --> 00:05:04,000
+if it's using Windows or Forms-Based Authentication.
+
+82
+00:05:04,000 --> 00:59:00,000
+( Pause )
+

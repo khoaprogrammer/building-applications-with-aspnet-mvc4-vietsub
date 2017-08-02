@@ -1,0 +1,600 @@
+1
+00:00:00,000 --> 00:00:05,000
+Now that we know a little bit about how routing works let's go into route config dot cs
+
+2
+00:00:05,000 --> 00:00:10,000
+and define a new route, this is only something you need to do if a default route doesn't work
+
+3
+00:00:10,000 --> 00:00:13,000
+for you but let me show you a scenario where a new route can help.
+
+4
+00:00:13,000 --> 00:00:19,000
+Let's imagine that the user expects to be able to come into the application and search
+
+5
+00:00:19,000 --> 00:00:26,000
+for a cuisine by its name, so French cuisine or Italian cuisine, in this case at second entry
+
+6
+00:00:26,000 --> 00:00:30,000
+in the URL the second segment of the path isn't really an action identifier it's more
+
+7
+00:00:30,000 --> 00:00:34,000
+of a parameter, it can be French or German or Italian.
+
+8
+00:00:34,000 --> 00:00:39,000
+So the default route really won't work very well for us because we don't want to add an action
+
+9
+00:00:39,000 --> 00:00:43,000
+to our controller for every type of cuisine that we have we just want
+
+10
+00:00:43,000 --> 00:00:45,000
+that path sent to the action as a parameter.
+
+11
+00:00:45,000 --> 00:00:49,000
+So I'll define a new route for this and I need to be careful where I define this route
+
+12
+00:00:49,000 --> 00:00:54,000
+because the order in which rotes are added to the global route collection is significant,
+
+13
+00:00:54,000 --> 00:00:58,000
+what the routing engine will do is evaluate each mapped route that we place
+
+14
+00:00:58,000 --> 00:01:03,000
+into the route collection the first one that matches the URL will win.
+
+15
+00:01:03,000 --> 00:01:06,000
+The default route entry that we have here is very greedy;
+
+16
+00:01:06,000 --> 00:01:09,000
+it matches nearly any URL that you want to throw at it.
+
+17
+00:01:09,000 --> 00:01:14,000
+It matches slash home slash index, it matches slash home, we've even seen it work
+
+18
+00:01:14,000 --> 00:01:17,000
+when you just go to the root of the application and it can do this
+
+19
+00:01:17,000 --> 00:01:22,000
+because it provides default parameter values to anything that's missing in the URL.
+
+20
+00:01:22,000 --> 00:01:26,000
+IF we want to define our own route we'd probably want to place it in front of that default route
+
+21
+00:01:26,000 --> 00:01:29,000
+and make that URL a little more restrictive.
+
+22
+00:01:29,000 --> 00:01:37,000
+So for example let me map a route and we'll give it the friendly name of cuisine
+
+23
+00:01:37,000 --> 00:01:42,000
+and we'll say the URL to match for this has to start with the word cuisine
+
+24
+00:01:42,000 --> 00:01:47,000
+and then it can have a parameter which we'll call name which will be the second segment
+
+25
+00:01:47,000 --> 00:01:52,000
+of the URL and you might say how can this work there's no control, there's no action.
+
+26
+00:01:52,000 --> 00:01:56,000
+Well, the mvc framework does need to know what the controller will be
+
+27
+00:01:56,000 --> 00:02:00,000
+and what the action will be so let me add those as defaults.
+
+28
+00:02:00,000 --> 00:02:09,000
+I'll create a new anonymously typed object and say controller equals the cuisine controller,
+
+29
+00:02:09,000 --> 00:02:13,000
+the default action, let's give it a default action of search
+
+30
+00:02:13,000 --> 00:02:20,000
+and name will just make it an empty name and that defines our new route.
+
+31
+00:02:20,000 --> 00:02:25,000
+Now if we have a request come in for slash cuisine the routing engine should see that,
+
+32
+00:02:25,000 --> 00:02:30,000
+that matches the cuisine route and send things off to a cuisine controller.
+
+33
+00:02:30,000 --> 00:02:32,000
+But if a request comes in for slash home,
+
+34
+00:02:32,000 --> 00:02:37,000
+slash index that doesn't match the cuisine route it doesn't start with the word cuisine
+
+35
+00:02:37,000 --> 00:02:42,000
+so we'll go to the next route entry which is the default route entry slash home slash index will
+
+36
+00:02:42,000 --> 00:02:43,000
+match that one.
+
+37
+00:02:43,000 --> 00:02:47,000
+As a side note let me briefly mention the purpose
+
+38
+00:02:47,000 --> 00:02:52,000
+of this routes dot ignore route method call, the routing engine will not try to process a request
+
+39
+00:02:52,000 --> 00:02:55,000
+that going to reach a real file on the file system.
+
+40
+00:02:55,000 --> 00:03:02,000
+That's why we can have a request for something like slash content, slash site dot css
+
+41
+00:03:02,000 --> 00:03:05,000
+and the routing engine won't interfere with that request.
+
+42
+00:03:05,000 --> 00:03:10,000
+The server can simply send back that css file in response, we don't need this request routed
+
+43
+00:03:10,000 --> 00:03:15,000
+to a controller, the file already exists we just need to pick it up off the disk and send it back
+
+44
+00:03:15,000 --> 00:03:18,000
+to the browser and that's what will happen because the routing engine will see that,
+
+45
+00:03:18,000 --> 00:03:20,000
+that's going to reach something on the disk
+
+46
+00:03:20,000 --> 00:03:23,000
+and it doesn't interfere and try and route things around.
+
+47
+00:03:23,000 --> 00:03:28,000
+But there are some files served up by asp dot net that end with a axt extension
+
+48
+00:03:28,000 --> 00:03:33,000
+and these files don't actually exist on the file system they're virtual files
+
+49
+00:03:33,000 --> 00:03:36,000
+but asp dot net knows how to serve them up.
+
+50
+00:03:36,000 --> 00:03:40,000
+If you've ever worked with asp dot net tracing you might be familiar with trace dot exd.
+
+51
+00:03:40,000 --> 00:03:45,000
+We'll take a look at a situation where we have an axd end point later in the course
+
+52
+00:03:45,000 --> 00:03:49,000
+but for now just know this is a way to tell a routing engine if you see something
+
+53
+00:03:49,000 --> 00:03:54,000
+like trace dot axd in the request just ignore it and don't try to route it,
+
+54
+00:03:54,000 --> 00:03:57,000
+someone else will take care of that even though the file doesn't actually exist on the disk.
+
+55
+00:03:57,000 --> 00:04:03,000
+Now that we have our new route to find let me run the application by pressing control F 5
+
+56
+00:04:03,000 --> 00:04:13,000
+and let's try to come into the cuisine controller and look for Swedish food.
+
+57
+00:04:13,000 --> 00:04:19,000
+The response I get back from my application is an acdp 404 error, this is the error code
+
+58
+00:04:19,000 --> 00:04:23,000
+that is recognized throughout the noon universe as meaning I cannot find what you're looking
+
+59
+00:04:23,000 --> 00:04:28,000
+for which is exactly what I would expect because I told the mcv framework to go looking
+
+60
+00:04:28,000 --> 00:04:34,000
+for a cuisine controller but I do not have a cuisine controller in the application.
+
+61
+00:04:34,000 --> 00:04:37,000
+So let's fix this problem, I'm going to right click on the controller's folder
+
+62
+00:04:37,000 --> 00:04:42,000
+and select add controller, this will bring up a dialogue box
+
+63
+00:04:42,000 --> 00:04:47,000
+where I can give my new controller a name, I'll call it the cuisine controller.
+
+64
+00:04:47,000 --> 00:04:50,000
+There's a number of other options inside of this dialogue which we'll talk about later
+
+65
+00:04:50,000 --> 00:04:55,000
+in the course, for right now I'll just leave the empty NBS controller template selected
+
+66
+00:04:55,000 --> 00:04:59,000
+and click add, this will add a controller to my controller's folder.
+
+67
+00:04:59,000 --> 00:05:02,000
+If it isn't quote empty it does have an index method inside,
+
+68
+00:05:02,000 --> 00:05:06,000
+it is derived from that base controller class and if I build this application
+
+69
+00:05:06,000 --> 00:05:12,000
+and run it again, refresh the browser we'll still have a 404 error message
+
+70
+00:05:12,000 --> 00:05:18,000
+because we also told the mvc framework inside of val config
+
+71
+00:05:18,000 --> 00:05:22,000
+that the action should be the search action and this controller does not have a search action.
+
+72
+00:05:22,000 --> 00:05:26,000
+There's also no way to specify the action in the URL we didn't provide
+
+73
+00:05:26,000 --> 00:05:28,000
+for that flexibility inside of this route.
+
+74
+00:05:28,000 --> 00:05:36,000
+So we really need to call the index action, the search action, we also don't have a view as yet
+
+75
+00:05:36,000 --> 00:05:39,000
+but that's okay I'm going to do the simplest possible thing inside
+
+76
+00:05:39,000 --> 00:05:42,000
+of an action which is just to return content.
+
+77
+00:05:42,000 --> 00:05:46,000
+When you return content you just send a string back down the browser,
+
+78
+00:05:46,000 --> 00:05:51,000
+there's no html involved unless you put html in the string, there's no view involved,
+
+79
+00:05:51,000 --> 00:05:56,000
+I could just say hello, just to prove that we're reaching the search action properly
+
+80
+00:05:56,000 --> 00:06:04,000
+and if I refresh again now we have a result, we have reached that method inside the controller.
+
+81
+00:06:04,000 --> 00:06:08,000
+Now let's see if we can pull out that name parameter out of the URL but before I do
+
+82
+00:06:08,000 --> 00:06:10,000
+that let me just oint out that actions are nothing more
+
+83
+00:06:10,000 --> 00:06:13,000
+than public methods inside of a controller class.
+
+84
+00:06:13,000 --> 00:06:18,000
+Anytime you add a public method to this class or any controller class you have to think about it
+
+85
+00:06:18,000 --> 00:06:23,000
+as something that will be URL addressable depending on your routing configuration.
+
+86
+00:06:23,000 --> 00:06:27,000
+If someone types the right thing into their browser address bar they might be able
+
+87
+00:06:27,000 --> 00:06:31,000
+to invoke a public method inside of a controller so don't add any methods inside of here
+
+88
+00:06:31,000 --> 00:06:34,000
+that you wouldn't expect to be called via a URL.
+
+89
+00:06:34,000 --> 00:06:37,000
+So just keep that in mind as you move forward.
+
+90
+00:06:37,000 --> 00:06:40,000
+Right now we're going to try to pull out the name value from the URL
+
+91
+00:06:40,000 --> 00:06:44,000
+and I've already demonstrated that we could get to that through route data,
+
+92
+00:06:44,000 --> 00:06:47,000
+I could ask for route data dot value sub name but it turns
+
+93
+00:06:47,000 --> 00:06:54,000
+out asp dot net mvc makes this even easier because if you add a parameter
+
+94
+00:06:54,000 --> 00:06:59,000
+to an action what the mvc framework will do is go out and try to find something that matches
+
+95
+00:06:59,000 --> 00:07:02,000
+that parameter name and then just give it to you.
+
+96
+00:07:02,000 --> 00:07:04,000
+It will do everything it can to populate that parameter,
+
+97
+00:07:04,000 --> 00:07:07,000
+it will look all around the request it will look in routing data,
+
+98
+00:07:07,000 --> 00:07:09,000
+so things that were picked out of the URL.
+
+99
+00:07:09,000 --> 00:07:14,000
+It will also look in the query string and it will look in posted form values.
+
+100
+00:07:14,000 --> 00:07:20,000
+In the case of coming to slash cuisine slash Swedish the mvc framework will see I need a
+
+101
+00:07:20,000 --> 00:07:24,000
+parameter called name and something called name was extracted from the URL
+
+102
+00:07:24,000 --> 00:07:27,000
+and it will automatically pass that into me.
+
+103
+00:07:27,000 --> 00:07:32,000
+What I want to do is just echo that fact when I return this content but before I do
+
+104
+00:07:32,000 --> 00:07:41,000
+that what I want to do is make sure I properly encode this value,
+
+105
+00:07:41,000 --> 00:07:46,000
+so I'll say message equals server dot html encode name server is a property that I inherit
+
+106
+00:07:46,000 --> 00:07:50,000
+on my controller that I can use to get to server type utilities
+
+107
+00:07:50,000 --> 00:07:56,000
+and variable including html encode which ill make sure if a user snuck through some sort
+
+108
+00:07:56,000 --> 00:07:59,000
+of malicious script tag or something like that it will render as text
+
+109
+00:07:59,000 --> 00:08:02,000
+and it will prevent a cross-site scripting attack.
+
+110
+00:08:02,000 --> 00:08:05,000
+The razor view engine will do this automatically for me
+
+111
+00:08:05,000 --> 00:08:07,000
+but since I'm using a content result I have
+
+112
+00:08:07,000 --> 00:08:12,000
+to be a little bit more careful about how I manage user input.
+
+113
+00:08:12,000 --> 00:08:17,000
+Let's just take that encoded message and return it as the content of our message,
+
+114
+00:08:17,000 --> 00:08:21,000
+now I will do a build, I will come back and refresh the browser
+
+115
+00:08:21,000 --> 00:08:27,000
+and you can see we get the name of the cuisine even though it is misspelled,
+
+116
+00:08:27,000 --> 00:08:31,000
+we get the name of the cuisine back out and we can show it in the browser.
+
+117
+00:08:31,000 --> 00:08:36,000
+Now currently the way our route is defined I can come to the cuisine controller and not pass
+
+118
+00:08:36,000 --> 00:08:42,000
+in a cuisine name and it renders just fine that's because in our routes we said
+
+119
+00:08:42,000 --> 00:08:46,000
+that if you do not find a name just use and empty string.
+
+120
+00:08:46,000 --> 00:08:49,000
+If I take this default out of here though something else will happen,
+
+121
+00:08:49,000 --> 00:08:57,000
+let me do a quick build and refresh now we're back to a 404 error message
+
+122
+00:08:57,000 --> 00:09:01,000
+because essentially what has happened is that we've told the mvc framework that an order
+
+123
+00:09:01,000 --> 00:09:05,000
+to match this route you have to have a name it's not optional, we didn't provide a default value
+
+124
+00:09:05,000 --> 00:09:10,000
+for it, therefore we didn't match the cuisine route we went to the default route,
+
+125
+00:09:10,000 --> 00:09:14,000
+we probably went to the index action of the cuisine controller which doesn't exist
+
+126
+00:09:14,000 --> 00:09:15,000
+and that's why we have this problem.
+
+127
+00:09:15,000 --> 00:09:20,000
+So let me put this back in and instead of specifying an empty string I'm going
+
+128
+00:09:20,000 --> 00:09:25,000
+to specify URL parameter dot optional, that's just telling the mvc framework it's okay
+
+129
+00:09:25,000 --> 00:09:33,000
+for this to not exist inside of the URL and now if I do a build and refresh we're getting
+
+130
+00:09:33,000 --> 00:09:37,000
+to the cuisine controller again there's just no value present for the name.
+
+131
+00:09:37,000 --> 00:09:44,000
+If I wanted to provide a default value I could say name equals French or name equals Swedish,
+
+132
+00:09:44,000 --> 00:09:51,000
+I could also do that using c sharp and saying that this has a default value of say French
+
+133
+00:09:51,000 --> 00:09:58,000
+and now if I do another build and refresh the french value comes
+
+134
+00:09:58,000 --> 00:10:02,000
+through even though I didn't specify that in the URL and just to show you
+
+135
+00:10:02,000 --> 00:10:05,000
+that the mvc framework is looking around in different places
+
+136
+00:10:05,000 --> 00:10:10,000
+for something called name let me enter a query string so I'll go to the cuisine controller
+
+137
+00:10:10,000 --> 00:10:16,000
+but say query string name equals a Italian and we get Italian comes
+
+138
+00:10:16,000 --> 00:10:19,000
+through so even though the routing engine didn't find a name
+
+139
+00:10:19,000 --> 00:10:23,000
+in the URL the mvc framework found something called name in the query string
+
+140
+00:10:23,000 --> 00:10:27,000
+and it just passed it into the action force automatically.
+
+141
+00:10:27,000 --> 00:10:31,000
+So you almost never inside of a controller action directly inspect route data
+
+142
+00:10:31,000 --> 00:10:35,000
+or directly inspect the query string which you could do by going
+
+143
+00:10:35,000 --> 00:10:38,000
+to request dot query string inside of a controller method,
+
+144
+00:10:38,000 --> 00:10:41,000
+all of those things are taken care of for us by the mvc framework,
+
+145
+00:10:41,000 --> 00:10:44,000
+it's just going to find things in the request and pass them into us.
+
+146
+00:10:44,000 --> 00:10:50,000
+And of course it should still work if I say slash cuisine slash Swedish
+
+147
+00:10:50,000 --> 00:10:55,000
+and actually spell it correctly this time that value of course was found in the URL.
+
+148
+00:10:55,000 --> 00:11:00,000
+As we move further along in this course we'll see more advanced scenarios involving multiple
+
+149
+00:11:00,000 --> 00:11:04,000
+action parameters and even complex types here with multiple properties
+
+150
+00:11:04,000 --> 00:59:00,000
+and see how the mvc framework behaves with those.
+

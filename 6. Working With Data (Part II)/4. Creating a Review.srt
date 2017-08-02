@@ -1,0 +1,408 @@
+1
+00:00:01,000 --> 00:00:04,000
+Let's turn our attention to creating a review.
+
+2
+00:00:04,000 --> 00:00:08,000
+When I click on this Created New link to create a review I'm going to need
+
+3
+00:00:08,000 --> 00:00:11,000
+to know the restaurant to associate the review with.
+
+4
+00:00:11,000 --> 00:00:14,000
+So, in the index action I will add a parameter here
+
+5
+00:00:14,000 --> 00:00:17,000
+that will tell the routing engine, please pass along.
+
+6
+00:00:17,000 --> 00:00:22,000
+A parameter called RestaurantId set it to the Restaurants Id property.
+
+7
+00:00:22,000 --> 00:00:26,000
+And I didn't pick the correct overload of action link here.
+
+8
+00:00:26,000 --> 00:00:28,000
+I can see that's going into route values.
+
+9
+00:00:28,000 --> 00:00:32,000
+So the routing engine will say, restaurant Id, I don't see that in the URL.
+
+10
+00:00:32,000 --> 00:00:35,000
+So, I'll place it in the query string.
+
+11
+00:00:35,000 --> 00:00:37,000
+This then should give us the proper link.
+
+12
+00:00:37,000 --> 00:00:39,000
+Now, what I need in the reviews controller is an action
+
+13
+00:00:39,000 --> 00:00:43,000
+that will respond to a Get request for create.
+
+14
+00:00:43,000 --> 00:00:45,000
+This is a very simple action.
+
+15
+00:00:45,000 --> 00:00:48,000
+It just needs to return a view that contains everything the user needs
+
+16
+00:00:48,000 --> 00:00:50,000
+to type in to create a review.
+
+17
+00:00:50,000 --> 00:00:54,000
+An early response to a get request and even though the restaurant Id will be
+
+18
+00:00:54,000 --> 00:00:56,000
+in the query string and I can take it
+
+19
+00:00:56,000 --> 00:01:00,000
+as a parameter here I don't actually use it in this create action.
+
+20
+00:01:00,000 --> 00:01:03,000
+But I'm going to leave the parameter there just so we know that it's available
+
+21
+00:01:03,000 --> 00:01:08,000
+in the query string and in the future if we create perhaps some sort of view model
+
+22
+00:01:08,000 --> 00:01:11,000
+that will provide some defaults for some of the RestaurantReview fields.
+
+23
+00:01:11,000 --> 00:01:15,000
+We can always populate it with that restaurant ID.
+
+24
+00:01:15,000 --> 00:01:19,000
+But really, this is all we need in the Create Action for this simple scenario.
+
+25
+00:01:19,000 --> 00:01:23,000
+I do need to create view so I will add a view called Create using Razor,
+
+26
+00:01:23,000 --> 00:01:26,000
+strongly typed against the RestaurantReview
+
+27
+00:01:26,000 --> 00:01:31,000
+and this time I will select the Create Scaffold template and we'll get a view
+
+28
+00:01:31,000 --> 00:01:33,000
+that is strongly typed to RestaurantReview.
+
+29
+00:01:33,000 --> 00:01:38,000
+It's using the BeginForm helper that will post back this form when the user clicks Save.
+
+30
+00:01:38,000 --> 00:01:41,000
+It'll post back to the same URL it came from.
+
+31
+00:01:41,000 --> 00:01:49,000
+So if we are on /Reviews/Create?restaurantId=3, we'll post back to that same location.
+
+32
+00:01:49,000 --> 00:01:51,000
+We'll still have a restaurant ID in the query string
+
+33
+00:01:51,000 --> 00:01:54,000
+and here's a little trick about BeginForm.
+
+34
+00:01:54,000 --> 00:02:00,000
+What Html.BeginForm will do is return an object that implements iDisposable and that means
+
+35
+00:02:00,000 --> 00:02:04,000
+that we can use it with a C# using statement.
+
+36
+00:02:04,000 --> 00:02:08,000
+Typically, iDisposable objects are objects that hold on to precious resources
+
+37
+00:02:08,000 --> 00:02:13,000
+like database connections and you want to dispose them, and an easy way to do that is
+
+38
+00:02:13,000 --> 00:02:18,000
+to wrap something that's iDisposable with a using statement and create a code block.
+
+39
+00:02:18,000 --> 00:02:23,000
+At the bottom of the code block, the C# compiler will emit the proper code
+
+40
+00:02:23,000 --> 00:02:26,000
+to automatically call Dispose on that object.
+
+41
+00:02:26,000 --> 00:02:30,000
+In this case, BeginForm isn't really hanging on to any precious connections
+
+42
+00:02:30,000 --> 00:02:36,000
+but when you call Dispose on that object, that's when it will emit the closing form tag.
+
+43
+00:02:36,000 --> 00:02:39,000
+So that's just some information on how BeginForm works
+
+44
+00:02:39,000 --> 00:02:43,000
+and why we're placing it inside of a using statement.
+
+45
+00:02:43,000 --> 00:02:46,000
+Inside of the form, we'll have some validation messages.
+
+46
+00:02:46,000 --> 00:02:48,000
+We'll see those in this module.
+
+47
+00:02:48,000 --> 00:02:51,000
+We also have some literal text that we could make a little bit prettier instead
+
+48
+00:02:51,000 --> 00:02:57,000
+of RestaurantReview all one word, I could give this a legend of New Review.
+
+49
+00:02:57,000 --> 00:03:03,000
+Then we have labels and editors for everything the user needs to fill in, the rating, the body,
+
+50
+00:03:03,000 --> 00:03:06,000
+the Reviewer Name and oops, here's restaurant ID.
+
+51
+00:03:06,000 --> 00:03:10,000
+So sometimes the scaffolding is a little eager and emits things
+
+52
+00:03:10,000 --> 00:03:12,000
+that you don't necessarily want these or to edit.
+
+53
+00:03:12,000 --> 00:03:14,000
+We're going to delete that.
+
+54
+00:03:14,000 --> 00:03:18,000
+Sometimes it is not so eager and it doesn't emit things that you want it to,
+
+55
+00:03:18,000 --> 00:03:21,000
+but in this case we just had to delete something.
+
+56
+00:03:21,000 --> 00:03:26,000
+That should be enough so that if I do a build and make sure everything is saved,
+
+57
+00:03:26,000 --> 00:03:32,000
+if I refresh this page, to get the new Create New link that has a restaurant ID in it.
+
+58
+00:03:32,000 --> 00:03:37,000
+I should be able to click this and here we're on a page where I can enter a rating,
+
+59
+00:03:37,000 --> 00:03:43,000
+I can enter a body, and I could enter a Reviewer Name and click Create.
+
+60
+00:03:43,000 --> 00:03:46,000
+That'll do a post back.
+
+61
+00:03:46,000 --> 00:03:49,000
+So we need a controller action on the Reviews controller
+
+62
+00:03:49,000 --> 00:03:53,000
+that will respond to that post request.
+
+63
+00:03:53,000 --> 00:03:55,000
+That action will look like this.
+
+64
+00:03:55,000 --> 00:03:59,000
+We respond to a post request and we take a RestaurantReview as a parameter.
+
+65
+00:03:59,000 --> 00:04:04,000
+That's where the model binder in MVC will jump in and say, "Oh, you need a RestaurantReview."
+
+66
+00:04:04,000 --> 00:04:09,000
+I'll instantiate an instance of that type and then look through all the properties to see
+
+67
+00:04:09,000 --> 00:04:12,000
+if I can match them up with something in the request and it will find a rating,
+
+68
+00:04:12,000 --> 00:04:16,000
+it will find a body, it will push those values into it.
+
+69
+00:04:16,000 --> 00:04:22,000
+It will also find the restaurant ID so it will populate the restaurant ID property of a Review.
+
+70
+00:04:22,000 --> 00:04:26,000
+So it's associated with the proper restaurant and then inside of that Create Action,
+
+71
+00:04:26,000 --> 00:04:30,000
+the first thing you typically do is check to see if ModelState is valid
+
+72
+00:04:30,000 --> 00:04:33,000
+and if this flag is valid, returns false,
+
+73
+00:04:33,000 --> 00:04:36,000
+that means something went wrong with the model binding.
+
+74
+00:04:36,000 --> 00:04:38,000
+Something that was required isn't there.
+
+75
+00:04:38,000 --> 00:04:40,000
+Something is too long or something was too short.
+
+76
+00:04:40,000 --> 00:04:44,000
+It runs through all the validation rules associated with an entity
+
+77
+00:04:44,000 --> 00:04:47,000
+and tells you if everything worked or not.
+
+78
+00:04:47,000 --> 00:04:51,000
+We'll add some additional validation rules in this module but for now,
+
+79
+00:04:51,000 --> 00:04:55,000
+just know that if that returns false, what we want to do is not save the thing
+
+80
+00:04:55,000 --> 00:05:00,000
+in the database, something was invalid, instead, we'll return the Create View again
+
+81
+00:05:00,000 --> 00:05:04,000
+and let the user try to fix any problems that might have occurred.
+
+82
+00:05:04,000 --> 00:05:09,000
+Those Html.validation message for helpers will show validation messages to the user.
+
+83
+00:05:09,000 --> 00:05:12,000
+We'll see that here in just a second.
+
+84
+00:05:12,000 --> 00:05:15,000
+But if ModelState is valid, that means everything was proper.
+
+85
+00:05:15,000 --> 00:05:20,000
+So we will tell the Entity Framework to please add this review to its reviews collection
+
+86
+00:05:20,000 --> 00:05:22,000
+and then the Entity Framework doesn't actually save anything
+
+87
+00:05:22,000 --> 00:05:25,000
+to the database until you call SaveChanges.
+
+88
+00:05:25,000 --> 00:05:30,000
+At that point, it will issue Insert or Update or Delete Statements or all three,
+
+89
+00:05:30,000 --> 00:05:34,000
+depending on how many objects you changed to reconcile the changes that you made
+
+90
+00:05:34,000 --> 00:05:36,000
+in memory with what's in the database.
+
+91
+00:05:36,000 --> 00:05:41,000
+In this case, it should just issue a single Insert statement to insert a new review
+
+92
+00:05:41,000 --> 00:05:47,000
+into the Reviews Table and if that works, we will redirect the user back to the index action.
+
+93
+00:05:47,000 --> 00:05:51,000
+We don't want to let them sit there on the Create View that was the result of a post
+
+94
+00:05:51,000 --> 00:05:55,000
+because they might hit Refresh and create another review accidentally
+
+95
+00:05:55,000 --> 00:05:58,000
+or redirect them back to another page where they can see that review.
+
+96
+00:05:58,000 --> 00:06:04,000
+And now I should have everything that I need if I do a Build where I can come to this page
+
+97
+00:06:04,000 --> 00:06:10,000
+and click Create and there I can see my new review in the list.
+
+98
+00:06:10,000 --> 00:06:11,000
+Let's try it with a different restaurant.
+
+99
+00:06:11,000 --> 00:06:22,000
+Let's see if we can add a review for a restaurant that doesn't have any reviews yet.
+
+100
+00:06:22,000 --> 00:06:23,000
+And that seems to work.
+
+101
+00:06:23,000 --> 00:06:29,000
+And now before we start talking about validation and how to add additional validation rules,
+
+102
+00:06:29,000 --> 00:59:00,000
+let's finish off the edit scenario.
+

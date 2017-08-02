@@ -1,0 +1,696 @@
+1
+00:00:02,000 --> 00:00:05,000
+Now that we have this nice asynchronous search feature,
+
+2
+00:00:05,000 --> 00:00:08,000
+it would be nice if we could also help our users find a restaurant they are looking
+
+3
+00:00:08,000 --> 00:00:12,000
+for by providing some suggestions when they start typing in the search box.
+
+4
+00:00:12,000 --> 00:00:17,000
+In other words, if I type the letter S, I'd like to see a list of possible restaurants
+
+5
+00:00:17,000 --> 00:00:20,000
+that start with the letter S as I'm typing.
+
+6
+00:00:20,000 --> 00:00:22,000
+Fortunately, we have jQuery UI in the project
+
+7
+00:00:22,000 --> 00:00:27,000
+and jQuery UI includes an autocomplete widget that will help us do this.
+
+8
+00:00:27,000 --> 00:00:32,000
+The way autocomplete works is that when the user starts typing, we can configure autocomplete
+
+9
+00:00:32,000 --> 00:00:35,000
+to make a request to the server and find possible matches.
+
+10
+00:00:35,000 --> 00:00:37,000
+Of course, we'll be calling a controller action
+
+11
+00:00:37,000 --> 00:00:40,000
+and the controller action will need to return JSON.
+
+12
+00:00:40,000 --> 00:00:42,000
+That's one of the formats that autocomplete can work with.
+
+13
+00:00:42,000 --> 00:00:45,000
+And then, once it has the list of possible restaurants,
+
+14
+00:00:45,000 --> 00:00:49,000
+it will take care of the UI part and put that list on the screen.
+
+15
+00:00:49,000 --> 00:00:52,000
+Since we're going to need some JSON data, let's start with a controller.
+
+16
+00:00:52,000 --> 00:00:57,000
+And since we are on the Index view of the HomeController, I'll put this action
+
+17
+00:00:57,000 --> 00:01:03,000
+that autocomplete will call in the HomeController.
+
+18
+00:01:03,000 --> 00:01:07,000
+This action is called autocomplete, but you could call it quick search or restaurant search
+
+19
+00:01:07,000 --> 00:01:12,000
+or anything that you want because ultimately, we'll tell autocomplete what URL to call
+
+20
+00:01:12,000 --> 00:01:15,000
+and we'll have control over what action it we call.
+
+21
+00:01:15,000 --> 00:01:19,000
+But I do expect this action to receive a parameter called term.
+
+22
+00:01:19,000 --> 00:01:22,000
+How do I know that, because if you look on jQueryUI.com,
+
+23
+00:01:22,000 --> 00:01:26,000
+they have lots of wonderful examples and demonstrations of how these widgets work.
+
+24
+00:01:26,000 --> 00:01:32,000
+And the documentation for autocomplete says when the user is typing, it will send a request
+
+25
+00:01:32,000 --> 00:01:36,000
+to the server and include a parameter in the request called term
+
+26
+00:01:36,000 --> 00:01:39,000
+and that will represent what the user has typed so far.
+
+27
+00:01:39,000 --> 00:01:44,000
+So I know if it sends something named term, I can get that as an action parameter.
+
+28
+00:01:44,000 --> 00:01:50,000
+I just need to take that term and query the database with it.
+
+29
+00:01:50,000 --> 00:01:53,000
+We'll say please give us the restaurants where the name of the restaurant starts
+
+30
+00:01:53,000 --> 00:01:57,000
+with whatever term that autocomplete has given me.
+
+31
+00:01:57,000 --> 00:02:01,000
+We will limit the result set to the first ten restaurants that we find
+
+32
+00:02:01,000 --> 00:02:04,000
+and then we'll do a projection with the select operator.
+
+33
+00:02:04,000 --> 00:02:07,000
+We'll turn every restaurant into an object that has a label property
+
+34
+00:02:07,000 --> 00:02:11,000
+and that label property will be equal to the restaurant name.
+
+35
+00:02:11,000 --> 00:02:13,000
+Why am I creating something with a label property?
+
+36
+00:02:13,000 --> 00:02:19,000
+Because, again, the jQuery UI documentation for autocomplete says the JSON you return,
+
+37
+00:02:19,000 --> 00:02:25,000
+the object should have a label property, or a value property, or a label and a value
+
+38
+00:02:25,000 --> 00:02:27,000
+that will use any combination of that.
+
+39
+00:02:27,000 --> 00:02:31,000
+Just giving it a label will be enough to have it put something on the screen
+
+40
+00:02:31,000 --> 00:02:35,000
+and when the user selects it, it'll put it into the input box for us.
+
+41
+00:02:35,000 --> 00:02:40,000
+All I need to do is to put that into JSON format which as we saw early
+
+42
+00:02:40,000 --> 00:02:44,000
+in this course is very easy to do, just invoke the JSON method,
+
+43
+00:02:44,000 --> 00:02:47,000
+it will serialize my model into JSON format.
+
+44
+00:02:47,000 --> 00:02:49,000
+We're going to allow this to happen during a get request.
+
+45
+00:02:49,000 --> 00:02:53,000
+And I should be able to test up this controller action from the browser.
+
+46
+00:02:53,000 --> 00:02:59,000
+If I just do a build, I can come and go to that controller action from the browser
+
+47
+00:02:59,000 --> 00:03:02,000
+and see the JSON that it's going to produce.
+
+48
+00:03:02,000 --> 00:03:08,000
+We'll go to home, autocomplete and let's pass a search term of 1 along.
+
+49
+00:03:08,000 --> 00:03:15,000
+And I can see the browser is telling me that some JSON came back the server.
+
+50
+00:03:15,000 --> 00:03:15,000
+We'll open that up.
+
+51
+00:03:15,000 --> 00:03:19,000
+And there I can see my JSON array.
+
+52
+00:03:19,000 --> 00:03:22,000
+It looks like all the objects have label properties.
+
+53
+00:03:22,000 --> 00:03:25,000
+Looks like all the objects have the label property set correctly.
+
+54
+00:03:25,000 --> 00:03:27,000
+So I think this is going to work with autocomplete.
+
+55
+00:03:27,000 --> 00:03:31,000
+Now, we just need to implement the client side of this.
+
+56
+00:03:31,000 --> 00:03:35,000
+The way autocomplete works from the client site is you have to wire it up against the input
+
+57
+00:03:35,000 --> 00:03:40,000
+that needs the autocomplete behavior.
+
+58
+00:03:40,000 --> 00:03:46,000
+And the way I'll identify the inputs that need an autocomplete behavior is with, guess what,
+
+59
+00:03:46,000 --> 00:03:50,000
+a data dash attribute, data-otf-autocomplete.
+
+60
+00:03:50,000 --> 00:03:56,000
+And the value for this attribute will be the URL that autocomplete needs to talk to.
+
+61
+00:03:56,000 --> 00:04:01,000
+So again, I'm using the URL helper to generate a URL that will point
+
+62
+00:04:01,000 --> 00:04:04,000
+to the HomeController's autocomplete action with this
+
+63
+00:04:04,000 --> 00:04:07,000
+and that value will be embedded in the data dash attribute.
+
+64
+00:04:07,000 --> 00:04:13,000
+That's the only change I need to make in the view, everything else will be JavaScript.
+
+65
+00:04:13,000 --> 00:04:17,000
+What I need to do using jQuery is go out and find those inputs
+
+66
+00:04:17,000 --> 00:04:19,000
+that have that data dash attribute.
+
+67
+00:04:19,000 --> 00:04:21,000
+So again, I'll use a selector here.
+
+68
+00:04:21,000 --> 00:04:25,000
+Find me all the inputs that have data-otf-autocomplete.
+
+69
+00:04:25,000 --> 00:04:30,000
+And for each one, call this function createAutocomplete.
+
+70
+00:04:30,000 --> 00:04:34,000
+In this case, we're not really wiring up an event like we did with the form
+
+71
+00:04:34,000 --> 00:04:35,000
+where we wired up the submitted end.
+
+72
+00:04:35,000 --> 00:04:41,000
+In this case, we need to go up to each object and give it the autocomplete widget.
+
+73
+00:04:41,000 --> 00:04:44,000
+So createAutocomplete will be a function that we need to write.
+
+74
+00:04:44,000 --> 00:04:51,000
+And when jQuery invokes this function, it will pass along the input as the this parameter.
+
+75
+00:04:51,000 --> 00:04:56,000
+So for each input that it finds with that data dash attribute, it will invoke this function,
+
+76
+00:04:56,000 --> 00:05:00,000
+pass along that single input as the this reference.
+
+77
+00:05:00,000 --> 00:05:04,000
+This code is just wrapping that input in jQuery using the dollar sign function
+
+78
+00:05:04,000 --> 00:05:07,000
+so I can use the jQuery API against it.
+
+79
+00:05:07,000 --> 00:05:11,000
+And very similar to last time, I'll also create an options object.
+
+80
+00:05:11,000 --> 00:05:14,000
+Now, there's all sorts of options that you can specify for the autocomplete.
+
+81
+00:05:14,000 --> 00:05:18,000
+You can tell it the minimum number of characters that the user has
+
+82
+00:05:18,000 --> 00:05:20,000
+to type before it will send a request to the server.
+
+83
+00:05:20,000 --> 00:05:24,000
+You can tell it how many milliseconds it has to wait
+
+84
+00:05:24,000 --> 00:05:27,000
+until after the user has stopped typing before it sends off that request.
+
+85
+00:05:27,000 --> 00:05:32,000
+But the one option that you must specify is the source option
+
+86
+00:05:32,000 --> 00:05:35,000
+that tells the autocomplete widget where to get the data.
+
+87
+00:05:35,000 --> 00:05:40,000
+So in this case, we'll just take the URL that was embedded in that data dash attribute.
+
+88
+00:05:40,000 --> 00:05:44,000
+We'll pull it out using the attribute method of jQuery and put it
+
+89
+00:05:44,000 --> 00:05:46,000
+in the source property on the options object.
+
+90
+00:05:46,000 --> 00:05:51,000
+And then, all I need to do to wire up autocomplete is to walk up to the input,
+
+91
+00:05:51,000 --> 00:05:55,000
+invoke the autocomplete method and pass in that options object.
+
+92
+00:05:55,000 --> 00:05:57,000
+This is how a lot of jQuery plug-ins work.
+
+93
+00:05:57,000 --> 00:06:00,000
+They extend jQuery by adding additional methods
+
+94
+00:06:00,000 --> 00:06:04,000
+on the jQuery objects so you can just invoke them.
+
+95
+00:06:04,000 --> 00:06:11,000
+jQuery UI adds methods to jQuery like autocomplete and dialog and button and tabs
+
+96
+00:06:11,000 --> 00:06:14,000
+and accordion, all sorts of user interface type things.
+
+97
+00:06:14,000 --> 00:06:18,000
+And at this point, I think I have everything correct where if I run the application,
+
+98
+00:06:18,000 --> 00:06:21,000
+I should be able to see autocomplete work.
+
+99
+00:06:21,000 --> 00:06:26,000
+So let's type in the letter S and there we can see the two restaurants
+
+100
+00:06:26,000 --> 00:06:29,000
+that start with S. So this looks promising.
+
+101
+00:06:29,000 --> 00:06:30,000
+Let's type in the number 11.
+
+102
+00:06:30,000 --> 00:06:33,000
+There, I can see all sorts of restaurants that start with 11.
+
+103
+00:06:33,000 --> 00:06:38,000
+And after I select one from the list, if I click Search, then it appears.
+
+104
+00:06:38,000 --> 00:06:44,000
+So what I need to do is first type something, select it, it'll be placed into the input box
+
+105
+00:06:44,000 --> 00:06:48,000
+for me by jQuery autocomplete and then I need to do a Search.
+
+106
+00:06:48,000 --> 00:06:53,000
+So a lot of people look at that and say can't make it so that one someone selects one
+
+107
+00:06:53,000 --> 00:06:55,000
+of these items, it just automatically submits that search
+
+108
+00:06:55,000 --> 00:06:58,000
+for them so that the results are updated.
+
+109
+00:06:58,000 --> 00:07:02,000
+And the answer is of course we can.
+
+110
+00:07:02,000 --> 00:07:06,000
+Over here in the options that we passed to autocomplete, when it creates itself,
+
+111
+00:07:06,000 --> 00:07:13,000
+we can pass in an additional option which is the function to invoke when the select even occurs.
+
+112
+00:07:13,000 --> 00:07:18,000
+So when the user selects something, please call a function called submit autocomplete form.
+
+113
+00:07:18,000 --> 00:07:20,000
+That is another function that we'll have to write.
+
+114
+00:07:20,000 --> 00:07:25,000
+And once again, the this reference will be set up to point
+
+115
+00:07:25,000 --> 00:07:28,000
+to the DOM element that we're interacting with.
+
+116
+00:07:28,000 --> 00:07:29,000
+In this case, it's the input again.
+
+117
+00:07:29,000 --> 00:07:35,000
+And I'll wrap that DOM element with jQuery so that we can do some interesting things with it.
+
+118
+00:07:35,000 --> 00:07:40,000
+For instance, one of the things that we'll have to do is set its value
+
+119
+00:07:40,000 --> 00:07:46,000
+because even though jQuery autocomplete will automatically populate the input with the item
+
+120
+00:07:46,000 --> 00:07:48,000
+that the user has selected, sometimes
+
+121
+00:07:48,000 --> 00:07:52,000
+that doesn't happen before this select event is raised.
+
+122
+00:07:52,000 --> 00:07:58,000
+So you can get into submit autocomplete form and still have an old input value there,
+
+123
+00:07:58,000 --> 00:08:00,000
+not the new one that the user selected.
+
+124
+00:08:00,000 --> 00:08:04,000
+We'll circumvent that problem just by setting the input value ourselves.
+
+125
+00:08:04,000 --> 00:08:07,000
+So this is the jQuery API to set the value of an input.
+
+126
+00:08:07,000 --> 00:08:10,000
+We're going to set it to you ui.item.label.
+
+127
+00:08:10,000 --> 00:08:14,000
+UI is a parameter that autocomplete passes in.
+
+128
+00:08:14,000 --> 00:08:16,000
+This is something also that you'll find in the documentation.
+
+129
+00:08:16,000 --> 00:08:21,000
+That UI object will have all sorts o interesting information about the state of autocomplete
+
+130
+00:08:21,000 --> 00:08:27,000
+and the parameters of autocomplete including the label of the item that the user clicked on.
+
+131
+00:08:27,000 --> 00:08:31,000
+So once the input is set, we just need to submit the form.
+
+132
+00:08:31,000 --> 00:08:33,000
+But we have to find the form first.
+
+133
+00:08:33,000 --> 00:08:36,000
+Fortunately, that's pretty easy with jQuery too.
+
+134
+00:08:36,000 --> 00:08:41,000
+What I can do is say, dear input, go and look through the parents above you,
+
+135
+00:08:41,000 --> 00:08:44,000
+all the DOM elements above you, and find a form.
+
+136
+00:08:44,000 --> 00:08:46,000
+In fact, find the first form.
+
+137
+00:08:46,000 --> 00:08:50,000
+That's just in case you're inside of a form that's inside of a form.
+
+138
+00:08:50,000 --> 00:08:53,000
+That would seem a little bit weird, but we'll just take the first form that you find
+
+139
+00:08:53,000 --> 00:08:56,000
+as you look up through your ancestors.
+
+140
+00:08:56,000 --> 00:09:01,000
+And once I find the form, there's a jQuery API where I can tell the form to submit itself.
+
+141
+00:09:01,000 --> 00:09:04,000
+That will raise the submit event and that will ultimately come back
+
+142
+00:09:04,000 --> 00:09:08,000
+into our AJAX form submit function that we wrote earlier.
+
+143
+00:09:08,000 --> 00:09:12,000
+And now, if I save this script, the only change I made was in script, so I should just be able
+
+144
+00:09:12,000 --> 00:09:16,000
+to save the file, refresh the browser and see this new behavior.
+
+145
+00:09:16,000 --> 00:09:20,000
+Let's try looking for 11 and selecting something.
+
+146
+00:09:20,000 --> 00:09:25,000
+And there, I can see the form was automatically submitted for me.
+
+147
+00:09:25,000 --> 00:09:32,000
+Try it again with the letter S. That seems to work too, and 11 too, all this seem to work.
+
+148
+00:09:32,000 --> 00:09:36,000
+And the one thing that still bothers me is that it's hard to tell
+
+149
+00:09:36,000 --> 00:09:38,000
+when the bottom half of the screen is updated.
+
+150
+00:09:38,000 --> 00:09:40,000
+This is automatically updating for me now.
+
+151
+00:09:40,000 --> 00:09:42,000
+I almost don't notice it.
+
+152
+00:09:42,000 --> 00:09:45,000
+It would be nice if I could draw the user's attention
+
+153
+00:09:45,000 --> 00:09:47,000
+to the bottom half of the screen somehow.
+
+154
+00:09:47,000 --> 00:09:49,000
+This is another place where jQuery UI can help.
+
+155
+00:09:49,000 --> 00:09:52,000
+It includes a number of effects that you can apply to DOM elements.
+
+156
+00:09:52,000 --> 00:09:57,000
+Effects that make things pulsate or bounce or grow or shrink.
+
+157
+00:09:57,000 --> 00:09:59,000
+They're very easy to use.
+
+158
+00:09:59,000 --> 00:10:02,000
+Let me show you an example.
+
+159
+00:10:02,000 --> 00:10:07,000
+Up here, when we take some HTML back from the server and we replace what's in the page
+
+160
+00:10:07,000 --> 00:10:13,000
+for the restaurant list with that new data, we can make it highlight itself.
+
+161
+00:10:13,000 --> 00:10:17,000
+I'll place some code in here that will take the HTML that's coming from the server and wrap it
+
+162
+00:10:17,000 --> 00:10:20,000
+in jQuery so we can manipulate it with the jQuery UI.
+
+163
+00:10:20,000 --> 00:10:26,000
+And then, after we have replaced the restaurant list with this new HTML,
+
+164
+00:10:26,000 --> 00:10:31,000
+I'll call the jQuery UI Effect method and tell it to run the highlight effect.
+
+165
+00:10:31,000 --> 00:10:36,000
+This is where you can pass the parameter to tell it if it should explode or pulsate or highlight.
+
+166
+00:10:36,000 --> 00:10:38,000
+We'll choose highlight.
+
+167
+00:10:38,000 --> 00:10:40,000
+Just, again, save the script.
+
+168
+00:10:40,000 --> 00:10:43,000
+Let's refresh the page to get that new script in the browser.
+
+169
+00:10:43,000 --> 00:10:46,000
+And then I'll search for 11.
+
+170
+00:10:46,000 --> 00:10:50,000
+And there you can see, it's just a very brief flash.
+
+171
+00:10:50,000 --> 00:10:53,000
+Hopefully, you can see it in the video.
+
+172
+00:10:53,000 --> 00:10:57,000
+But it should be just enough to draw my attention to that area and reassure me that,
+
+173
+00:10:57,000 --> 00:11:01,000
+yes, the results here actually have changed for me automatically.
+
+174
+00:11:01,000 --> 00:59:00,000
+( Pause )
+

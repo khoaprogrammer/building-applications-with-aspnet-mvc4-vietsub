@@ -1,0 +1,84 @@
+1
+00:00:02,000 --> 00:00:05,000
+Our last infrastructure topic is diagnostics.
+
+2
+00:00:05,000 --> 00:00:09,000
+Diagnostics help us answer the question just what is our application doing?
+
+3
+00:00:09,000 --> 00:00:10,000
+When did it start?
+
+4
+00:00:10,000 --> 00:00:11,000
+When it restart?
+
+5
+00:00:11,000 --> 00:00:13,000
+Are there any unhandled exceptions?
+
+6
+00:00:13,000 --> 00:00:15,000
+Are there any authorization failures?
+
+7
+00:00:15,000 --> 00:00:18,000
+To get this type of information, there are a number of options available.
+
+8
+00:00:18,000 --> 00:00:24,000
+First, ASP.net does have a health monitoring system you can configure to report on everything
+
+9
+00:00:24,000 --> 00:00:28,000
+from application start to application end and all the events in between,
+
+10
+00:00:28,000 --> 00:00:31,000
+exceptions, failures, compilation events.
+
+11
+00:00:31,000 --> 00:00:35,000
+There are also many third party options for logging and monitoring.
+
+12
+00:00:35,000 --> 00:00:38,000
+Logfornet is a popular open source library you can reference
+
+13
+00:00:38,000 --> 00:00:39,000
+to build your own logging infrastructure.
+
+14
+00:00:39,000 --> 00:00:44,000
+And the patterns and practices team at Microsoft also has an application logging block.
+
+15
+00:00:44,000 --> 00:00:49,000
+One really popular open source library is ELMAH, e l m a h. That stands
+
+16
+00:00:49,000 --> 00:00:52,000
+for Error Logging Handles and Modules.
+
+17
+00:00:52,000 --> 00:00:57,000
+ELMAH can capture events about your application and store them in a variety of destinations,
+
+18
+00:00:57,000 --> 00:00:59,000
+xml files, text files, databases.
+
+19
+00:00:59,000 --> 00:01:03,000
+It could even post them to Twitter and it has some prebuilt UI
+
+20
+00:01:03,000 --> 00:01:06,000
+to show you the events it has recorded.
+
+21
+00:01:06,000 --> 00:59:00,000
+Let's take a look.
+

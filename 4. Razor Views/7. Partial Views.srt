@@ -1,0 +1,616 @@
+1
+00:00:02,000 --> 00:00:03,000
+Another type of view that you'll find useful
+
+2
+00:00:03,000 --> 00:00:07,000
+when building MVC applications is the partial view.
+
+3
+00:00:07,000 --> 00:00:10,000
+A partial view allows you to allow you to put HTML on C sharp code into a file
+
+4
+00:00:10,000 --> 00:00:13,000
+that you can reuse across multiple other views.
+
+5
+00:00:13,000 --> 00:00:17,000
+We'll see some used cases for partial views in this course but for now, let's just imagine
+
+6
+00:00:17,000 --> 00:00:21,000
+that the div we have here to display a review is something that we need
+
+7
+00:00:21,000 --> 00:00:24,000
+in several different places in the application.
+
+8
+00:00:24,000 --> 00:00:28,000
+We show the reviews in a couple different places and we'd like the display to be consistent
+
+9
+00:00:28,000 --> 00:00:32,000
+but we do not want to duplicate this code every time we display a review.
+
+10
+00:00:32,000 --> 00:00:38,000
+We want to reuse it that's why I'm going to select the code and cut it out of this view.
+
+11
+00:00:38,000 --> 00:00:42,000
+Then I'll come over to our views folder, the reviews folder in the views folder
+
+12
+00:00:42,000 --> 00:00:47,000
+and say add a new view and I'll call this underscore review.
+
+13
+00:00:47,000 --> 00:00:51,000
+Again the underscore is just a convention that means this is a special type of view
+
+14
+00:00:51,000 --> 00:00:52,000
+in this case it's a partial view.
+
+15
+00:00:52,000 --> 00:00:54,000
+It's still a Razor view.
+
+16
+00:00:54,000 --> 00:00:57,000
+It can still be strongly typed against the restaurant review
+
+17
+00:00:57,000 --> 00:00:59,000
+but this time I'll leave the Scaffold template empty
+
+18
+00:00:59,000 --> 00:01:02,000
+because I already have the mark up that I want to put in here.
+
+19
+00:01:02,000 --> 00:01:05,000
+And I will select the check box that says create as a partial view.
+
+20
+00:01:05,000 --> 00:01:09,000
+What that really means is that when Visual Studio creates this,
+
+21
+00:01:09,000 --> 00:01:13,000
+it won't automatically add a code block at the top of the view to set the page title
+
+22
+00:01:13,000 --> 00:01:14,000
+because we don't want to set the page title
+
+23
+00:01:14,000 --> 00:01:18,000
+from a partial view that's the responsibility of the content view.
+
+24
+00:01:18,000 --> 00:01:20,000
+This is just rendering a portion of the page.
+
+25
+00:01:20,000 --> 00:01:27,000
+And now I can click add and I will paste in the code that I cut out from the index view
+
+26
+00:01:27,000 --> 00:01:30,000
+and hit control K, control D to do some formatting.
+
+27
+00:01:30,000 --> 00:01:34,000
+In this case, it just bumps it up against the left margin and aligns some things.
+
+28
+00:01:34,000 --> 00:01:36,000
+But in the mean time you have some HTML or C sharp code
+
+29
+00:01:36,000 --> 00:01:39,000
+that doesn't quite fit right, it's not formatted properly.
+
+30
+00:01:39,000 --> 00:01:43,000
+If you hit control K, control D that will do some formatting for you.
+
+31
+00:01:43,000 --> 00:01:45,000
+There is one other change I have to make in this view.
+
+32
+00:01:45,000 --> 00:01:50,000
+It used to be inside of a foreach loop that had a local variable called item.
+
+33
+00:01:50,000 --> 00:01:55,000
+Now, the model for this view is actually going to be a single restaurant review.
+
+34
+00:01:55,000 --> 00:01:58,000
+So I need to change item to model.
+
+35
+00:01:58,000 --> 00:02:02,000
+And one quick and easy way to do that is with quick replace.
+
+36
+00:02:02,000 --> 00:02:08,000
+We'll just change item to model, replace all and now our view should be ready to go.
+
+37
+00:02:08,000 --> 00:02:12,000
+And you can see that the partial view is just another Razor view.
+
+38
+00:02:12,000 --> 00:02:16,000
+It has the same csHTML extension that can still be strongly typed.
+
+39
+00:02:16,000 --> 00:02:19,000
+It still has a model that it can work against.
+
+40
+00:02:19,000 --> 00:02:23,000
+It's just the intention is that we're going to reuse this from other views
+
+41
+00:02:23,000 --> 00:02:31,000
+in the way you render a partial view, is to use another HTML helper HTML.Partial.
+
+42
+00:02:31,000 --> 00:02:34,000
+When you call HTML partial, you give it the name or the view that you want
+
+43
+00:02:34,000 --> 00:02:38,000
+to render in this case, Review.csHTML.
+
+44
+00:02:38,000 --> 00:02:44,000
+And you don't need to specify the file extension when you ask the MVC runtime to render a partial
+
+45
+00:02:44,000 --> 00:02:47,000
+but I can pass in the model that it needs to render.
+
+46
+00:02:47,000 --> 00:02:51,000
+The model in this case is each individual review each item.
+
+47
+00:02:51,000 --> 00:02:59,000
+And with all this in place, I can just save everything and refresh the application.
+
+48
+00:02:59,000 --> 00:03:01,000
+The user won't see any visual difference in the page.
+
+49
+00:03:01,000 --> 00:03:03,000
+It looks exactly the same as it did before.
+
+50
+00:03:03,000 --> 00:03:07,000
+We've just made a structural change in how the page displays.
+
+51
+00:03:07,000 --> 00:03:10,000
+We've created this partial view and we might have done that because we want
+
+52
+00:03:10,000 --> 00:03:13,000
+to reuse that across several other views.
+
+53
+00:03:13,000 --> 00:03:16,000
+Another good reason to use a partial view is just to simplify a view.
+
+54
+00:03:16,000 --> 00:03:20,000
+Now the foreach statement is a lot easier to read because I can clearly see when it starts
+
+55
+00:03:20,000 --> 00:03:23,000
+and when it ends and I can see that all we really do
+
+56
+00:03:23,000 --> 00:03:27,000
+in here is render each review using a partial view.
+
+57
+00:03:27,000 --> 00:03:32,000
+I also want to point out that since we put underscore review in the reviews folder,
+
+58
+00:03:32,000 --> 00:03:35,000
+it's only available from other views that are in the same folder.
+
+59
+00:03:35,000 --> 00:03:42,000
+If instead, we had placed this view in the shared folder, it would be available anywhere
+
+60
+00:03:42,000 --> 00:03:47,000
+in the application from any view to say render partial this review.
+
+61
+00:03:47,000 --> 00:03:51,000
+I also want to show you another scenario where partial views can be useful.
+
+62
+00:03:51,000 --> 00:03:55,000
+So one way to render a partial is to use this HTML.PartialHelper.
+
+63
+00:03:55,000 --> 00:03:59,000
+Typically, this is the approach you take when you want to reuse a piece of the HTML
+
+64
+00:03:59,000 --> 00:04:03,000
+or you want to simplify a view because you have a really complex model.
+
+65
+00:04:03,000 --> 00:04:08,000
+But regardless of why you're using HTML.Partial, when you do use it the only data
+
+66
+00:04:08,000 --> 00:04:13,000
+or model information that you can pass to HTML.Partial is model information
+
+67
+00:04:13,000 --> 00:04:16,000
+that you already have available inside of your view.
+
+68
+00:04:16,000 --> 00:04:20,000
+So you can pass the model item or you can pass a subset of the model item
+
+69
+00:04:20,000 --> 00:04:23,000
+like here, we just passed a single review.
+
+70
+00:04:23,000 --> 00:04:25,000
+But you can also come across a situation where you want
+
+71
+00:04:25,000 --> 00:04:28,000
+to render something that is not part of your model.
+
+72
+00:04:28,000 --> 00:04:31,000
+This frequently comes up with the layout view.
+
+73
+00:04:31,000 --> 00:04:35,000
+Because the layout view is executing for every page in the application,
+
+74
+00:04:35,000 --> 00:04:40,000
+and so it's very difficult to tie it to any particular model, there's ways to do that
+
+75
+00:04:40,000 --> 00:04:42,000
+but it involves a lot of messy inheritance.
+
+76
+00:04:42,000 --> 00:04:47,000
+So the scenario I'm talking about is imagine in the layout view if we want the best review
+
+77
+00:04:47,000 --> 00:04:51,000
+in the database to always appear somewhere on the page.
+
+78
+00:04:51,000 --> 00:04:54,000
+If I went to do that there's no way for me to go into the layout view
+
+79
+00:04:54,000 --> 00:04:59,000
+and specify a model directive here that says this view will always have a restaurant review
+
+80
+00:04:59,000 --> 00:05:03,000
+as a model because this layout view is used again throughout the entire application.
+
+81
+00:05:03,000 --> 00:05:08,000
+It's used on pages that display restaurant reviews but it will also be used on pages
+
+82
+00:05:08,000 --> 00:05:12,000
+that display restaurants or allow a user to register and log in.
+
+83
+00:05:12,000 --> 00:05:16,000
+And all of those other scenarios, they do not involve restaurant reviews.
+
+84
+00:05:16,000 --> 00:05:20,000
+So I cannot strongly type this layout view to a particular model.
+
+85
+00:05:20,000 --> 00:05:25,000
+But there is another helper available that can allow me to solve that situation.
+
+86
+00:05:25,000 --> 00:05:28,000
+And it involves partial views quite frequently.
+
+87
+00:05:28,000 --> 00:05:30,000
+This other helper is called HTML.Action.
+
+88
+00:05:30,000 --> 00:05:35,000
+So imagine we do want to show the best review on every page in the application.
+
+89
+00:05:35,000 --> 00:05:37,000
+We'll show it down here just above the footer.
+
+90
+00:05:37,000 --> 00:05:43,000
+What I can do is invoke HTML.Action and what HTML.Action allows you to do is set
+
+91
+00:05:43,000 --> 00:05:47,000
+up a sub request inside of this primary MVC request.
+
+92
+00:05:47,000 --> 00:05:51,000
+So it's a subrequest that can go out and call another controller action
+
+93
+00:05:51,000 --> 00:05:55,000
+that builds its own model and dependent of what the main controller is doing
+
+94
+00:05:55,000 --> 00:06:00,000
+and render its own view, a partial view that will be inserted right here
+
+95
+00:06:00,000 --> 00:06:03,000
+where the call to HTML.Action is.
+
+96
+00:06:03,000 --> 00:06:07,000
+So let's say that we need to build an action called BestReview.
+
+97
+00:06:07,000 --> 00:06:12,000
+And this is always going to be on the Reviews controller.
+
+98
+00:06:12,000 --> 00:06:16,000
+Just like HTML.Action link, you can also pass in additional parameters here
+
+99
+00:06:16,000 --> 00:06:18,000
+that will get passed along to this other controller action,
+
+100
+00:06:18,000 --> 00:06:21,000
+but we don't need to pass any parameters.
+
+101
+00:06:21,000 --> 00:06:26,000
+And this is basically saying go out and call this action on the reviews controller
+
+102
+00:06:26,000 --> 00:06:30,000
+and whatever it omits, whatever outputs whatever the result is,
+
+103
+00:06:30,000 --> 00:06:33,000
+place it here where I have HTML.Action.
+
+104
+00:06:33,000 --> 00:06:37,000
+And I do want to point out that this is not a separate HTTP request.
+
+105
+00:06:37,000 --> 00:06:42,000
+This doesn't require the browser to come back to the server and call this other controller action
+
+106
+00:06:42,000 --> 00:06:47,000
+into controller action that's called from server code it's like a subrequest.
+
+107
+00:06:47,000 --> 00:06:51,000
+So let's go over to the ReviewsController we need to implement BestReview
+
+108
+00:06:51,000 --> 00:06:53,000
+and I'll just put it as the top action here.
+
+109
+00:06:53,000 --> 00:06:58,000
+This can still be an action that returns an action result.
+
+110
+00:06:58,000 --> 00:07:05,000
+Actually it's going to be returning a PartialViewResult and it's called BestReview.
+
+111
+00:07:05,000 --> 00:07:08,000
+We'll need to find the best review and I realized that all
+
+112
+00:07:08,000 --> 00:07:13,000
+of our reviews right now have a rating of 10, so we'd need to find a way
+
+113
+00:07:13,000 --> 00:07:20,000
+to reconcile a tie or let's say from R in reviews.
+
+114
+00:07:20,000 --> 00:07:25,000
+Now we orderby R dot rating in descending order.
+
+115
+00:07:25,000 --> 00:07:31,000
+Now, we have our reviews in sorted order and now we're going
+
+116
+00:07:31,000 --> 00:07:35,000
+to return not a view this time, but a PartialView.
+
+117
+00:07:35,000 --> 00:07:39,000
+And we could create a brand new PartialView for this action to render.
+
+118
+00:07:39,000 --> 00:07:41,000
+It could be called BestReview.
+
+119
+00:07:41,000 --> 00:07:45,000
+We could also render that other PartialView that we just created,
+
+120
+00:07:45,000 --> 00:07:49,000
+the one that is called underscore Review.csHTML.
+
+121
+00:07:49,000 --> 00:07:57,000
+Again, no extension needed here and we will pass in the first review that we picked up based
+
+122
+00:07:57,000 --> 00:08:00,000
+on putting the reviews in the sorted order.
+
+123
+00:08:00,000 --> 00:08:04,000
+This is by the way how you would overwrite what view and action is going to render,
+
+124
+00:08:04,000 --> 00:08:08,000
+you can always explicitly specify a view by name here without the file extension.
+
+125
+00:08:08,000 --> 00:08:11,000
+But I can do that for the IndexView too.
+
+126
+00:08:11,000 --> 00:08:13,000
+If I didn't want it to return the IndexView
+
+127
+00:08:13,000 --> 00:08:19,000
+for some reason I could always specify a view name by string here.
+
+128
+00:08:19,000 --> 00:08:24,000
+But now I should be able to do a bill and let's come out to the home page of the application.
+
+129
+00:08:24,000 --> 00:08:30,000
+And what we should see here at the bottom of the home page is there's our best review.
+
+130
+00:08:30,000 --> 00:08:33,000
+We should probably put a better title around it so we know why
+
+131
+00:08:33,000 --> 00:08:35,000
+that information is appearing here.
+
+132
+00:08:35,000 --> 00:08:40,000
+But that should now be on every page of the application, because it's in the lay out view.
+
+133
+00:08:40,000 --> 00:08:44,000
+And we did that by calling an action that got to build its own model, render its own view
+
+134
+00:08:44,000 --> 00:08:47,000
+so it's completely independent from everything else,
+
+135
+00:08:47,000 --> 00:08:51,000
+it didn't really complicate our layout view to do those.
+
+136
+00:08:51,000 --> 00:08:56,000
+But one thing to keep in mind when you do build an action like this BestReview,
+
+137
+00:08:56,000 --> 00:09:00,000
+as I said before, your public methods are available to the browser.
+
+138
+00:09:00,000 --> 00:09:01,000
+So if I come in to the browser and I go
+
+139
+00:09:01,000 --> 00:09:12,000
+to slash Reviews slash BestReview I will be able to get that result.
+
+140
+00:09:12,000 --> 00:09:15,000
+Because like all public methods on the controller, if the user enters the right URL
+
+141
+00:09:15,000 --> 00:09:19,000
+into the browser, they're going to be able to invoke the controller action.
+
+142
+00:09:19,000 --> 00:09:23,000
+But in this case, if you do not want that to happen, there's an attribute
+
+143
+00:09:23,000 --> 00:09:26,000
+that you can apply to this action.
+
+144
+00:09:26,000 --> 00:09:27,000
+It's called ChildActionOnly.
+
+145
+00:09:27,000 --> 00:09:31,000
+And if I do that and do a build it's no longer legal to call
+
+146
+00:09:31,000 --> 00:09:34,000
+that directly using an HTTP request.
+
+147
+00:09:34,000 --> 00:09:39,000
+You can only access this by calling HTML.Action as a child request,
+
+148
+00:09:39,000 --> 00:09:42,000
+so it would still work in the layout view.
+
+149
+00:09:42,000 --> 00:09:44,000
+I just can't call it directly.
+
+150
+00:09:44,000 --> 00:09:48,000
+And now you know a couple of different ways to use partial views.
+
+151
+00:09:48,000 --> 00:09:53,000
+There's HTML.Partial which allows you to simplify a view and reuse HTML.
+
+152
+00:09:53,000 --> 00:10:00,000
+And there's also HTML.Action which allows you to set up a completely independent subrequest
+
+153
+00:10:00,000 --> 00:10:03,000
+that builds its own model and renders its own PartialView.
+
+154
+00:10:03,000 --> 00:59:00,000
+( Pause )
+

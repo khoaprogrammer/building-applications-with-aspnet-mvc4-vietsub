@@ -1,0 +1,64 @@
+1
+00:00:02,000 --> 00:00:05,000
+In this module, we spent some time with the ASP.net output cache attribute.
+
+2
+00:00:05,000 --> 00:00:09,000
+We saw how to use the attribute and vary by location and vary by header
+
+3
+00:00:09,000 --> 00:00:12,000
+to hopefully increase the performance of the application.
+
+4
+00:00:12,000 --> 00:00:15,000
+I say hopefully because I never took any performance measurements before
+
+5
+00:00:15,000 --> 00:00:19,000
+and after caching and the only way to know for sure that you've helped is
+
+6
+00:00:19,000 --> 00:00:21,000
+to start taking hard measurements.
+
+7
+00:00:21,000 --> 00:00:25,000
+So I encourage you to always take measurements before you start applying cache attributes.
+
+8
+00:00:25,000 --> 00:00:29,000
+We also looked at the localization features of ASP.net and saw how we can let resource files
+
+9
+00:00:29,000 --> 00:00:32,000
+and ASP.net take care of most of the hard work.
+
+10
+00:00:32,000 --> 00:00:34,000
+We saw, for example, how the globalization settings
+
+11
+00:00:34,000 --> 00:00:38,000
+in web.config can automatically give us different formatting behaviors
+
+12
+00:00:38,000 --> 00:00:42,000
+for different languages depending on the client's accept language header.
+
+13
+00:00:42,000 --> 00:00:46,000
+Finally, we took a look at diagnostics and we now have ELMAH added to the application
+
+14
+00:00:46,000 --> 00:00:51,000
+and watching for errors and giving us an easy way to see the unhandled exceptions that occur.
+
+15
+00:00:51,000 --> 00:00:55,000
+This was just a quick look at all the functionality that ELMAH can provide.
+
+16
+00:00:55,000 --> 00:59:00,000
+( Silence )
+

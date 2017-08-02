@@ -1,0 +1,40 @@
+1
+00:00:02,000 --> 00:00:05,000
+Hi, this is Scott Allen and in this module we're going to take some time
+
+2
+00:00:05,000 --> 00:00:09,000
+to understand how controllers work in the mvc framework.
+
+3
+00:00:09,000 --> 00:00:13,000
+Specifically we're going to look at the routing rules which deliver in the incoming requests
+
+4
+00:00:13,000 --> 00:00:16,000
+for from the web to our controllers and then look at controller actions.
+
+5
+00:00:16,000 --> 00:00:18,000
+You might remember from the introduction
+
+6
+00:00:18,000 --> 00:00:21,000
+that the controller actions are the public methods on our controllers.
+
+7
+00:00:21,000 --> 00:00:26,000
+They have the ability to respond to an incoming http request from the web.
+
+8
+00:00:26,000 --> 00:00:30,000
+We'll also be taking a look at action filters which can introduce pre and post processing
+
+9
+00:00:30,000 --> 00:00:36,000
+to an action and then see how we can input data to an action with action parameters
+
+10
+00:00:36,000 --> 00:59:00,000
+and output different types of results from an action using different action results.
+

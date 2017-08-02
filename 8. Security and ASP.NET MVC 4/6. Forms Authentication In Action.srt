@@ -1,0 +1,512 @@
+1
+00:00:01,000 --> 00:00:05,000
+Let's see how Forms Authentication works inside of the application now.
+
+2
+00:00:05,000 --> 00:00:08,000
+As a user, I can come in and click the Register link.
+
+3
+00:00:08,000 --> 00:00:12,000
+And this will give me a page where I can fill out the bare amount of information
+
+4
+00:00:12,000 --> 00:00:19,000
+to create an account, just a User name, a Password, and then confirm my password.
+
+5
+00:00:19,000 --> 00:00:23,000
+I can click Register and I have an account and I'm automatically logged into the site.
+
+6
+00:00:23,000 --> 00:00:29,000
+My name appears at the top of the page and that's done using User.Identity.Name,
+
+7
+00:00:29,000 --> 00:00:32,000
+just like we saw with Windows Authentication in the Layout view.
+
+8
+00:00:32,000 --> 00:00:37,000
+At this point, I could click on my name to manage my account and change my password.
+
+9
+00:00:37,000 --> 00:00:41,000
+I could also log off of the site and then come in and log in again.
+
+10
+00:00:41,000 --> 00:00:44,000
+And all of this functionality is provided out of the box
+
+11
+00:00:44,000 --> 00:00:47,000
+when we create a new internet application.
+
+12
+00:00:47,000 --> 00:00:51,000
+The register page for example is given to us by adding a view
+
+13
+00:00:51,000 --> 00:00:56,000
+to the account folder called Register.cshtml.
+
+14
+00:00:56,000 --> 00:01:01,000
+And it's inside of here where you can see textboxes to input the user name
+
+15
+00:01:01,000 --> 00:01:04,000
+and password boxes to input the password and confirm the password.
+
+16
+00:01:04,000 --> 00:01:08,000
+This is one of the places you'd have to come in and modify if you wanted to force a user
+
+17
+00:01:08,000 --> 00:01:12,000
+to provide you additional information when they register like the name of a favorite restaurant.
+
+18
+00:01:12,000 --> 00:01:17,000
+And this view is rendered from an AccountController which we were also given.
+
+19
+00:01:17,000 --> 00:01:19,000
+Of course that's in the Controllers folder.
+
+20
+00:01:19,000 --> 00:01:23,000
+And it includes methods like Register.
+
+21
+00:01:23,000 --> 00:01:27,000
+And based on what you know about the MVC framework so far, you can probably figure
+
+22
+00:01:27,000 --> 00:01:30,000
+out what most of the code inside of here is doing.
+
+23
+00:01:30,000 --> 00:01:33,000
+We have a register action that responds to an HTTP GET request
+
+24
+00:01:33,000 --> 00:01:36,000
+that gives the user a form to fill out their information.
+
+25
+00:01:36,000 --> 00:01:41,000
+And we have a register action that response to an HTTP POST request and takes information
+
+26
+00:01:41,000 --> 00:01:44,000
+from the user to create a record in the database.
+
+27
+00:01:44,000 --> 00:01:48,000
+We also have ModelState and we have a RegisterModel which is
+
+28
+00:01:48,000 --> 00:01:51,000
+like a view model containing only the information about a user that we need
+
+29
+00:01:51,000 --> 00:01:53,000
+in the view to get them registered.
+
+30
+00:01:53,000 --> 00:01:56,000
+These are all concepts we've looked at so far.
+
+31
+00:01:56,000 --> 00:02:00,000
+So let's focus on what we haven't seen which includes the call to WebSecurity.
+
+32
+00:02:00,000 --> 00:02:04,000
+WebSecurity is basically a wrapper around membership functionality.
+
+33
+00:02:04,000 --> 00:02:07,000
+It takes care of data access, cryptography, and all the other code
+
+34
+00:02:07,000 --> 00:02:10,000
+that you need for Forms-Based Authentication.
+
+35
+00:02:10,000 --> 00:02:14,000
+Here we can see when I successfully register, there's a call to CreateUserAndAccount,
+
+36
+00:02:14,000 --> 00:02:17,000
+that's what actually puts me into the database.
+
+37
+00:02:17,000 --> 00:02:19,000
+So what database do we go to?
+
+38
+00:02:19,000 --> 00:02:20,000
+Well, if you remember, we placed a call
+
+39
+00:02:20,000 --> 00:02:24,000
+to WebSecurity.InitializeDatabase in the application start event.
+
+40
+00:02:24,000 --> 00:02:27,000
+And we passed the parameter specifying the database connection name
+
+41
+00:02:27,000 --> 00:02:30,000
+to use which was DefaultConnection.
+
+42
+00:02:30,000 --> 00:02:34,000
+The same connection string that we used for storing restaurant information and that means
+
+43
+00:02:34,000 --> 00:02:39,000
+if I go to the Database Explorer, and look at our DefaultConnection and open this
+
+44
+00:02:39,000 --> 00:02:44,000
+up to see the tables, I will see not only Restaurants and RestaurantReviews
+
+45
+00:02:44,000 --> 00:02:49,000
+which we had before, but also the UserProfile table which we've just added in this module,
+
+46
+00:02:49,000 --> 00:02:51,000
+that's a table that we're in control of.
+
+47
+00:02:51,000 --> 00:02:53,000
+And then, there's a number of tables that are used
+
+48
+00:02:53,000 --> 00:02:57,000
+by WebSecurity, they all have a webpages_prefix.
+
+49
+00:02:57,000 --> 00:03:00,000
+And if we open up some of these tables to poke around,
+
+50
+00:03:00,000 --> 00:03:04,000
+you can see the UserProfile table has an ID, UserName, and FavoriteRestaurant columns.
+
+51
+00:03:04,000 --> 00:03:08,000
+That's exactly what would we expect based on our definition for UserProfile.
+
+52
+00:03:08,000 --> 00:03:14,000
+And if I right-click on this and select Show Data, we'll see there's exactly one record
+
+53
+00:03:14,000 --> 00:03:19,000
+in here, the sallen user that I just created has a UserID but no FavoriteRestaurant
+
+54
+00:03:19,000 --> 00:03:22,000
+because we didn't forced anyone to fill that information out.
+
+55
+00:03:22,000 --> 00:03:24,000
+We don't have a place yet to fill that information out.
+
+56
+00:03:24,000 --> 00:03:32,000
+And now if I look into webpages_Membership, what I'll find is it there is a corresponding record
+
+57
+00:03:32,000 --> 00:03:36,000
+in here that has the same UserID so we can join these two tables together
+
+58
+00:03:36,000 --> 00:03:38,000
+to get the whole picture for a user.
+
+59
+00:03:38,000 --> 00:03:45,000
+And this one includes information like a hash password for sallen.
+
+60
+00:03:45,000 --> 00:03:47,000
+WebSecurity will automatically hash password which is good
+
+61
+00:03:47,000 --> 00:03:52,000
+because then we're not storing the user's password in plain text in the database.
+
+62
+00:03:52,000 --> 00:03:54,000
+That's something you almost never, ever, ever want to do,
+
+63
+00:03:54,000 --> 00:03:57,000
+store plain text password in your database.
+
+64
+00:03:57,000 --> 00:03:59,000
+And there are some additional columns in here, too.
+
+65
+00:03:59,000 --> 00:04:05,000
+But overall, the database is now a combination of tables that we used to manage restaurants
+
+66
+00:04:05,000 --> 00:04:08,000
+and reviews and user profiles, and tables used by WebSecurity
+
+67
+00:04:08,000 --> 00:04:11,000
+and its friends to manage membership and roles.
+
+68
+00:04:11,000 --> 00:04:15,000
+And this database was created through a combination of WebSecurity
+
+69
+00:04:15,000 --> 00:04:17,000
+and our entity framework migrations.
+
+70
+00:04:17,000 --> 00:04:23,000
+And now that we know where the data is stored, let's go back to the AccountController
+
+71
+00:04:23,000 --> 00:04:28,000
+and take a look at the second WebSecurity call, the call to log in.
+
+72
+00:04:28,000 --> 00:04:33,000
+You'll also see this in the log in action which is where we come
+
+73
+00:04:33,000 --> 00:04:37,000
+after the user has clicked the log on link and they filled in the user name and their password,
+
+74
+00:04:37,000 --> 00:04:42,000
+they click Log in, we'll end up in this action that simply needs to take that user name
+
+75
+00:04:42,000 --> 00:04:46,000
+and password and pass it to WebSecurity for validation.
+
+76
+00:04:46,000 --> 00:04:50,000
+If the model says it is valid and WebSecurity says that we can log in,
+
+77
+00:04:50,000 --> 00:04:53,000
+what we'll do is redirect back to the ReturnUrl.
+
+78
+00:04:53,000 --> 00:04:55,000
+We'll see how that works in just a second.
+
+79
+00:04:55,000 --> 00:04:58,000
+You can think about what WebSecurity.Login has to do.
+
+80
+00:04:58,000 --> 00:05:03,000
+It has to, first of all, compare the hashed version of this password against the hash that's
+
+81
+00:05:03,000 --> 00:05:05,000
+in the database and see if they match.
+
+82
+00:05:05,000 --> 00:05:08,000
+And if they do, they can issue that cookie that we talked about.
+
+83
+00:05:08,000 --> 00:05:12,000
+Let's actually take a look and see if we can see that.
+
+84
+00:05:12,000 --> 00:05:18,000
+Here in Internet Explorer, on the log in page, let me press F12 to open the Developer Tools
+
+85
+00:05:18,000 --> 00:05:23,000
+and let's go to the Network tab and click Start Capturing.
+
+86
+00:05:23,000 --> 00:05:25,000
+This will capture network request.
+
+87
+00:05:25,000 --> 00:05:31,000
+And I'll now try to log in with my user name and password, I can click Remember Me
+
+88
+00:05:31,000 --> 00:05:36,000
+if I want the cookie to stick around between browsing sessions and click log in.
+
+89
+00:05:36,000 --> 00:05:41,000
+( Pause )
+
+90
+00:05:41,000 --> 00:05:42,000
+And here we can see what happened.
+
+91
+00:05:42,000 --> 00:05:47,000
+I posted my user name and password to /Account/Login.
+
+92
+00:05:47,000 --> 00:05:52,000
+It determine that I logged in successfully so it returned a 302 result which is a redirect,
+
+93
+00:05:52,000 --> 00:05:55,000
+which says, "Dear web browser, please go somewhere else."
+
+94
+00:05:55,000 --> 00:06:01,000
+So it redirected me back to that root of the application, the homepage as a logged in user.
+
+95
+00:06:01,000 --> 00:06:09,000
+And if we open up this response from the web server and go to the Response headers,
+
+96
+00:06:09,000 --> 00:06:13,000
+then what I want you to pay attention to is the Set-Cookie header.
+
+97
+00:06:13,000 --> 00:06:15,000
+This is how you tell a browser to accept a cookie.
+
+98
+00:06:15,000 --> 00:06:18,000
+The name of this cookie is .ASPXAUTH.
+
+99
+00:06:18,000 --> 00:06:23,000
+When decrypted will tell ASP.NET MVC that this user has successfully authenticated
+
+100
+00:06:23,000 --> 00:06:27,000
+to the application, there's no need to make them sign in again and now the browser is going
+
+101
+00:06:27,000 --> 00:06:30,000
+to send that cookie along on every subsequent request.
+
+102
+00:06:30,000 --> 00:06:34,000
+We can see that if we go back to the summary view and look at this request
+
+103
+00:06:34,000 --> 00:06:36,000
+that comes back into the homepage.
+
+104
+00:06:36,000 --> 00:06:41,000
+If I double-click on that, and now we look at the Request headers, so what the browser sends
+
+105
+00:06:41,000 --> 00:06:44,000
+to the server when it's requesting this page.
+
+106
+00:06:44,000 --> 00:06:46,000
+Down here in the Cookie section, if I double-click that,
+
+107
+00:06:46,000 --> 00:06:50,000
+you can see that we send along the ASPXAUTH cookie.
+
+108
+00:06:50,000 --> 00:06:56,000
+And that will actually go out on every subsequent request now until I close the browser
+
+109
+00:06:56,000 --> 00:07:00,000
+or actually it should stick around longer because I clicked on the Remember Me check box.
+
+110
+00:07:00,000 --> 00:07:03,000
+But the other thing I want to show you here if we go back to the summary view and look
+
+111
+00:07:03,000 --> 00:07:10,000
+at Account Logon, double-click on that to go into the details and look at the request body.
+
+112
+00:07:10,000 --> 00:07:16,000
+If I scroll over here, you can also see my UserName and my Password.
+
+113
+00:07:16,000 --> 00:07:21,000
+And so can anyone who might be sniffing network traffic between me and the web server.
+
+114
+00:07:21,000 --> 00:07:26,000
+So this is obviously not secure and this is why pretty much any reputable website that needs
+
+115
+00:07:26,000 --> 00:07:30,000
+to force its users to log in is going to use SSL.
+
+116
+00:07:30,000 --> 00:07:33,000
+They'll acquire an SSL certificate and install it on the web server
+
+117
+00:07:33,000 --> 00:07:36,000
+and then force the log in process to go through HTTPS.
+
+118
+00:07:36,000 --> 00:07:42,000
+If you go down that path, that's always a good idea to come into methods like this log
+
+119
+00:07:42,000 --> 00:07:45,000
+in method and add an attribute RequireHttps.
+
+120
+00:07:45,000 --> 00:07:48,000
+This is an action filter.
+
+121
+00:07:48,000 --> 00:07:52,000
+We've talked about action filters in this course but this is an action filter that will make sure
+
+122
+00:07:52,000 --> 00:07:57,000
+that the request that is arriving is coming over a secure encrypted connection.
+
+123
+00:07:57,000 --> 00:08:01,000
+And that would make sure that we're not passing any passwords in clear text.
+
+124
+00:08:01,000 --> 00:08:03,000
+No one should be able to see those traveling over the network.
+
+125
+00:08:03,000 --> 00:08:07,000
+And now that we know a little bit about how Forms Authentication works,
+
+126
+00:08:07,000 --> 00:08:11,000
+let's put on our developer hat and see how we can apply it to force users
+
+127
+00:08:11,000 --> 00:08:16,000
+to authenticate before they reach specific sections of the application.
+
+128
+00:08:16,000 --> 00:59:00,000
+( Pause )
+

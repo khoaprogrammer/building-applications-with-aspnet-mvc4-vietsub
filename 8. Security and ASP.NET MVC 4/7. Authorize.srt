@@ -1,0 +1,272 @@
+1
+00:00:02,000 --> 00:00:05,000
+Now let's look at forcing a user to authenticate.
+
+2
+00:00:05,000 --> 00:00:10,000
+First, I'm going to remove the RequireHttps attribute that we put on the log on action
+
+3
+00:00:10,000 --> 00:00:13,000
+because I do not have an SSL certificate set up.
+
+4
+00:00:13,000 --> 00:00:17,000
+And instead, we'll talk about a different attribute, the Authorize attribute.
+
+5
+00:00:17,000 --> 00:00:22,000
+Let's imagine that for some reason, you have some secret members only information inside
+
+6
+00:00:22,000 --> 00:00:25,000
+of the About page for the application.
+
+7
+00:00:25,000 --> 00:00:30,000
+In that case, what I would want to do is use an Authorize attribute here.
+
+8
+00:00:30,000 --> 00:00:34,000
+Authorize sounds like it's more about authorization than authentication.
+
+9
+00:00:34,000 --> 00:00:39,000
+But when you use the Authorize attribute like this with no other parameters, essentially,
+
+10
+00:00:39,000 --> 00:00:45,000
+you're specifying the type of authorization that says, only authenticated users are authorize
+
+11
+00:00:45,000 --> 00:00:46,000
+to invoke this controller action.
+
+12
+00:00:46,000 --> 00:00:50,000
+So before we get into the About action, a user has to be logged in.
+
+13
+00:00:50,000 --> 00:00:56,000
+And just by having that attribute there, if I do a build and we come back out to the application,
+
+14
+00:00:56,000 --> 00:01:00,000
+let me go to the homepage and close the Developer Tools.
+
+15
+00:01:00,000 --> 00:01:02,000
+And from the homepage I'm currently logged in.
+
+16
+00:01:02,000 --> 00:01:06,000
+So I'll also log off and now try to go to the About page.
+
+17
+00:01:06,000 --> 00:01:10,000
+And ASP.NET MVC has detected that Authorize attribute.
+
+18
+00:01:10,000 --> 00:01:14,000
+It knows I have to be at least logged in into this application before it can view that.
+
+19
+00:01:14,000 --> 00:01:17,000
+So it redirects me to the log in page where I can log in.
+
+20
+00:01:17,000 --> 00:01:22,000
+And notice that the ReturnUrl includes /Home/About,
+
+21
+00:01:22,000 --> 00:01:24,000
+it's been URL encoded with percent 2f.
+
+22
+00:01:24,000 --> 00:01:30,000
+But it's /Home/About is the ReturnUrl, that way once I log in MVC will be able
+
+23
+00:01:30,000 --> 00:01:37,000
+to redirect me back to where I was trying to get to which is the About page.
+
+24
+00:01:37,000 --> 00:01:44,000
+Now if you're wondering how MVC knew to send me to /Account/Login when it detected that I needed
+
+25
+00:01:44,000 --> 00:01:48,000
+to authenticate, that is something that you can configure in an application.
+
+26
+00:01:48,000 --> 00:01:54,000
+If you look at the root web.config in the project, at the authentication section,
+
+27
+00:01:54,000 --> 00:01:58,000
+the mode is equal to forms, and we have a loginUrl specified
+
+28
+00:01:58,000 --> 00:02:02,000
+in the forms element underneath that authentication element.
+
+29
+00:02:02,000 --> 00:02:07,000
+So the loginUrl tells the MVC framework where to go to authenticate a user.
+
+30
+00:02:07,000 --> 00:02:12,000
+The timeout value here specifies how long the user will be authenticated after logging in.
+
+31
+00:02:12,000 --> 00:02:17,000
+And this number is specified in minutes, so 2,880 minutes.
+
+32
+00:02:17,000 --> 00:02:21,000
+But coming back to our Authorize attribute, like many of these attributes,
+
+33
+00:02:21,000 --> 00:02:23,000
+you can apply them at the action level.
+
+34
+00:02:23,000 --> 00:02:28,000
+You can also take something like the Authorize attribute and apply it at the controller level.
+
+35
+00:02:28,000 --> 00:02:30,000
+So I'll remove it from the About action
+
+36
+00:02:30,000 --> 00:02:33,000
+and let's just apply it to the entire HomeController.
+
+37
+00:02:33,000 --> 00:02:38,000
+Now the user would need to be authenticated to do anything with the HomeController.
+
+38
+00:02:38,000 --> 00:02:41,000
+If there were just a couple of things that you wanted a user to be able to do,
+
+39
+00:02:41,000 --> 00:02:47,000
+an anonymous user to be able to do, there is an AllowAnonymous attribute.
+
+40
+00:02:47,000 --> 00:02:49,000
+I can place that-- let's say on the index action.
+
+41
+00:02:49,000 --> 00:02:54,000
+That will at least allow a user to get to the homepage of the application without logging in.
+
+42
+00:02:54,000 --> 00:02:56,000
+So let's try this real quick.
+
+43
+00:02:56,000 --> 00:02:59,000
+Authorize is at the controller level.
+
+44
+00:02:59,000 --> 00:03:01,000
+AllowAnonymous is on the index action.
+
+45
+00:03:01,000 --> 00:03:05,000
+So if I log off then I come back out here to the homepage
+
+46
+00:03:05,000 --> 00:03:07,000
+and it's viewing the homepage just fine.
+
+47
+00:03:07,000 --> 00:03:12,000
+And if I try to go to About or Contact, now I need to log in.
+
+48
+00:03:12,000 --> 00:03:16,000
+But before I log in, let me show you a couple of other things that you can do with Authorize.
+
+49
+00:03:16,000 --> 00:03:21,000
+You can be a little more specific about who is allowed into the HomeController.
+
+50
+00:03:21,000 --> 00:03:23,000
+You can specify users.
+
+51
+00:03:23,000 --> 00:03:27,000
+So I could say Users equals sallen, plall.
+
+52
+00:03:27,000 --> 00:03:29,000
+So you can have a comma separated list of users.
+
+53
+00:03:29,000 --> 00:03:35,000
+And having that in place, if I login as sallen, I should be able to get somewhere.
+
+54
+00:03:35,000 --> 00:03:42,000
+So sallen and my password, and now I can get to the Contact page.
+
+55
+00:03:42,000 --> 00:03:46,000
+But it's not very frequently that you can specify specific users except
+
+56
+00:03:46,000 --> 00:03:51,000
+for perhaps an admin user or a super user.
+
+57
+00:03:51,000 --> 00:03:56,000
+It's more common often to include roles instead of specific users.
+
+58
+00:03:56,000 --> 00:04:04,000
+And then you could say roles equal something like administrators and sales.
+
+59
+00:04:04,000 --> 00:04:06,000
+These users and roles parameters, by the way,
+
+60
+00:04:06,000 --> 00:04:09,000
+I should point out that they also work with Windows Authentication.
+
+61
+00:04:09,000 --> 00:04:13,000
+When you specify users, you'd be specifying users in active directory.
+
+62
+00:04:13,000 --> 00:04:17,000
+When you specify roles, you'd be specifying groups in Windows.
+
+63
+00:04:17,000 --> 00:04:22,000
+But now that I've added roles to my Authorize attribute, I've hit a bit of a stumbling block
+
+64
+00:04:22,000 --> 00:04:24,000
+because I do not have any roles defined.
+
+65
+00:04:24,000 --> 00:04:28,000
+We saw in the Database Explorer that there is a table where you can store roles,
+
+66
+00:04:28,000 --> 00:04:32,000
+but I don't have any user interface available for me to create roles.
+
+67
+00:04:32,000 --> 00:04:37,000
+We'll look at a way to populate some of these membership tables next.
+
+68
+00:04:37,000 --> 00:59:00,000
+( Pause )
+

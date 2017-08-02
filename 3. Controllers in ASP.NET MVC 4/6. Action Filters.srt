@@ -1,0 +1,616 @@
+1
+00:00:02,000 --> 00:00:06,000
+In addition to the action selector attributes we just looked at there are also a number
+
+2
+00:00:06,000 --> 00:00:09,000
+of action filter attributes you can use.
+
+3
+00:00:09,000 --> 00:00:14,000
+Action filters apply pre and post processing logic to a controller action and its result.
+
+4
+00:00:14,000 --> 00:00:19,000
+Action filters are the components that you want to use to apply cross-cutting logic that's logic
+
+5
+00:00:19,000 --> 00:00:23,000
+that has to execute across multiple controller actions but you don't want
+
+6
+00:00:23,000 --> 00:00:26,000
+to duplicate code inside of individual controllers.
+
+7
+00:00:26,000 --> 00:00:30,000
+One example is the output cash attribute this tells the run time that it's allowed
+
+8
+00:00:30,000 --> 00:00:34,000
+to cash the final output of some action and to use
+
+9
+00:00:34,000 --> 00:00:36,000
+that cashed result to service future requests.
+
+10
+00:00:36,000 --> 00:00:40,000
+When you apply this attribute in the right places you can dramatically increase the
+
+11
+00:00:40,000 --> 00:00:43,000
+through put and scalability of an application,
+
+12
+00:00:43,000 --> 00:00:45,000
+we'll take a look at cashing later in this course.
+
+13
+00:00:45,000 --> 00:00:50,000
+Another example is the authorize attribute, authorize allows you to ensure a user is logged
+
+14
+00:00:50,000 --> 00:00:53,000
+in and perhaps a in a specific role like the admin.
+
+15
+00:00:53,000 --> 00:00:58,000
+role before the action is allowed to process that user's request.
+
+16
+00:00:58,000 --> 00:01:01,000
+We'll be looking at most of these filters during the duration of this course
+
+17
+00:01:01,000 --> 00:01:06,000
+but right now I just want to show you how to apply a filter and also take a quick look
+
+18
+00:01:06,000 --> 00:01:11,000
+at building your own custom action filter.
+
+19
+00:01:11,000 --> 00:01:17,000
+Here inside of visual studio let's get rid of our second search action result and go back just
+
+20
+00:01:17,000 --> 00:01:21,000
+to a single search action result, we'll have it respond to both a get and a post
+
+21
+00:01:21,000 --> 00:01:24,000
+and I'm going to use the authorize attribute.
+
+22
+00:01:24,000 --> 00:01:30,000
+You can just use the authorize attribute without any parameters, you can also specify something
+
+23
+00:01:30,000 --> 00:01:34,000
+like roles equals admin., that means the user has to be logged in and they have to be
+
+24
+00:01:34,000 --> 00:01:40,000
+in the admin role before we can invoke this function, you can also specify user names inside
+
+25
+00:01:40,000 --> 00:01:44,000
+of here, I'm just going to use the authorize attribute without any parameters,
+
+26
+00:01:44,000 --> 00:01:48,000
+what that tells the mvc framework is the user has to be logged in in order
+
+27
+00:01:48,000 --> 00:01:51,000
+to be able to use the search action.
+
+28
+00:01:51,000 --> 00:01:56,000
+Now if I do a build and I come back to refresh the application
+
+29
+00:01:56,000 --> 00:02:02,000
+and what has happened is we've been redirected to the log on page because I've tried
+
+30
+00:02:02,000 --> 00:02:07,000
+to go somewhere that requires me to be authorized, it requires me to be authenticated
+
+31
+00:02:07,000 --> 00:02:12,000
+and the run time will see authorized attribute and it's smart enough to redirect me to the log
+
+32
+00:02:12,000 --> 00:02:17,000
+on page where if I were to register on this site I could create an account and the log in.
+
+33
+00:02:17,000 --> 00:02:22,000
+After I log in I'd be redirected back to the cuisine controller where I originally tried
+
+34
+00:02:22,000 --> 00:02:26,000
+to get to, back to the original URL that I tried.
+
+35
+00:02:26,000 --> 00:02:30,000
+We'll be looking at authentication and authorization and other security topics
+
+36
+00:02:30,000 --> 00:02:34,000
+in a later module but right now I just want to focus on action filters and I want
+
+37
+00:02:34,000 --> 00:02:37,000
+to demonstrate that you can place them not only on an individual action
+
+38
+00:02:37,000 --> 00:02:44,000
+but you can also place them on a controller and when they're at the controller level they apply
+
+39
+00:02:44,000 --> 00:02:48,000
+to all the actions inside of that controller so again if I tried to get
+
+40
+00:02:48,000 --> 00:02:53,000
+to the cuisine controller now that we've rebuilt I'll still be redirected to the log on page,
+
+41
+00:02:53,000 --> 00:02:58,000
+I need to log in before I can get past that authorized gate keeper.
+
+42
+00:02:58,000 --> 00:03:01,000
+In addition to applying action filters at the action level
+
+43
+00:03:01,000 --> 00:03:06,000
+and at the controller level you can also have what's known as global filters.
+
+44
+00:03:06,000 --> 00:03:09,000
+Global filters are typically registered during application start
+
+45
+00:03:09,000 --> 00:03:13,000
+up which means we register them during the application start event to let me return
+
+46
+00:03:13,000 --> 00:03:19,000
+to the magical global dot asax dot cx file and there's the application start event one
+
+47
+00:03:19,000 --> 00:03:24,000
+of the calls that you can see in here is a call to filter config dot registered global filters,
+
+48
+00:03:24,000 --> 00:03:28,000
+I'll put the cursor right on that method, press F12 and we'll jump over to that class
+
+49
+00:03:28,000 --> 00:03:32,000
+which by the way it's also inside of the app start folder.
+
+50
+00:03:32,000 --> 00:03:37,000
+Here you can see that we're registering a single global filter, it's the handle error attribute.
+
+51
+00:03:37,000 --> 00:03:42,000
+A global filter like handle error attribute will be in effect for every single request
+
+52
+00:03:42,000 --> 00:03:47,000
+that is processed by any controller inside of your application.
+
+53
+00:03:47,000 --> 00:03:50,000
+The purpose of the handle error attribute is to display a friendly error page
+
+54
+00:03:50,000 --> 00:03:53,000
+to users when something goes wrong.
+
+55
+00:03:53,000 --> 00:03:56,000
+Let's see how this works, let me return to the cuisine controller,
+
+56
+00:03:56,000 --> 00:04:00,000
+we've commented out the authorized attributes so we should be able to get inside of this action
+
+57
+00:04:00,000 --> 00:04:03,000
+without logging in and we'll pretend
+
+58
+00:04:03,000 --> 00:04:09,000
+that something terrible has happened during the execution of our program
+
+59
+00:04:09,000 --> 00:04:13,000
+and we'll throw an exception that's going to escape the action.
+
+60
+00:04:13,000 --> 00:04:18,000
+That means if I come back to the cuisine controller, let's go to cuisine,
+
+61
+00:04:18,000 --> 00:04:25,000
+what we'll see is affectionately known as the asp dot net yellow screen of death.
+
+62
+00:04:25,000 --> 00:04:28,000
+It's the screen that shows you there was an un-handled exception on the server
+
+63
+00:04:28,000 --> 00:04:32,000
+and it gives you a stack trace and some additional information that you
+
+64
+00:04:32,000 --> 00:04:36,000
+as a developer probably will find useful because it can help you track down a problem
+
+65
+00:04:36,000 --> 00:04:40,000
+but your users don't want to see this in fact it can be dangerous
+
+66
+00:04:40,000 --> 00:04:43,000
+because it can give away information that someone who is
+
+67
+00:04:43,000 --> 00:04:48,000
+up to no good can use to try to attack your server.
+
+68
+00:04:48,000 --> 00:04:52,000
+But in actuality your users will probably never see this page because by default this level
+
+69
+00:04:52,000 --> 00:04:57,000
+of detailed error information is only shown when the request originates from the same machine
+
+70
+00:04:57,000 --> 00:05:01,000
+that the application is on so on the local host.
+
+71
+00:05:01,000 --> 00:05:04,000
+If we want to see what the user is actually going to see we just have
+
+72
+00:05:04,000 --> 00:05:07,000
+to configure our application a little bit differently.
+
+73
+00:05:07,000 --> 00:05:11,000
+Configuration is another topic that we'll cover later in this course
+
+74
+00:05:11,000 --> 00:05:16,000
+but for now let me introduce you to the web dot config files that is inside of this project,
+
+75
+00:05:16,000 --> 00:05:20,000
+this controls configuration settings for the entire application
+
+76
+00:05:20,000 --> 00:05:27,000
+and one of the things I can configure in here is how to handle errors, I want custom errors
+
+77
+00:05:27,000 --> 00:05:31,000
+and I want the mode to be on by default it is that third option there,
+
+78
+00:05:31,000 --> 00:05:37,000
+remote only which means it only shows a pretty error page to remote users.
+
+79
+00:05:37,000 --> 00:05:43,000
+I'll just type in that xml element that's inside of the system dot web section,
+
+80
+00:05:43,000 --> 00:05:47,000
+save the web dot config file and now let me come back and refresh this page,
+
+81
+00:05:47,000 --> 00:05:52,000
+the application will restart any time that you twiddle with the web dot config file
+
+82
+00:05:52,000 --> 00:05:55,000
+and this is the pretty error page that the users will see.
+
+83
+00:05:55,000 --> 00:06:01,000
+Of course pretty is in the eye of the beholder but the reason we end up here is primarily
+
+84
+00:06:01,000 --> 00:06:06,000
+because of that handle error attribute, it is providing post processing logic on an action
+
+85
+00:06:06,000 --> 00:06:08,000
+and when it sees that an exception has escaped
+
+86
+00:06:08,000 --> 00:06:14,000
+from an action it will display an error view instead of the yellow screen of death.
+
+87
+00:06:14,000 --> 00:06:20,000
+The error view is actually in your application by default you can find it if you go
+
+88
+00:06:20,000 --> 00:06:23,000
+into the solution explorer window and look under views shared,
+
+89
+00:06:23,000 --> 00:06:28,000
+views that are in this folder are available to controllers throughout the application,
+
+90
+00:06:28,000 --> 00:06:33,000
+there's an error dot see html view here so the error view is just a razor view
+
+91
+00:06:33,000 --> 00:06:36,000
+like all the other views we are using and it's inside of here
+
+92
+00:06:36,000 --> 00:06:40,000
+where you can provide some additional information or additional messages
+
+93
+00:06:40,000 --> 00:06:43,000
+or give someone the number to the help desk
+
+94
+00:06:43,000 --> 00:06:47,000
+so that they can call them in the middle of the night.
+
+95
+00:06:47,000 --> 00:06:52,000
+Let me just change that view and if I refresh we'll be able to see
+
+96
+00:06:52,000 --> 00:06:55,000
+that change reflected in the browser.
+
+97
+00:06:55,000 --> 00:07:02,000
+Let me also demonstrate that if that if we were to go into our app start filter config
+
+98
+00:07:02,000 --> 00:07:07,000
+and comment on this line it places the handle error attribute
+
+99
+00:07:07,000 --> 00:07:11,000
+into the global filter collection then after I do a build
+
+100
+00:07:11,000 --> 00:07:18,000
+and refresh we get a slightly different error, well actually it's the same error it's just
+
+101
+00:07:18,000 --> 00:07:22,000
+that asp dot net is displaying a different page it's not giving out a level of detail
+
+102
+00:07:22,000 --> 00:07:26,000
+in this error because we have custom errors mode equals on we're going
+
+103
+00:07:26,000 --> 00:07:29,000
+to see exactly what the user sees here,
+
+104
+00:07:29,000 --> 00:07:31,000
+they're not going to see a stack trace they're just going to be aware
+
+105
+00:07:31,000 --> 00:07:35,000
+that something is wrong on the server.
+
+106
+00:07:35,000 --> 00:07:37,000
+What I should do is come back and put this filter into place
+
+107
+00:07:37,000 --> 00:07:42,000
+so that we have friendly errors and also go into web dot config and change this mode
+
+108
+00:07:42,000 --> 00:07:48,000
+to remote only, that means our end users will see custom error pages
+
+109
+00:07:48,000 --> 00:07:52,000
+but when we're developing here on local host we'll still get to see stack traces
+
+110
+00:07:52,000 --> 00:07:56,000
+which can be very useful for debugging.
+
+111
+00:07:56,000 --> 00:07:59,000
+Now before we finish this module I also want to demonstrate that it's very easy
+
+112
+00:07:59,000 --> 00:08:02,000
+to build your own custom action filters.
+
+113
+00:08:02,000 --> 00:08:07,000
+I'm going to go to the filters folder that's already in this application and click add class,
+
+114
+00:08:07,000 --> 00:08:13,000
+what we're going to build is a logging attribute so I will call this log attribute,
+
+115
+00:08:13,000 --> 00:08:21,000
+that will create a class, log attribute, I'm going to derive it from action filter attribute
+
+116
+00:08:21,000 --> 00:08:26,000
+that is in the system dot web dot mvc name space and once I derive
+
+117
+00:08:26,000 --> 00:08:33,000
+from the base filter attribute class what I can do is override one of four important methods.
+
+118
+00:08:33,000 --> 00:08:38,000
+On action executing is a method you can override to look
+
+119
+00:08:38,000 --> 00:08:42,000
+at the request before an action even executes where as
+
+120
+00:08:42,000 --> 00:08:46,000
+on action executed is a method they you can override and you get to poke around inside
+
+121
+00:08:46,000 --> 00:08:50,000
+of what happened at a point in time after the action executes.
+
+122
+00:08:50,000 --> 00:08:56,000
+You can also catch before the result is executed and after the result is executed
+
+123
+00:08:56,000 --> 00:08:59,000
+so for instance before a view vendors and a view vendors
+
+124
+00:08:59,000 --> 00:09:03,000
+and these action filters are very powerful, you can change the environment,
+
+125
+00:09:03,000 --> 00:09:06,000
+you can change results you can change parameters,
+
+126
+00:09:06,000 --> 00:09:08,000
+let me just go ahead and override these methods.
+
+127
+00:09:08,000 --> 00:09:18,000
+Let's override on action executing and override on action executed, override on result executing
+
+128
+00:09:18,000 --> 00:09:25,000
+and override on result executed and then I will come in and press F9 at the top of each
+
+129
+00:09:25,000 --> 00:09:30,000
+of these methods to set a break point and now let's apply this attribute
+
+130
+00:09:30,000 --> 00:09:33,000
+to our cuisine controller and see how it behaves.
+
+131
+00:09:33,000 --> 00:09:39,000
+All we need to do that is place it on an action or at the controller level,
+
+132
+00:09:39,000 --> 00:09:43,000
+this log attribute is in a different name space so I'll need to bring in the name space ode
+
+133
+00:09:43,000 --> 00:09:48,000
+to food dot filters, but at this point I should be able to run
+
+134
+00:09:48,000 --> 00:09:50,000
+with the debugger and see where we break.
+
+135
+00:09:50,000 --> 00:09:57,000
+Let me go to slash cuisine and you can see we get inside
+
+136
+00:09:57,000 --> 00:10:02,000
+of on action executing even before we get inside the action itself
+
+137
+00:10:02,000 --> 00:10:06,000
+and one of the things I could look at inside of here is the filter context.
+
+138
+00:10:06,000 --> 00:10:09,000
+From filter context you can find out all sorts of things,
+
+139
+00:10:09,000 --> 00:10:13,000
+you can find out what parameters are being passed to an action, you can add parameters,
+
+140
+00:10:13,000 --> 00:10:21,000
+you can modify parameters, if I continue on and press F5 you can see now we're in the action,
+
+141
+00:10:21,000 --> 00:10:27,000
+we're throwing and exception, something terrible has happened, press F5 to continue again
+
+142
+00:10:27,000 --> 00:10:32,000
+and now we're in one action executed, this also has a filter context,
+
+143
+00:10:32,000 --> 00:10:36,000
+this filter context can have more information on it because now the action has executed.
+
+144
+00:10:36,000 --> 00:10:41,000
+You might have a result that you want to inspect or you might have an exception that you want
+
+145
+00:10:41,000 --> 00:10:47,000
+to inspect so here we can see that an un-handled exception escaped from that.
+
+146
+00:10:47,000 --> 00:10:52,000
+If I was really writing a log attribute I would probably record that exception somewhere,
+
+147
+00:10:52,000 --> 00:10:56,000
+I'd probably also be recording what time the controller started executing
+
+148
+00:10:56,000 --> 00:10:59,000
+and what time it finished and I could do all sorts of interesting
+
+149
+00:10:59,000 --> 00:11:01,000
+and useful things with attributes.
+
+150
+00:11:01,000 --> 00:11:06,000
+I'd probably also install this log attribute as a global filter attribute so it would execute
+
+151
+00:11:06,000 --> 00:11:11,000
+for everything inside the application but for now I just want you to know
+
+152
+00:11:11,000 --> 00:11:15,000
+that these are available when you see attributes on actions and controllers you'll have an idea
+
+153
+00:11:15,000 --> 00:11:19,000
+of what they can do and you can see how easy it is if you ever need
+
+154
+00:11:19,000 --> 00:59:00,000
+to write your own attribute, how easy that is to do.
+

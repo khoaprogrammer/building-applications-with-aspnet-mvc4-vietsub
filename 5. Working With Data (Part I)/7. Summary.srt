@@ -1,0 +1,44 @@
+1
+00:00:02,000 --> 00:00:05,000
+In this module, we took our first steps with the Entity Framework.
+
+2
+00:00:05,000 --> 00:00:09,000
+We let it take our C Sharp classes and not only save objects in the database
+
+3
+00:00:09,000 --> 00:00:12,000
+but we also let it create the database for us.
+
+4
+00:00:12,000 --> 00:00:16,000
+This was all done using the DbSet and DbContext classes of the Entity Framework.
+
+5
+00:00:16,000 --> 00:00:19,000
+We also used EF Migrations to seed the database
+
+6
+00:00:19,000 --> 00:00:22,000
+with some initial restaurants and manage the schema.
+
+7
+00:00:22,000 --> 00:00:27,000
+Finally, I showed you a few different LINQ queries to give you an idea of what is possible
+
+8
+00:00:27,000 --> 00:00:30,000
+when querying a database with the Entity Framework.
+
+9
+00:00:30,000 --> 00:00:33,000
+In the next module, we're going to build on what we learned here to look at editing
+
+10
+00:00:33,000 --> 00:00:37,000
+and inserting data along with all the features you need in those scenarios,
+
+11
+00:00:37,000 --> 00:59:00,000
+features like validation and from the error messages.
+

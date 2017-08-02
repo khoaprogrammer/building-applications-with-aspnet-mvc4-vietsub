@@ -1,0 +1,48 @@
+1
+00:00:01,000 --> 00:00:05,000
+Hi, this is Scott Allen and this is the first module in the course design
+
+2
+00:00:05,000 --> 00:00:09,000
+to demonstrate everything you need to build applications with ASP.NET MVC.
+
+3
+00:00:09,000 --> 00:00:14,000
+This course is primarily aimed at developers who are new to ASP.NET MVC,
+
+4
+00:00:14,000 --> 00:00:18,000
+but even if you've been working with the framework I hope to show you a few tricks.
+
+5
+00:00:18,000 --> 00:00:21,000
+We'll be starting at the very beginning in this first module.
+
+6
+00:00:21,000 --> 00:00:24,000
+I'll first show you how to install all the tools that you need.
+
+7
+00:00:24,000 --> 00:00:29,000
+We'll be using Visual Studio express 2012 for the web which is a free tool
+
+8
+00:00:29,000 --> 00:00:31,000
+for building web applications, but you can use other editions
+
+9
+00:00:31,000 --> 00:00:35,000
+of Visual Studio 2012 if you want to follow along.
+
+10
+00:00:35,000 --> 00:00:39,000
+By the end of this first module, you'll see how to create and run your first application
+
+11
+00:00:39,000 --> 00:00:43,000
+and also have an understanding of the design goals of the MVC framework.
+
+12
+00:00:43,000 --> 00:59:00,000
+So, let's get started.
+

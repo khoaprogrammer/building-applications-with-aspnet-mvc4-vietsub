@@ -1,0 +1,568 @@
+1
+00:00:02,000 --> 00:00:06,000
+Inside of a Razor view like this index view for RestaurantReviews our responsibility is
+
+2
+00:00:06,000 --> 00:00:09,000
+to take the model object given to this by the controller
+
+3
+00:00:09,000 --> 00:00:11,000
+and present the model in a user interface.
+
+4
+00:00:11,000 --> 00:00:16,000
+And the user interface in the web application is generally built using HTML.
+
+5
+00:00:16,000 --> 00:00:19,000
+As we talked about earlier, you can think of Razor as a template,
+
+6
+00:00:19,000 --> 00:00:22,000
+where you combine literal text with pieces of data from your model
+
+7
+00:00:22,000 --> 00:00:25,000
+that you pull out using sharp C sharp code.
+
+8
+00:00:25,000 --> 00:00:28,000
+The literal text is like the h2 and Index text too in this view.
+
+9
+00:00:28,000 --> 00:00:33,000
+If I want a view to display a more descriptive header, I can change this text.
+
+10
+00:00:33,000 --> 00:00:38,000
+Let's say that this will display, the Latest Reviews.
+
+11
+00:00:38,000 --> 00:00:44,000
+I can just save a view, refresh the browser and I can see that literal text appears here.
+
+12
+00:00:44,000 --> 00:00:49,000
+Razor just output that without changing anything, the text gets sent to the browser
+
+13
+00:00:49,000 --> 00:00:53,000
+where the h2 element becomes a level two header, so it gives this a bit of a title effect here
+
+14
+00:00:53,000 --> 00:00:56,000
+to announce that these are the Latest Reviews.
+
+15
+00:00:56,000 --> 00:01:02,000
+When you see an at sign in Razor, chances are then you are not dealing with literal text
+
+16
+00:01:02,000 --> 00:01:04,000
+because an at sign can introduce C sharp code
+
+17
+00:01:04,000 --> 00:01:08,000
+and the C sharp code can contain an expression for Razor to evaluate.
+
+18
+00:01:08,000 --> 00:01:12,000
+So I can use C sharp code to reach into my model and pull out data.
+
+19
+00:01:12,000 --> 00:01:20,000
+I could have something like we are showing the latest at Model.Count reviews.
+
+20
+00:01:20,000 --> 00:01:26,000
+Save this, put parenthesis because count is a link operator,
+
+21
+00:01:26,000 --> 00:01:28,000
+it needs to be invoked and now refresh the view.
+
+22
+00:01:28,000 --> 00:01:31,000
+And we get-- we are showing the latest 3 reviews.
+
+23
+00:01:31,000 --> 00:01:36,000
+So we didn't output at Model.Count, instead Razor saw that that was C sharp code,
+
+24
+00:01:36,000 --> 00:01:40,000
+it evaluated it, it produced the number 3, so it sent that number 3 down to the browser.
+
+25
+00:01:40,000 --> 00:01:45,000
+And technically, you don't need to only access the model in the view.
+
+26
+00:01:45,000 --> 00:01:47,000
+You could also access ViewBag.
+
+27
+00:01:47,000 --> 00:01:49,000
+In fact, you could access anything.
+
+28
+00:01:49,000 --> 00:01:53,000
+Let me just put out a property that is inherited by a view.
+
+29
+00:01:53,000 --> 00:01:56,000
+The views VirtualPath and save this.
+
+30
+00:01:56,000 --> 00:01:58,000
+And when I do that I can see
+
+31
+00:01:58,000 --> 00:02:03,000
+that the VirtualPath property contains the path of the view in this application.
+
+32
+00:02:03,000 --> 00:02:05,000
+So I don't need to stick to just the model property.
+
+33
+00:02:05,000 --> 00:02:10,000
+I can go anywhere to pick up data but remember there is no data access or calculation logic
+
+34
+00:02:10,000 --> 00:02:12,000
+in the view at least not heavy calculation logic.
+
+35
+00:02:12,000 --> 00:02:17,000
+Because data access in calculation logic, that's what controllers and models do.
+
+36
+00:02:17,000 --> 00:02:20,000
+And while I'm looking at it,
+
+37
+00:02:20,000 --> 00:02:24,000
+a tilde is something we've seen before but I'm not sure I explained it.
+
+38
+00:02:24,000 --> 00:02:29,000
+A tilde represents the root of the application so tilde slash Views would mean go
+
+39
+00:02:29,000 --> 00:02:32,000
+to the view folder from the root of this application.
+
+40
+00:02:32,000 --> 00:02:34,000
+It's common to use a tilde everywhere you specify a path
+
+41
+00:02:34,000 --> 00:02:37,000
+because without the tilde you need to be careful of your app
+
+42
+00:02:37,000 --> 00:02:39,000
+that gets deployed into a subdirectory.
+
+43
+00:02:39,000 --> 00:02:42,000
+You have to know the name of the directory where the app is deployed
+
+44
+00:02:42,000 --> 00:02:44,000
+in order to hand out correct links.
+
+45
+00:02:44,000 --> 00:02:46,000
+And that gets very messy.
+
+46
+00:02:46,000 --> 00:02:49,000
+So anytime you need to point to something in the application whether it's a JavaScript file
+
+47
+00:02:49,000 --> 00:02:54,000
+or an image or another view, using the tilde is a safe and easy approach.
+
+48
+00:02:54,000 --> 00:02:57,000
+Let's go back to the code we have before.
+
+49
+00:02:57,000 --> 00:03:00,000
+I'll hit Control Z a couple times and we're back to at Model.Count.
+
+50
+00:03:00,000 --> 00:03:04,000
+You can think of the at sign here a bit like response dot right if you've ever done
+
+51
+00:03:04,000 --> 00:03:11,000
+that in ASP.NET or classic ASP, the result of the C Sharp expression Model.Count is sent
+
+52
+00:03:11,000 --> 00:03:16,000
+down to the client essentially with a response dot right but there is a significant difference
+
+53
+00:03:16,000 --> 00:03:18,000
+between this code and response dot right
+
+54
+00:03:18,000 --> 00:03:24,000
+because Razor will automatically HTML encode any output sent through the at sign
+
+55
+00:03:24,000 --> 00:03:26,000
+to help prevent cross-site scripting attacks.
+
+56
+00:03:26,000 --> 00:03:27,000
+Let me demonstrate this.
+
+57
+00:03:27,000 --> 00:03:34,000
+If we switch over into the ReviewsController and come down to our data that we're displaying,
+
+58
+00:03:34,000 --> 00:03:40,000
+what we could do is change the city for the Marrakesh restaurant from Washington D.C.
+
+59
+00:03:40,000 --> 00:03:48,000
+to something like script alert XSS which stands for cross-site scripting attack slash script.
+
+60
+00:03:48,000 --> 00:03:54,000
+So what this represents is what would happen if somehow, someway a malicious user was able
+
+61
+00:03:54,000 --> 00:03:57,000
+to get something into your database that was a malicious script.
+
+62
+00:03:57,000 --> 00:04:05,000
+And if I build the application and refresh the browser, what we'll see is that Marrakesh,
+
+63
+00:04:05,000 --> 00:04:07,000
+the city is now script with an alert box.
+
+64
+00:04:07,000 --> 00:04:10,000
+Now an alert box is just an annoyance.
+
+65
+00:04:10,000 --> 00:04:13,000
+But if someone actually did get a malicious script into the database
+
+66
+00:04:13,000 --> 00:04:16,000
+and Razor was not HTML encoding this,
+
+67
+00:04:16,000 --> 00:04:19,000
+the browser would actually see a script tag and execute that JavaScript.
+
+68
+00:04:19,000 --> 00:04:22,000
+Cross-site scripting attacks can do terrible things.
+
+69
+00:04:22,000 --> 00:04:23,000
+They can steal cookies from users,
+
+70
+00:04:23,000 --> 00:04:27,000
+they can display fake password dialogs and steal user's passwords.
+
+71
+00:04:27,000 --> 00:04:29,000
+Cross-site scripting attacks are very dangerous
+
+72
+00:04:29,000 --> 00:04:32,000
+and unfortunately they are the number one vulnerability on the web.
+
+73
+00:04:32,000 --> 00:04:36,000
+So you have to be very careful when displaying data that the user has given to you
+
+74
+00:04:36,000 --> 00:04:41,000
+and make sure you HTML encode that data which again fortunately Razor does that by default.
+
+75
+00:04:41,000 --> 00:04:46,000
+We can see that if we do a View Source here and I do a quick search for XSS,
+
+76
+00:04:46,000 --> 00:04:52,000
+instead of actually outputting a less than character which would allow the browser to see
+
+77
+00:04:52,000 --> 00:04:57,000
+that this is a script tag and start executing JavaScript, instead Razor converted that less
+
+78
+00:04:57,000 --> 00:05:02,000
+than character into ampersand LT colon which is a way to tell the browser I want
+
+79
+00:05:02,000 --> 00:05:04,000
+to display a less than character.
+
+80
+00:05:04,000 --> 00:05:10,000
+And so now what we have is a script that's showing up in the city which is a lot better
+
+81
+00:05:10,000 --> 00:05:12,000
+than actually having executable script.
+
+82
+00:05:12,000 --> 00:05:16,000
+And just to show you what happens if you really want to display something
+
+83
+00:05:16,000 --> 00:05:21,000
+without HTML encoding, you can do that in Razor.
+
+84
+00:05:21,000 --> 00:05:25,000
+What we'll do is we'll come down to this line of code that is displaying the city and we'll talk
+
+85
+00:05:25,000 --> 00:05:29,000
+about what HTML.Display for does in just a bit.
+
+86
+00:05:29,000 --> 00:05:32,000
+But the way to do this in Razor is to use HTML.Raw,
+
+87
+00:05:32,000 --> 00:05:38,000
+that's a way of saying take this expression, take the string, do not HTML encode it.
+
+88
+00:05:38,000 --> 00:05:45,000
+So if I just put item.City in here, save everything and refresh the browser.
+
+89
+00:05:45,000 --> 00:05:50,000
+Now we have actual executable script on the page which in this case is an annoyance
+
+90
+00:05:50,000 --> 00:05:55,000
+if that really was a malicious script, terrible things could happen.
+
+91
+00:05:55,000 --> 00:05:57,000
+So let me quickly get rid of that script.
+
+92
+00:05:57,000 --> 00:06:02,000
+I'm into the ReviewsController, just set Control Z to get back to Washington D.C.
+
+93
+00:06:02,000 --> 00:06:04,000
+And now we can move forward again.
+
+94
+00:06:04,000 --> 00:06:07,000
+And now, let's look at item.Rating.
+
+95
+00:06:07,000 --> 00:06:10,000
+I'm going to comment out this line of code because we're not quite ready
+
+96
+00:06:10,000 --> 00:06:13,000
+to talk about what display for does.
+
+97
+00:06:13,000 --> 00:06:18,000
+I just want to show you that I can also output the item rating juts by saying at item.Rating.
+
+98
+00:06:18,000 --> 00:06:22,000
+And if I save everything and rebuild, we've gotten rid of our script
+
+99
+00:06:22,000 --> 00:06:25,000
+but we should still be showing the rating as a 10 which is correct.
+
+100
+00:06:25,000 --> 00:06:31,000
+And the at item.Rating is what we will call an implicit code expression in Razor.
+
+101
+00:06:31,000 --> 00:06:35,000
+We'd let Razor figure out what a C Sharp code and what is mark up.
+
+102
+00:06:35,000 --> 00:06:40,000
+It's smart enough to know that at item.Rating is a C Sharp expression whereas less
+
+103
+00:06:40,000 --> 00:06:43,000
+than slash TD are going to back into mark up.
+
+104
+00:06:43,000 --> 00:06:47,000
+But what if we have some text displaying right after this rating?
+
+105
+00:06:47,000 --> 00:06:51,000
+So the rating is on the scale of 1 to 10 but if we wanted to let someone know
+
+106
+00:06:51,000 --> 00:06:54,000
+that by saying 10 out of 10 or 3 out of 10.
+
+107
+00:06:54,000 --> 00:06:56,000
+I just put a slash 10 here.
+
+108
+00:06:56,000 --> 00:06:58,000
+There's two ways to interpret this.
+
+109
+00:06:58,000 --> 00:07:03,000
+You could say take the rating and divide it by 10 because this is all a C Sharp expression
+
+110
+00:07:03,000 --> 00:07:07,000
+or show slash 10 as literal text.
+
+111
+00:07:07,000 --> 00:07:11,000
+And by default what Razor will do is figure that that is text,
+
+112
+00:07:11,000 --> 00:07:14,000
+not part of the C Sharp expression, so we get 10 out of 10.
+
+113
+00:07:14,000 --> 00:07:18,000
+But what if we really did want to take the rating and divide it by 10?
+
+114
+00:07:18,000 --> 00:07:23,000
+Then we would need what's known as an explicit code expression where you use parenthesis
+
+115
+00:07:23,000 --> 00:07:27,000
+and the at sign to explicitly denote what your C Sharp code is.
+
+116
+00:07:27,000 --> 00:07:32,000
+And if I'll save this version of the view, all the ratings turn into 1
+
+117
+00:07:32,000 --> 00:07:35,000
+because we're taking 10 and dividing it by 10.
+
+118
+00:07:35,000 --> 00:07:37,000
+But for the most part, Razor is really good at figuring
+
+119
+00:07:37,000 --> 00:07:41,000
+out what is C Sharp code and what is not C Sharp code.
+
+120
+00:07:41,000 --> 00:07:46,000
+If I turn this back into an implicit expression, let me just show you a couple other edge cases.
+
+121
+00:07:46,000 --> 00:07:53,000
+Imagine I wanted to prefix the rating with an R. So if I put the letter R here and we want
+
+122
+00:07:53,000 --> 00:07:57,000
+to have an R10 or an R3 and I save this and refresh,
+
+123
+00:07:57,000 --> 00:08:01,000
+what we see is at item.Rating is now output as literal text.
+
+124
+00:08:01,000 --> 00:08:06,000
+That's because Razor makes a special case for e-mail addresses and when it sees something
+
+125
+00:08:06,000 --> 00:08:10,000
+at something dot something, it assumes you might want to display an e-mail address
+
+126
+00:08:10,000 --> 00:08:13,000
+so it doesn't evaluate this as C Sharp code.
+
+127
+00:08:13,000 --> 00:08:16,000
+The nice thing about this is if you actually have an e-mail address
+
+128
+00:08:16,000 --> 00:08:20,000
+and you put it there something like scottallen@Pluralsight.com,
+
+129
+00:08:20,000 --> 00:08:23,000
+you don't need to worry about escaping anything.
+
+130
+00:08:23,000 --> 00:08:29,000
+But in this scenario where I really do want to say something like R1 or R10,
+
+131
+00:08:29,000 --> 00:08:32,000
+I need to go back to using an explicit code expression
+
+132
+00:08:32,000 --> 00:08:35,000
+and surrounding my C Sharp there with parenthesis.
+
+133
+00:08:35,000 --> 00:08:40,000
+Now that will be treated as C Sharp code and I get the R10 out.
+
+134
+00:08:40,000 --> 00:08:45,000
+So Razor is smart enough to figure out e-mail addresses
+
+135
+00:08:45,000 --> 00:08:46,000
+because of the presence of the at sign.
+
+136
+00:08:46,000 --> 00:08:54,000
+Well what happens if I want to put out something that has an at sign in it like a Twitter handle?
+
+137
+00:08:54,000 --> 00:08:56,000
+Now this Razor handle this.
+
+138
+00:08:56,000 --> 00:09:00,000
+Well, it thinks at OdeToCode should be a C Sharp expression.
+
+139
+00:09:00,000 --> 00:09:04,000
+It goes off looking for something called OdeToCode but it doesn't find one.
+
+140
+00:09:04,000 --> 00:09:10,000
+This would a case where I just need to escape the at sign by using a double at sign.
+
+141
+00:09:10,000 --> 00:09:15,000
+And now if I save the view, now we're outputting at OdeToCode literally
+
+142
+00:09:15,000 --> 00:59:00,000
+which is what we intended to do for a Twitter handle.
+

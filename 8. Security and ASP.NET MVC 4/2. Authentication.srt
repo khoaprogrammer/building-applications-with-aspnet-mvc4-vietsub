@@ -1,0 +1,248 @@
+1
+00:00:02,000 --> 00:00:06,000
+When you authenticate a user, you are verifying the identity of the user.
+
+2
+00:00:06,000 --> 00:00:09,000
+You might need to know a user's identity because you're building an application
+
+3
+00:00:09,000 --> 00:00:13,000
+that only specific users should access, like a payroll system.
+
+4
+00:00:13,000 --> 00:00:16,000
+You cannot let just anyone poke around in the salary information.
+
+5
+00:00:16,000 --> 00:00:20,000
+Or maybe you're building a website where users post their picture collections.
+
+6
+00:00:20,000 --> 00:00:24,000
+You might want to know the user's identity just so you can track their photographs
+
+7
+00:00:24,000 --> 00:00:29,000
+and only allow users to delete their own photographs and not the photographs of others.
+
+8
+00:00:29,000 --> 00:00:33,000
+So the first step would be identifying the user and making sure you know who they are.
+
+9
+00:00:33,000 --> 00:00:36,000
+There are three ways to do this with ASP.NET.
+
+10
+00:00:36,000 --> 00:00:39,000
+The first mechanism is called Forms Authentication.
+
+11
+00:00:39,000 --> 00:00:43,000
+With forms-based authentication, the website is responsible for providing a page
+
+12
+00:00:43,000 --> 00:00:48,000
+with an input form where the user can enter their user name and enter their password.
+
+13
+00:00:48,000 --> 00:00:52,000
+And when they click a log on button, something inside our application is responsible
+
+14
+00:00:52,000 --> 00:00:54,000
+for making sure they entered the right password.
+
+15
+00:00:54,000 --> 00:00:59,000
+We'll see how MVC provides a lot of the infrastructure support for Forms Authentication
+
+16
+00:00:59,000 --> 00:01:01,000
+so it's not as hard as it sounds.
+
+17
+00:01:01,000 --> 00:01:05,000
+Another way to authenticate a user is to use OpenID or OAuth.
+
+18
+00:01:05,000 --> 00:01:11,000
+These are open standards for authentication and authorization respectively and using OpenID
+
+19
+00:01:11,000 --> 00:01:16,000
+or OAuth means your users don't need to create or share a password with your site
+
+20
+00:01:16,000 --> 00:01:19,000
+and you don't have to store or validate a user's password.
+
+21
+00:01:19,000 --> 00:01:23,000
+Instead, you rely on a third party like Twitter or Microsoft
+
+22
+00:01:23,000 --> 00:01:25,000
+to authenticate the user and then tell you who they are.
+
+23
+00:01:25,000 --> 00:01:27,000
+We'll see this in a bit.
+
+24
+00:01:27,000 --> 00:01:30,000
+The third approach is Windows Authentication.
+
+25
+00:01:30,000 --> 00:01:35,000
+Windows Authentication is typically used for internet applications because it uses components
+
+26
+00:01:35,000 --> 00:01:38,000
+and services provided by the Windows Operating System.
+
+27
+00:01:38,000 --> 00:01:43,000
+Microsoft also refers to Windows Auth as "Integrated Auth", because once a user is logged
+
+28
+00:01:43,000 --> 00:01:48,000
+in to a domain, Windows can automatically authenticate them to My Application
+
+29
+00:01:48,000 --> 00:01:50,000
+if My Application uses Windows Auth.
+
+30
+00:01:50,000 --> 00:01:53,000
+Although Windows Authentication does work across a variety of browsers
+
+31
+00:01:53,000 --> 00:01:58,000
+and not just Internet Explorer, it's still best to use for an internet application
+
+32
+00:01:58,000 --> 00:02:01,000
+that runs inside your company's Firewall and where all of your users are logged
+
+33
+00:02:01,000 --> 00:02:05,000
+into a Windows domain and you have an active directory server somewhere.
+
+34
+00:02:05,000 --> 00:02:10,000
+Your users can have a single sign on experience, because once they logged on to their desktops,
+
+35
+00:02:10,000 --> 00:02:13,000
+they use that identity for your application as well as network shares
+
+36
+00:02:13,000 --> 00:02:16,000
+and network printers and other internet apps.
+
+37
+00:02:16,000 --> 00:02:21,000
+If you're building a public website then you probably want to avoid Windows Auth
+
+38
+00:02:21,000 --> 00:02:23,000
+because users might not be on the same domain.
+
+39
+00:02:23,000 --> 00:02:27,000
+In fact, they might not even be running on a device that supports Windows Authentication.
+
+40
+00:02:27,000 --> 00:02:32,000
+And that's where Forms Authentication comes in, because any web browser can let a user sign
+
+41
+00:02:32,000 --> 00:02:35,000
+into a site using Forms Authentication.
+
+42
+00:02:35,000 --> 00:02:38,000
+It's highly customizable because you build the log on page
+
+43
+00:02:38,000 --> 00:02:41,000
+and you control the log on experience.
+
+44
+00:02:41,000 --> 00:02:46,000
+You can customize how the form looks and how strong of a password that you require.
+
+45
+00:02:46,000 --> 00:02:48,000
+Forms Authentication relies on cookies by default.
+
+46
+00:02:48,000 --> 00:02:53,000
+So once a user is signed in to an application, the runtime will store a cookie
+
+47
+00:02:53,000 --> 00:02:57,000
+in the client's browser so they don't need to sign in again during the same browsing session.
+
+48
+00:02:57,000 --> 00:03:01,000
+One word of warning with Forms Authentication, is that SSL is required
+
+49
+00:03:01,000 --> 00:03:04,000
+to make Forms Authentication secure.
+
+50
+00:03:04,000 --> 00:03:10,000
+Unless I'm logging into a site using an HTTPS address instead of regular HTTP,
+
+51
+00:03:10,000 --> 00:03:15,000
+then I'm passing in my user name and password across the network in plain text and someone
+
+52
+00:03:15,000 --> 00:03:19,000
+who is watching network traffic can see my password and steal it.
+
+53
+00:03:19,000 --> 00:03:23,000
+OpenID and OAuth are also designed to work with internet applications.
+
+54
+00:03:23,000 --> 00:03:28,000
+When you need to validate a user's identity, you redirect their browser to a third party website,
+
+55
+00:03:28,000 --> 00:03:31,000
+like a website run by Google or Microsoft,
+
+56
+00:03:31,000 --> 00:03:34,000
+and the user proves their identity to this third party.
+
+57
+00:03:34,000 --> 00:03:37,000
+Then the third party will redirect the user back to you with a message
+
+58
+00:03:37,000 --> 00:03:40,000
+that proves they successfully authenticated themselves.
+
+59
+00:03:40,000 --> 00:03:45,000
+This all works securely, thanks to the magic of cryptography.
+
+60
+00:03:45,000 --> 00:03:48,000
+We'll see how to work with these three different approaches to authentication in this module.
+
+61
+00:03:48,000 --> 00:03:52,000
+And we'll get started by looking at Windows Authentication.
+
+62
+00:03:52,000 --> 00:59:00,000
+( Pause )
+

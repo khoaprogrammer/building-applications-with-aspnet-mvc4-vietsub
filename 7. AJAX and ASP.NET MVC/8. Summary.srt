@@ -1,0 +1,32 @@
+1
+00:00:02,000 --> 00:00:06,000
+In this module, we added some AJAX features to our application using jQuery,
+
+2
+00:00:06,000 --> 00:00:09,000
+jQuery UI, and our own custom JavaScript.
+
+3
+00:00:09,000 --> 00:00:13,000
+We brought controller actions to return JSON and implemented paging and searching
+
+4
+00:00:13,000 --> 00:00:18,000
+with async behavior to provide an updated page without disrupting the user experience.
+
+5
+00:00:18,000 --> 00:00:22,000
+Finally, we saw quite a few data dash attributes in our HTML.
+
+6
+00:00:22,000 --> 00:00:25,000
+We saw how we could work with those attributes from our script
+
+7
+00:00:25,000 --> 00:00:30,000
+and also have the MVC framework uses those attributes to add AJAX functionality
+
+8
+00:00:30,000 --> 00:59:00,000
+through AJAX helpers and also to support client validation.
+

@@ -1,0 +1,392 @@
+1
+00:00:01,000 --> 00:00:05,000
+Once studio is installed, you should be able to find it by searching your Windows start menu.
+
+2
+00:00:05,000 --> 00:00:10,000
+And Windows 8 the start menu is an enormous screen full of squares and rectangles,
+
+3
+00:00:10,000 --> 00:00:12,000
+but I should be able to find VS Express for web.
+
+4
+00:00:12,000 --> 00:00:16,000
+I'm going to right click that and tell Windows to pin it to my task bar.
+
+5
+00:00:16,000 --> 00:00:19,000
+That makes it really easy to launch from a desktop view in the future
+
+6
+00:00:19,000 --> 00:00:23,000
+and then just click on the icon to get started.
+
+7
+00:00:23,000 --> 00:00:27,000
+Visual Studio Express doesn't want you to register and obtain a product key.
+
+8
+00:00:27,000 --> 00:00:31,000
+Again this is a free product, but you'll have to provide some basic contact information
+
+9
+00:00:31,000 --> 00:00:34,000
+to obtain the key and keep using VS Express.
+
+10
+00:00:34,000 --> 00:00:37,000
+But right now I'm going to cancel this and just move forward,
+
+11
+00:00:37,000 --> 00:00:40,000
+but you'll probably want to register right away.
+
+12
+00:00:40,000 --> 00:00:42,000
+The first time that you launch Visual Studio,
+
+13
+00:00:42,000 --> 00:00:46,000
+it might take a little extra time to perform some initialization.
+
+14
+00:00:46,000 --> 00:00:52,000
+But every start up after this will be considerably faster.
+
+15
+00:00:52,000 --> 00:00:53,000
+Now, we're ready to go.
+
+16
+00:00:53,000 --> 00:00:57,000
+Every great application that's built using Visual Studio starts by clicking
+
+17
+00:00:57,000 --> 00:01:01,000
+on the new project link or you can also go to file new project.
+
+18
+00:01:01,000 --> 00:01:05,000
+And inside of here you'll see templates create all sorts of different applications,
+
+19
+00:01:05,000 --> 00:01:09,000
+Silverlight Applications, class libraries, of course the one we're interested in,
+
+20
+00:01:09,000 --> 00:01:13,000
+is an ASP.NET MVC 4 Web application.
+
+21
+00:01:13,000 --> 00:01:18,000
+You can create this using Visual Basic or for this course we'll be using C sharp.
+
+22
+00:01:18,000 --> 00:01:23,000
+I'm going to give the project a name I'll call this OdeToFood because I want to build a website
+
+23
+00:01:23,000 --> 00:01:29,000
+where I can enter restaurant reviews and I can select any folder on my hard drive even
+
+24
+00:01:29,000 --> 00:01:34,000
+when it doesn't exist yet or I want to save this project and be able to work on it.
+
+25
+00:01:34,000 --> 00:01:39,000
+Now, I can click okay and Visual Studio will ask me what template I want
+
+26
+00:01:39,000 --> 00:01:40,000
+to use to create this project.
+
+27
+00:01:40,000 --> 00:01:44,000
+In the future, you might see additional templates in this dialog box and the idea is
+
+28
+00:01:44,000 --> 00:01:47,000
+that you'll pick the template that is the closest match to the type
+
+29
+00:01:47,000 --> 00:01:49,000
+of application you want to build.
+
+30
+00:01:49,000 --> 00:01:52,000
+The empty template is great if you know exactly what you want
+
+31
+00:01:52,000 --> 00:01:55,000
+and you want to start from scratch.
+
+32
+00:01:55,000 --> 00:01:58,000
+The internet application template is the one I'll be selecting.
+
+33
+00:01:58,000 --> 00:02:00,000
+We'll talk about some of these other templates later in the course,
+
+34
+00:02:00,000 --> 00:02:04,000
+but the internet application template comes with the default home page
+
+35
+00:02:04,000 --> 00:02:08,000
+and all of the user interface pieces and infrastructure needed for users to register
+
+36
+00:02:08,000 --> 00:02:11,000
+on the site and then log on and log off.
+
+37
+00:02:11,000 --> 00:02:15,000
+For the view engine, I'm going to leave the default value here of Razor.
+
+38
+00:02:15,000 --> 00:02:19,000
+A view engine in MVC is a component that works inside the application
+
+39
+00:02:19,000 --> 00:02:24,000
+to help you produce the HTML that you need to send back to the client's browser.
+
+40
+00:02:24,000 --> 00:02:29,000
+Razor is the preferred view engine for ASP.NET MVC, it's the one I strongly suggest you use.
+
+41
+00:02:29,000 --> 00:02:34,000
+I'll also let Visual Studio go ahead and create a unit test project for me.
+
+42
+00:02:34,000 --> 00:02:38,000
+The project will have the same name as my web project which is OdeToFood.
+
+43
+00:02:38,000 --> 00:02:41,000
+It will just have dot Tests appended at the end.
+
+44
+00:02:41,000 --> 00:02:45,000
+And with that I'll click okay and Visual Studio will go ahead
+
+45
+00:02:45,000 --> 00:02:48,000
+and start putting together my project.
+
+46
+00:02:48,000 --> 00:02:54,000
+One thing that's new with ASP.NET MVC 4 is all of the little pieces that go into this project.
+
+47
+00:02:54,000 --> 00:02:57,000
+All of the different libraries like jQuery and jQuery UI.
+
+48
+00:02:57,000 --> 00:03:00,000
+They are all added as NuGet packages.
+
+49
+00:03:00,000 --> 00:03:03,000
+We'll be talking about NuGet later in this course too.
+
+50
+00:03:03,000 --> 00:03:06,000
+But it makes all of these pieces very easy to update.
+
+51
+00:03:06,000 --> 00:03:10,000
+So, if there is an update to one of let's say the JavaScript Libraries in my project.
+
+52
+00:03:10,000 --> 00:03:12,000
+I can easily go out and install that update
+
+53
+00:03:12,000 --> 00:03:15,000
+without manually downloading and copying files around.
+
+54
+00:03:15,000 --> 00:03:19,000
+We'll see that, but for now, Visual Studio has created the project.
+
+55
+00:03:19,000 --> 00:03:20,000
+It's ready to go.
+
+56
+00:03:20,000 --> 00:03:25,000
+So, let me run the application, I can click the play button up here in the tool bar
+
+57
+00:03:25,000 --> 00:03:28,000
+to run this application inside of Internet Explorer
+
+58
+00:03:28,000 --> 00:03:33,000
+that will have Visual Studio compile everything that will launch IIS Express
+
+59
+00:03:33,000 --> 00:03:37,000
+and also Internet Explorer and there we can see the application as running.
+
+60
+00:03:37,000 --> 00:03:38,000
+That's a good sign.
+
+61
+00:03:38,000 --> 00:03:42,000
+You can see that the template we pick, the internet application template,
+
+62
+00:03:42,000 --> 00:03:46,000
+it give us a home page with some default colors and styles.
+
+63
+00:03:46,000 --> 00:03:48,000
+We have a menu with working links.
+
+64
+00:03:48,000 --> 00:03:50,000
+So, I can go to an about page.
+
+65
+00:03:50,000 --> 00:03:53,000
+I can also go to a contact page.
+
+66
+00:03:53,000 --> 00:03:59,000
+Notice the URL here is a nice friendly readable URL slash home slash contact.
+
+67
+00:03:59,000 --> 00:04:01,000
+There is no file extensions present.
+
+68
+00:04:01,000 --> 00:04:08,000
+And if we view the source code to this, we can see its nice clean looking HTML.
+
+69
+00:04:08,000 --> 00:04:14,000
+In fact, that's HTML file because we have an HTML 5 doc type and MVC 4 includes some
+
+70
+00:04:14,000 --> 00:04:19,000
+of the HTML 5 best practices, for instance, specifying the language from my mark up.
+
+71
+00:04:19,000 --> 00:04:22,000
+Also specifying the characters set encoding.
+
+72
+00:04:22,000 --> 00:04:25,000
+It turns out that it's important to have that meta tag
+
+73
+00:04:25,000 --> 00:04:27,000
+with the character set encoding specified.
+
+74
+00:04:27,000 --> 00:04:32,000
+If you want to avoid some strange and subtle cross site scripting vulnerabilities.
+
+75
+00:04:32,000 --> 00:04:37,000
+We also have a meta view port tag by default and this is important for mobile devices.
+
+76
+00:04:37,000 --> 00:04:41,000
+You can think of this as an instruction for how the page should render.
+
+77
+00:04:41,000 --> 00:04:44,000
+So, without this meta tag, a mobile browser will assume that your page needs
+
+78
+00:04:44,000 --> 00:04:47,000
+over 900 pixels to display properly.
+
+79
+00:04:47,000 --> 00:04:51,000
+So, it will zoom out to fit all of the content on the screen.
+
+80
+00:04:51,000 --> 00:04:54,000
+But because it's so zoomed out, the user cannot work with the site until they zoom in.
+
+81
+00:04:54,000 --> 00:04:58,000
+But with this tag in place, we are telling a mobile browser
+
+82
+00:04:58,000 --> 00:05:00,000
+that our site will adapt to the width of the device.
+
+83
+00:05:00,000 --> 00:05:04,000
+So, please don't assume anything about how many pixels we need.
+
+84
+00:05:04,000 --> 00:05:07,000
+This all works because of some instructions that are in the style sheet
+
+85
+00:05:07,000 --> 00:05:09,000
+that are included in this application by default.
+
+86
+00:05:09,000 --> 00:05:15,000
+I have a few other videos on Pluralsight that use MVC 4 with mobile devices and jQuery mobile,
+
+87
+00:05:15,000 --> 00:05:18,000
+if you're more interested in that topic.
+
+88
+00:05:18,000 --> 00:05:21,000
+We also have a link to Modernizer JavaScript library.
+
+89
+00:05:21,000 --> 00:05:25,000
+Modernizer will ensure our HTML 5 mark up works with older browsers that were
+
+90
+00:05:25,000 --> 00:05:28,000
+around before HTML 5 was given any thought.
+
+91
+00:05:28,000 --> 00:05:31,000
+So browsers like IE 6 which is over 10 years old now.
+
+92
+00:05:31,000 --> 00:05:37,000
+We can be sure that using the new HTML 5 elements like header and section and nav,
+
+93
+00:05:37,000 --> 00:05:40,000
+they will appear properly on that older browser.
+
+94
+00:05:40,000 --> 00:05:45,000
+Later in the course, we'll explore where all of this comes from and how to modify it.
+
+95
+00:05:45,000 --> 00:05:48,000
+For now, let's just be happy that MVC 4 is keeping up with the latest standards
+
+96
+00:05:48,000 --> 00:05:52,000
+and has given us a running web application to work with.
+
+97
+00:05:52,000 --> 00:05:56,000
+But right now, I want to close the browser and return to Visual Studio
+
+98
+00:05:56,000 --> 00:59:00,000
+to start poking around inside of this project.
+

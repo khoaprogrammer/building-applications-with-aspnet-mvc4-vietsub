@@ -1,0 +1,32 @@
+1
+00:00:02,000 --> 00:00:03,000
+Hi, this is Scott Allen.
+
+2
+00:00:03,000 --> 00:00:08,000
+And in this module, we will look at adding AJAX features to an MVC application.
+
+3
+00:00:08,000 --> 00:00:12,000
+Specifically, we'll look at the AJAX helpers offered by the MVC framework.
+
+4
+00:00:12,000 --> 00:00:17,000
+We'll also spend time using jQuery and jQuery UI to work directly in script code.
+
+5
+00:00:17,000 --> 00:00:21,000
+I'll show you how client validation works, how to minify and bundle your scripts,
+
+6
+00:00:21,000 --> 00:00:23,000
+how to produce JSON from your application,
+
+7
+00:00:23,000 --> 00:00:26,000
+and what to do with JSON once you have it on the client.
+
+8
+00:00:26,000 --> 00:59:00,000
+I will do all these things while adding features to the application.
+

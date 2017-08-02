@@ -1,0 +1,336 @@
+1
+00:00:02,000 --> 00:00:08,000
+In addition to code expressions, both implicit and explicit, Razor also supports code blocks.
+
+2
+00:00:08,000 --> 00:00:11,000
+We can see an example of this here at the top of the view.
+
+3
+00:00:11,000 --> 00:00:13,000
+You can see a block of code that starts with the at sign
+
+4
+00:00:13,000 --> 00:00:17,000
+and has an opening curly brace and a closing curly brace.
+
+5
+00:00:17,000 --> 00:00:22,000
+In between those curly braces, we can place as much C Sharp code as we want inside of a view.
+
+6
+00:00:22,000 --> 00:00:24,000
+But remember, keep the view simple.
+
+7
+00:00:24,000 --> 00:00:26,000
+So a lot of code is usually a bad sign.
+
+8
+00:00:26,000 --> 00:00:30,000
+The C Sharp code that is inside of this block is going to execute.
+
+9
+00:00:30,000 --> 00:00:33,000
+It's not going to have its expressions evaluated and written to the client.
+
+10
+00:00:33,000 --> 00:00:36,000
+It simply executes or produces side effects.
+
+11
+00:00:36,000 --> 00:00:42,000
+We can set things on the ViewBag like you can see us setting the ViewBag.Title property.
+
+12
+00:00:42,000 --> 00:00:44,000
+We'll see the significance of that line of code in just a little bit
+
+13
+00:00:44,000 --> 00:00:47,000
+when we talk about layout views with Razor.
+
+14
+00:00:47,000 --> 00:00:51,000
+I can even declare variables and use them inside of the code block
+
+15
+00:00:51,000 --> 00:00:57,000
+so I could say let's create a variable called firstReview that is equal to Model.First.
+
+16
+00:00:57,000 --> 00:01:01,000
+So it literally gave me the first item in the collection that is my model.
+
+17
+00:01:01,000 --> 00:01:03,000
+And inside of the code block, you have
+
+18
+00:01:03,000 --> 00:01:07,000
+to observe the correct usage of semicolons for C Sharp codes.
+
+19
+00:01:07,000 --> 00:01:09,000
+We'll terminate that with a semicolon.
+
+20
+00:01:09,000 --> 00:01:13,000
+Now we can use firstReview anywhere else inside of this view.
+
+21
+00:01:13,000 --> 00:01:17,000
+So at the top of the view, I could now say firstReview.Name,
+
+22
+00:01:17,000 --> 00:01:20,000
+we'll up the name of the restaurant.
+
+23
+00:01:20,000 --> 00:01:23,000
+And you can see we get the name of the restaurant, the first restaurant
+
+24
+00:01:23,000 --> 00:01:26,000
+and all of the reviews here at the top.
+
+25
+00:01:26,000 --> 00:01:32,000
+Another example of a code block is the foreach statement here in the middle of the view.
+
+26
+00:01:32,000 --> 00:01:34,000
+This foreach statement allows us to iterate
+
+27
+00:01:34,000 --> 00:01:36,000
+through the model pulling out one item at a time.
+
+28
+00:01:36,000 --> 00:01:39,000
+And you can see that Razor allows us to transition
+
+29
+00:01:39,000 --> 00:01:45,000
+between C Sharp code before each statement and back into HTML without making any explicit marks
+
+30
+00:01:45,000 --> 00:01:50,000
+or using any sort of delimiters to tell it when we're transitioning from C Sharp code to HTML.
+
+31
+00:01:50,000 --> 00:01:56,000
+We simply have the opening curly brace and then we have a TR to start the table row.
+
+32
+00:01:56,000 --> 00:01:57,000
+It works in the other direction too.
+
+33
+00:01:57,000 --> 00:02:01,000
+So at the bottom of the foreach, we have a closing curly brace.
+
+34
+00:02:01,000 --> 00:02:06,000
+Razor is smart enough to figure out that the slash TR at the bottom is HTML
+
+35
+00:02:06,000 --> 00:02:08,000
+but that closing curly brace is part of my C Sharp code
+
+36
+00:02:08,000 --> 00:02:11,000
+that terminates the foreach statement.
+
+37
+00:02:11,000 --> 00:02:15,000
+Let me demonstrate a few other features of code blocks by removing this table
+
+38
+00:02:15,000 --> 00:02:19,000
+and we'll rewrite this a different way.
+
+39
+00:02:19,000 --> 00:02:20,000
+I'll remove the table.
+
+40
+00:02:20,000 --> 00:02:24,000
+I'm also going to remove the bit about a firstReview to clean up this view a little bit.
+
+41
+00:02:24,000 --> 00:02:30,000
+And now here above the create link, let's write a new each statement.
+
+42
+00:02:30,000 --> 00:02:36,000
+So for each review that we have in the model, let's-- instead of writing out a table,
+
+43
+00:02:36,000 --> 00:02:39,000
+let's write out a div for each review.
+
+44
+00:02:39,000 --> 00:02:46,000
+And in the div we'll have an h4 that has the name of the restaurant.
+
+45
+00:02:46,000 --> 00:02:50,000
+We'll include a span that has the rating associated with that restaurant.
+
+46
+00:02:50,000 --> 00:02:56,000
+And then perhaps just a paragraph tag that has the city--
+
+47
+00:02:56,000 --> 00:02:57,000
+And the country.
+
+48
+00:02:57,000 --> 00:03:04,000
+And then, for one last touch, let me go in to the div and give it a class of review
+
+49
+00:03:04,000 --> 00:03:09,000
+and I'll come in to our style sheet for the Site.css.
+
+50
+00:03:09,000 --> 00:03:12,000
+And down here at the bottom, I'm just going to paste
+
+51
+00:03:12,000 --> 00:03:15,000
+in some code that will pretty up our review.
+
+52
+00:03:15,000 --> 00:03:19,000
+Give it a bottom border, add some color to the h4 tag that we've added just
+
+53
+00:03:19,000 --> 00:03:22,000
+to make it appear a little bit better.
+
+54
+00:03:22,000 --> 00:03:23,000
+I'll save the style sheet.
+
+55
+00:03:23,000 --> 00:03:27,000
+If I'll go save everything and build and let's refresh,
+
+56
+00:03:27,000 --> 00:03:30,000
+we're still displaying our reviews now, we're just not using a table.
+
+57
+00:03:30,000 --> 00:03:32,000
+We're using a series of divs.
+
+58
+00:03:32,000 --> 00:03:35,000
+And now I'd like to show you a couple things about code blocks.
+
+59
+00:03:35,000 --> 00:03:38,000
+For the most part, when I wrote that code block, I didn't have to worry
+
+60
+00:03:38,000 --> 00:03:42,000
+about when I was writing C Sharp code and when I was writing HTML.
+
+61
+00:03:42,000 --> 00:03:47,000
+I know I have to use an at sign when I want to write a C Sharp expression and I just do that.
+
+62
+00:03:47,000 --> 00:03:52,000
+But you'll notice that a comma became part of my literal text that's outputted in the view.
+
+63
+00:03:52,000 --> 00:03:54,000
+Again, no explicit delimiters there.
+
+64
+00:03:54,000 --> 00:03:57,000
+But again, there's a couple special edge cases here.
+
+65
+00:03:57,000 --> 00:04:02,000
+For instance, what if I wanted the text review to appear before this div
+
+66
+00:04:02,000 --> 00:04:05,000
+and not inside of its own HTML element?
+
+67
+00:04:05,000 --> 00:04:12,000
+So if I just put review here and save the view and refresh, Razor gets a little bit unhappy
+
+68
+00:04:12,000 --> 00:04:14,000
+and essentially that's because it didn't make the transition
+
+69
+00:04:14,000 --> 00:04:17,000
+from C Sharp code back into literal text.
+
+70
+00:04:17,000 --> 00:04:20,000
+It thinks that review is part of my C Sharp code.
+
+71
+00:04:20,000 --> 00:04:26,000
+The easiest way to fix this, if you really don't want review inside of some sort of HTML element,
+
+72
+00:04:26,000 --> 00:04:30,000
+is just to use at colon that tells Razor that this is literal text.
+
+73
+00:04:30,000 --> 00:04:36,000
+And now if I refresh, we'll have the word review in front of every div.
+
+74
+00:04:36,000 --> 00:04:41,000
+The same thing could be used if we, for some obscure reason,
+
+75
+00:04:41,000 --> 00:04:44,000
+wanted to have a closing curly brace underneath of every div and have
+
+76
+00:04:44,000 --> 00:04:46,000
+that actually display in the view.
+
+77
+00:04:46,000 --> 00:04:48,000
+Fairly, if I refresh that doesn't display.
+
+78
+00:04:48,000 --> 00:04:50,000
+Razor thinks this is part of C Sharp code
+
+79
+00:04:50,000 --> 00:04:54,000
+and it thinks this second closing curly brace is literal text
+
+80
+00:04:54,000 --> 00:04:56,000
+so that appears at the bottom of the view.
+
+81
+00:04:56,000 --> 00:05:00,000
+I wanted this curly brace to be part of my text.
+
+82
+00:05:00,000 --> 00:05:07,000
+Again just use at colon and now we have the closing curly brace appearing where we wanted.
+
+83
+00:05:07,000 --> 00:05:11,000
+But those are edge cases you probably won't run into this very often, for the most part,
+
+84
+00:05:11,000 --> 00:59:00,000
+just write what you feel in Razor, it will figure out the proper thing to do.
+

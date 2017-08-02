@@ -1,0 +1,380 @@
+1
+00:00:00,000 --> 00:00:02,000
+( Silence )
+
+2
+00:00:02,000 --> 00:00:06,000
+The default configuration for ASP.net health monitoring lives in a web.config file
+
+3
+00:00:06,000 --> 00:00:10,000
+but it doesn't live in the web.config file that's in the root of your project.
+
+4
+00:00:10,000 --> 00:00:14,000
+Instead it lives in a machine level web.config file that applies configuration
+
+5
+00:00:14,000 --> 00:00:18,000
+to every ASP.net application that runs on this computer.
+
+6
+00:00:18,000 --> 00:00:21,000
+You can find that if you go into your Windows directory.
+
+7
+00:00:21,000 --> 00:00:23,000
+Go to Microsfoft.net.
+
+8
+00:00:23,000 --> 00:00:26,000
+Go to framework and then pick the right version number.
+
+9
+00:00:26,000 --> 00:00:30,000
+We're using Visual Studio 2012 with .net 4 point 5.
+
+10
+00:00:30,000 --> 00:00:32,000
+So of course we go to the version 4 directory
+
+11
+00:00:32,000 --> 00:00:36,000
+because version 4 point 5 was an in place update to version 4.
+
+12
+00:00:36,000 --> 00:00:39,000
+Dot.net version numbers have always been confusing
+
+13
+00:00:39,000 --> 00:00:43,000
+and dot.net 4 point 5 continues that historical tradition.
+
+14
+00:00:43,000 --> 00:00:43,000
+We go into that directory.
+
+15
+00:00:43,000 --> 00:00:45,000
+There'll be a config directory.
+
+16
+00:00:45,000 --> 00:00:49,000
+It's inside of here where you will find a machine level web.config
+
+17
+00:00:49,000 --> 00:00:51,000
+that applies configuration everywhere.
+
+18
+00:00:51,000 --> 00:00:54,000
+I can drag that into Visual Studio and we'll do a search,
+
+19
+00:00:54,000 --> 00:00:58,000
+control I in here to find health monitoring.
+
+20
+00:00:58,000 --> 00:01:04,000
+And the two most important sections in here are -- well actually there's 3 important sections.
+
+21
+00:01:04,000 --> 00:01:06,000
+One is providers.
+
+22
+00:01:06,000 --> 00:01:10,000
+Providers include destinations for where you can publish events.
+
+23
+00:01:10,000 --> 00:01:12,000
+You might want to save them in the event log.
+
+24
+00:01:12,000 --> 00:01:16,000
+In that case, you'd use the event log provider or maybe you want to store them in sequel server
+
+25
+00:01:16,000 --> 00:01:20,000
+or maybe you want to use WOMI (phonetic) to publish these events.
+
+26
+00:01:20,000 --> 00:01:21,000
+So those are the built-in providers.
+
+27
+00:01:21,000 --> 00:01:25,000
+You can always add more providers if you write one.
+
+28
+00:01:25,000 --> 00:01:27,000
+Another important section is event mappings.
+
+29
+00:01:27,000 --> 00:01:32,000
+This categorizes all the possible events into buckets with friendly names.
+
+30
+00:01:32,000 --> 00:01:38,000
+So we have all events which is every event that could happen in the health monitoring system,
+
+31
+00:01:38,000 --> 00:01:42,000
+lifetime events, request processing events, and all errors.
+
+32
+00:01:42,000 --> 00:01:49,000
+It is the rules section that will define where to send something like all errors.
+
+33
+00:01:49,000 --> 00:01:51,000
+What provider do we send these to?
+
+34
+00:01:51,000 --> 00:01:54,000
+So by default because this is in this machine level web config,
+
+35
+00:01:54,000 --> 00:01:57,000
+we will send all errors to the event log.
+
+36
+00:01:57,000 --> 00:01:59,000
+Any unhandled exception that occurs
+
+37
+00:01:59,000 --> 00:02:02,000
+in the ASP.net application should appear in the Windows event log.
+
+38
+00:02:02,000 --> 00:02:06,000
+Also, any failure audits should appear in the event log.
+
+39
+00:02:06,000 --> 00:02:08,000
+You can add additional rules.
+
+40
+00:02:08,000 --> 00:02:12,000
+The best thing to do would be to take this health monitoring section and mimic
+
+41
+00:02:12,000 --> 00:02:16,000
+in your own web.config file if you want to reconfigure any of these rules
+
+42
+00:02:16,000 --> 00:02:19,000
+but the one thing you need to be careful about is not to do something
+
+43
+00:02:19,000 --> 00:02:23,000
+like send all request processing events to the Windows error log.
+
+44
+00:02:23,000 --> 00:02:27,000
+It's not designed to handle a high volume of events being pumped into it.
+
+45
+00:02:27,000 --> 00:02:32,000
+That would be something that you could do with sequel server though.
+
+46
+00:02:32,000 --> 00:02:34,000
+But because we have these rules in effect, all errors go to the event log,
+
+47
+00:02:34,000 --> 00:02:37,000
+that means if I have an unhandled exception, I should be able to see
+
+48
+00:02:37,000 --> 00:02:41,000
+that in the Windows event log and in fact, we still do have a controller,
+
+49
+00:02:41,000 --> 00:02:46,000
+the cuisine controller, that we wrote a long time ago that has an unhandled exception.
+
+50
+00:02:46,000 --> 00:02:49,000
+It intentionally has an unhandled exception.
+
+51
+00:02:49,000 --> 00:02:51,000
+So let's run the application and go there once.
+
+52
+00:02:51,000 --> 00:02:54,000
+And now something terrible has happened.
+
+53
+00:02:54,000 --> 00:02:57,000
+Let's see if I can find this in the Windows event log by going
+
+54
+00:02:57,000 --> 00:03:00,000
+to the gigantic start menu and typing --
+
+55
+00:03:00,000 --> 00:03:02,000
+( Silence )
+
+56
+00:03:02,000 --> 00:03:07,000
+-- event and under settings, there's view event logs.
+
+57
+00:03:07,000 --> 00:03:09,000
+( Silence )
+
+58
+00:03:09,000 --> 00:03:14,000
+ASP.net errors would be recorded under Windows logs, under application and here
+
+59
+00:03:14,000 --> 00:03:17,000
+at the very top we can see there's been an ASP.net problem.
+
+60
+00:03:17,000 --> 00:03:22,000
+It's listed as a warning but it's inside of here where you will find the event message which is
+
+61
+00:03:22,000 --> 00:03:24,000
+that there was an unhandled exception.
+
+62
+00:03:24,000 --> 00:03:28,000
+You can find the path to the application where this occurred, the machine name.
+
+63
+00:03:28,000 --> 00:03:32,000
+You can find out who the web server was running as.
+
+64
+00:03:32,000 --> 00:03:36,000
+Since we're using IS Express, it's running under my account and there's a full stack trace
+
+65
+00:03:36,000 --> 00:03:40,000
+that we could use to try to track down exactly where this error came from.
+
+66
+00:03:40,000 --> 00:03:44,000
+So all of that information's recorded in the event log for you automatically
+
+67
+00:03:44,000 --> 00:03:48,000
+but sometimes the event log can be a little cumbersome to get to.
+
+68
+00:03:48,000 --> 00:03:52,000
+Sometimes you want to store things in a way that you can get to them through the web interface
+
+69
+00:03:52,000 --> 00:03:55,000
+or perhaps, you want to be able to email errors out to the people
+
+70
+00:03:55,000 --> 00:03:58,000
+and that's when you can turn to ELMAH.
+
+71
+00:03:58,000 --> 00:04:02,000
+Remember this stands for Error Logging Modules and Handlers.
+
+72
+00:04:02,000 --> 00:04:04,000
+The easy way to install it is through newget (phonetic).
+
+73
+00:04:04,000 --> 00:04:09,000
+We'll just do a search for ELMAH and the package I want to install is ELMAH.mvc
+
+74
+00:04:09,000 --> 00:04:13,000
+because this will allow me to reach the ELMAH error logs
+
+75
+00:04:13,000 --> 00:04:17,000
+in a nice MVC friendly way just by going to slash ELMAH.
+
+76
+00:04:17,000 --> 00:04:20,000
+And now if I close this, it's been added to the project.
+
+77
+00:04:20,000 --> 00:04:24,000
+I'm just going to do a build to make sure all the right files get copied to the right places.
+
+78
+00:04:24,000 --> 00:04:28,000
+Otherwise, there's no code changes I need to make.
+
+79
+00:04:28,000 --> 00:04:30,000
+We'll go back to the cuisine controller.
+
+80
+00:04:30,000 --> 00:04:35,000
+I have a few exceptions pumped in here by pounding on the refresh key
+
+81
+00:04:35,000 --> 00:04:39,000
+and now let me go to slash ELMAH.
+
+82
+00:04:39,000 --> 00:04:42,000
+And I can see all the exceptions that it just recorded.
+
+83
+00:04:42,000 --> 00:04:46,000
+You can drill into the details and see the stack trace.
+
+84
+00:04:46,000 --> 00:04:51,000
+You can also configure ELMAH to send these via email or store them in different places.
+
+85
+00:04:51,000 --> 00:04:55,000
+All that configuration can take place in your web.config file.
+
+86
+00:04:55,000 --> 00:05:00,000
+In fact, ELMAH did add some configuration to my web.config file
+
+87
+00:05:00,000 --> 00:05:01,000
+and it added some of these app settings.
+
+88
+00:05:01,000 --> 00:05:06,000
+For instance, who is allowed to see the event log?
+
+89
+00:05:06,000 --> 00:05:10,000
+Since we now have rules in the application, I could say well only admins.
+
+90
+00:05:10,000 --> 00:05:14,000
+You can also configure the route that you use to get to see those error messages.
+
+91
+00:05:14,000 --> 00:05:18,000
+So by default it's ELMAH and just go to slash ELMAH to see the errors, that's very simple.
+
+92
+00:05:18,000 --> 00:05:22,000
+And one more thing, since we are going to require rules here.
+
+93
+00:05:22,000 --> 00:05:26,000
+I'm going to explicitly say this requires authentication before you can view it.
+
+94
+00:05:26,000 --> 00:05:33,000
+You can read more details about ELMAH and ELMAH configuration on the ELMAH website.
+
+95
+00:05:33,000 --> 00:59:00,000
+( Silence )
+

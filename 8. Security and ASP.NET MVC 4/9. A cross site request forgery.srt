@@ -1,0 +1,488 @@
+1
+00:00:01,000 --> 00:00:03,000
+One type of attack, you will potentially face
+
+2
+00:00:03,000 --> 00:00:07,000
+in a web application is a Cross-Site Request Forgery.
+
+3
+00:00:07,000 --> 00:00:09,000
+I want to make you aware of this attack because it's subtle
+
+4
+00:00:09,000 --> 00:00:13,000
+and potentially dangerous and it's also easy to prevent.
+
+5
+00:00:13,000 --> 00:00:18,000
+A Cross-Site Request Forgery or CSRF is an attack a malicious user can execute using
+
+6
+00:00:18,000 --> 00:00:21,000
+unsuspecting users who are logged in to your site.
+
+7
+00:00:21,000 --> 00:00:25,000
+A CSRF attack might do something a user will find annoying like log them
+
+8
+00:00:25,000 --> 00:00:27,000
+out of the site or change the profile name.
+
+9
+00:00:27,000 --> 00:00:31,000
+But this attack can also be destructive and steal or destroy data.
+
+10
+00:00:31,000 --> 00:00:32,000
+Let me give you an example.
+
+11
+00:00:32,000 --> 00:00:36,000
+Let's imagine I'm a bad person who wants to create a restaurant on OdeToFood,
+
+12
+00:00:36,000 --> 00:00:38,000
+but I don't have administrator access.
+
+13
+00:00:38,000 --> 00:00:42,000
+So what I will do is go out and create my own web application.
+
+14
+00:00:42,000 --> 00:00:45,000
+I'll start a new wen application here with Visual Studio, again,
+
+15
+00:00:45,000 --> 00:00:47,000
+it'll just be a throw away application.
+
+16
+00:00:47,000 --> 00:00:52,000
+I'll create an MVC 4 application but it doesn't need to be an MVC application.
+
+17
+00:00:52,000 --> 00:00:57,000
+It could just be an HTML page that I upload somewhere on my website.
+
+18
+00:00:57,000 --> 00:00:59,000
+I'll use an empty project template.
+
+19
+00:00:59,000 --> 00:01:05,000
+And now that that's ready, all I'm really trying to do here is build an application
+
+20
+00:01:05,000 --> 00:01:08,000
+that I can run in IIS Express and point out that it's a different application
+
+21
+00:01:08,000 --> 00:01:11,000
+than OdeToFood, so it's someone else's website.
+
+22
+00:01:11,000 --> 00:01:18,000
+And then inside of here, I will add a new item, just a regular HTML page that can be served
+
+23
+00:01:18,000 --> 00:01:24,000
+up from my site, let me call it, funnypictures.html.
+
+24
+00:01:24,000 --> 00:01:31,000
+And my goal here is to execute a CSRF attack against someone who is logged in to OdeToFood.
+
+25
+00:01:31,000 --> 00:01:36,000
+In order to do it, I usually need to know a little bit about what HTML is on the site
+
+26
+00:01:36,000 --> 00:01:40,000
+that I want to attack, but that's usually not too hard to get,
+
+27
+00:01:40,000 --> 00:01:44,000
+and the HTML that I'm particularly interested in is the form
+
+28
+00:01:44,000 --> 00:01:46,000
+that is used to create a new restaurant.
+
+29
+00:01:46,000 --> 00:01:53,000
+So let me copy it out of the source view of this page and paste that into my HTML page.
+
+30
+00:01:53,000 --> 00:02:00,000
+And then just clean it up a bit because we really only need a form tag and the inputs
+
+31
+00:02:00,000 --> 00:02:09,000
+for name, the city, and the country, and hit control K,
+
+32
+00:02:09,000 --> 00:02:11,000
+control D to do some formatting, that looks better.
+
+33
+00:02:11,000 --> 00:02:20,000
+And now I'll add the values that I want to get into OdeToFood through an unsuspecting user,
+
+34
+00:02:20,000 --> 00:02:26,000
+my values and this could represent trying to transfer money or change someone's profile,
+
+35
+00:02:26,000 --> 00:02:30,000
+anything on a site that only an authenticated user can get to, that's what I want to get to
+
+36
+00:02:30,000 --> 00:02:33,000
+and place my own values into the application.
+
+37
+00:02:33,000 --> 00:02:36,000
+And I'll do just a couple of other things to dress this up.
+
+38
+00:02:36,000 --> 00:02:38,000
+Let's give the form an ID.
+
+39
+00:02:38,000 --> 00:02:40,000
+I'll just call it the form.
+
+40
+00:02:40,000 --> 00:02:43,000
+Let me add in inline style.
+
+41
+00:02:43,000 --> 00:02:47,000
+So nothing inside this form actually displays to the user.
+
+42
+00:02:47,000 --> 00:02:51,000
+The goal is not to have the user fill this out, the goal is for me to trick the user
+
+43
+00:02:51,000 --> 00:02:56,000
+into taking this HTML and submitting it to OdeToFood application behind their backs.
+
+44
+00:02:56,000 --> 00:03:01,000
+And that means the action, we're not going to be posting back to my website.
+
+45
+00:03:01,000 --> 00:03:03,000
+My website doesn't have anything to do with restaurants.
+
+46
+00:03:03,000 --> 00:03:06,000
+It's just full of malicious pages.
+
+47
+00:03:06,000 --> 00:03:10,000
+I'm going to change that to postback to the real website which is over here
+
+48
+00:03:10,000 --> 00:03:13,000
+on a different port number on this machine.
+
+49
+00:03:13,000 --> 00:03:18,000
+And I don't even need the user to click a button because I'm going to add some script here
+
+50
+00:03:18,000 --> 00:03:25,000
+that will just automatically submit this form after a 2,000 millisecond delay.
+
+51
+00:03:25,000 --> 00:03:30,000
+So what I've done essentially is craft a form to look just like the form that OdeToFood expects.
+
+52
+00:03:30,000 --> 00:03:37,000
+And now if I run this application or just view this in a browser, as me the bad person,
+
+53
+00:03:37,000 --> 00:03:44,000
+the malicious user that form gets submitted to OdeToFood which redirects me to the login page
+
+54
+00:03:44,000 --> 00:03:48,000
+because I need to login but unfortunately I'm not an administrator.
+
+55
+00:03:48,000 --> 00:03:55,000
+However, if I take this URL and somehow get it to another user who is an administrator,
+
+56
+00:03:55,000 --> 00:03:59,000
+maybe I'll send a link in the e-mail, use some social engineering,
+
+57
+00:03:59,000 --> 00:04:02,000
+get them to click on something else that's on another page, thinking they're going
+
+58
+00:04:02,000 --> 00:04:05,000
+to download a free song or something.
+
+59
+00:04:05,000 --> 00:04:10,000
+If I get that person to do it, someone who is logged in to OdeToFood all they need
+
+60
+00:04:10,000 --> 00:04:16,000
+to do is click a link and come to this page and then I get a value into the database.
+
+61
+00:04:16,000 --> 00:04:17,000
+It will be down here at the bottom.
+
+62
+00:04:17,000 --> 00:04:23,000
+And of course there's all sorts of things I could do to make this less obvious to the user
+
+63
+00:04:23,000 --> 00:04:26,000
+that they just posted something to OdeToFood.
+
+64
+00:04:26,000 --> 00:04:28,000
+I could use jQuery to do the submission in the background
+
+65
+00:04:28,000 --> 00:04:31,000
+so they never even see the OdetoFood website.
+
+66
+00:04:31,000 --> 00:04:34,000
+All they see is that page of line where I put a funny picture on there.
+
+67
+00:04:34,000 --> 00:04:37,000
+Behind the scene something is happening on OdeToFood that they don't know about.
+
+68
+00:04:37,000 --> 00:04:43,000
+And me the bad person has used someone who is an administrator on OdeToFood as a proxy
+
+69
+00:04:43,000 --> 00:04:47,000
+and channeled my malicious data through them to get it into the database.
+
+70
+00:04:47,000 --> 00:04:49,000
+That's a Cross Site Request Forgery.
+
+71
+00:04:49,000 --> 00:04:53,000
+It works because that other user is logged in to the application.
+
+72
+00:04:53,000 --> 00:04:57,000
+And because they're logged in to the site, their browser has a cookie.
+
+73
+00:04:57,000 --> 00:05:02,000
+And because their browser has a cookie, the browser sends that cookie along on every request
+
+74
+00:05:02,000 --> 00:05:06,000
+that it makes to OdeToFood even if the user didn't intent for that request to go
+
+75
+00:05:06,000 --> 00:05:11,000
+to OdeToFood, even if me, the malicious person tricked them into sending a request to OdeToFood
+
+76
+00:05:11,000 --> 00:05:14,000
+that carried along something dangerous.
+
+77
+00:05:14,000 --> 00:05:19,000
+So when you are building an application that uses forms authentication and you have areas
+
+78
+00:05:19,000 --> 00:05:24,000
+with form posts that you want to protect with authorization rules, then it's not enough
+
+79
+00:05:24,000 --> 00:05:28,000
+to just authenticate a user, and authorize them based on their role.
+
+80
+00:05:28,000 --> 00:05:33,000
+You have to make sure that the form they're submitting to you is a form that you gave them
+
+81
+00:05:33,000 --> 00:05:38,000
+and not a form that a malicious user tricked them into sending.
+
+82
+00:05:38,000 --> 00:05:42,000
+It should be your restaurant create form not someone else's form from another website.
+
+83
+00:05:42,000 --> 00:05:45,000
+And fortunately, this is easy to do with ASP.NET MVC.
+
+84
+00:05:45,000 --> 00:05:51,000
+It has the concept of an anti-forgery token to ensure that the form post that is coming
+
+85
+00:05:51,000 --> 00:05:56,000
+in when you create a restaurant is something that you gave the user.
+
+86
+00:05:56,000 --> 00:06:00,000
+The way we use an anti-forgery token is to go to the restaurant controller
+
+87
+00:06:00,000 --> 00:06:05,000
+and on this create action, the destination for a post put an attribute
+
+88
+00:06:05,000 --> 00:06:07,000
+to say validate anti-forgery token.
+
+89
+00:06:07,000 --> 00:06:08,000
+This is part of the solution.
+
+90
+00:06:08,000 --> 00:06:15,000
+And just having that attribute in place, if I build the application come back out as a user
+
+91
+00:06:15,000 --> 00:06:20,000
+who is logged in to the site and try to create something new with any name, any city,
+
+92
+00:06:20,000 --> 00:06:23,000
+any country, I'll get an exemption
+
+93
+00:06:23,000 --> 00:06:27,000
+that there was no request verification token that I submitted.
+
+94
+00:06:27,000 --> 00:06:31,000
+So the way this anti-forgery token works is that we need to go into the form
+
+95
+00:06:31,000 --> 00:06:35,000
+that will post this controller action and use an HTML helper
+
+96
+00:06:35,000 --> 00:06:38,000
+that will add a verification token into the form.
+
+97
+00:06:38,000 --> 00:06:43,000
+The verification token is a hidden input that holds a cryptographically significant value.
+
+98
+00:06:43,000 --> 00:06:46,000
+So that is basically, added to every form that the user is going
+
+99
+00:06:46,000 --> 00:06:48,000
+to submit into an authorized area.
+
+100
+00:06:48,000 --> 00:06:54,000
+That cryptographically significant value is also placed into a cookie in the user's browser.
+
+101
+00:06:54,000 --> 00:06:57,000
+So when the user submits the form, the form value has
+
+102
+00:06:57,000 --> 00:07:02,000
+to match the cookie value before MVC will allow that request through.
+
+103
+00:07:02,000 --> 00:07:07,000
+The idea is that even if a malicious user gives one of your members some evil HTML,
+
+104
+00:07:07,000 --> 00:07:10,000
+they will not be able to set that cookie in your user's browser
+
+105
+00:07:10,000 --> 00:07:15,000
+because browsers don't allow one site to set cookies for a different site
+
+106
+00:07:15,000 --> 00:07:20,000
+and that is how an anti-forgery token will prevent a CSRF attack.
+
+107
+00:07:20,000 --> 00:07:24,000
+So the evil application that I was building over here,
+
+108
+00:07:24,000 --> 00:07:27,000
+it wouldn't be enough just to have these inputs anymore.
+
+109
+00:07:27,000 --> 00:07:32,000
+I would also need to figure out what the user's anti-forgery token is and set a cookie
+
+110
+00:07:32,000 --> 00:07:36,000
+in their browser, that's just impossible for me to do, so I would give up.
+
+111
+00:07:36,000 --> 00:07:40,000
+But we need to get this working in the real application
+
+112
+00:07:40,000 --> 00:07:44,000
+and I have validate anti-forgery token that attribute is on my create action.
+
+113
+00:07:44,000 --> 00:07:50,000
+I also need to go into the create view for a restaurant and for this to work inside of Form,
+
+114
+00:07:50,000 --> 00:07:54,000
+I'll just use Html.AntiForgeryToken.
+
+115
+00:07:54,000 --> 00:08:02,000
+That is all that it's needed and now if I come into the browser let me refresh this page.
+
+116
+00:08:02,000 --> 00:08:10,000
+And I should be able to create a restaurant with a name of two and a city,
+
+117
+00:08:10,000 --> 00:08:13,000
+and a country of two just to see if this works.
+
+118
+00:08:13,000 --> 00:08:19,000
+And down here at the bottom on my list I can see now, I can successfully add that.
+
+119
+00:08:19,000 --> 00:08:23,000
+So one more quick summary if you're building something that uses forms authentication,
+
+120
+00:08:23,000 --> 00:08:28,000
+you have form post coming in to authorized areas add an anti-forgery token to the form
+
+121
+00:08:28,000 --> 00:08:35,000
+and validate that anti-forgery token in the action that is a destination for the post.
+
+122
+00:08:35,000 --> 00:59:00,000
+Taking these two steps will help to prevent a Cross Site Request Forgery.
+

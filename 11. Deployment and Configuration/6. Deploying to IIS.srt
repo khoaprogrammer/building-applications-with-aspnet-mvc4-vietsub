@@ -1,0 +1,420 @@
+1
+00:00:02,000 --> 00:00:04,000
+When you're ready to deploy an application, you can right click
+
+2
+00:00:04,000 --> 00:00:07,000
+on your web project and select publish.
+
+3
+00:00:07,000 --> 00:00:11,000
+Visual Studio will figure out all of the files that need to be deployed to a web server,
+
+4
+00:00:11,000 --> 00:00:13,000
+collect them all together, and push them there.
+
+5
+00:00:13,000 --> 00:00:16,000
+All you need to do is tell it how to do that.
+
+6
+00:00:16,000 --> 00:00:18,000
+The first thing you do is select a publishing profile.
+
+7
+00:00:18,000 --> 00:00:20,000
+I'll create a new profile.
+
+8
+00:00:20,000 --> 00:00:25,000
+I'll give it the name release because this will be my release mode build that I want to publish.
+
+9
+00:00:25,000 --> 00:00:29,000
+And on the next screen, I can select a publish method.
+
+10
+00:00:29,000 --> 00:00:30,000
+There's several different methods here.
+
+11
+00:00:30,000 --> 00:00:34,000
+If you need to FTP the files to the server, Visual Studio can do that.
+
+12
+00:00:34,000 --> 00:00:38,000
+If you need to just push something onto a file system, you already know the directory
+
+13
+00:00:38,000 --> 00:00:42,000
+where the webserver will serve this application from; you can also do that.
+
+14
+00:00:42,000 --> 00:00:47,000
+You can select web deploy, and just enter in a server name and the site that you want
+
+15
+00:00:47,000 --> 00:00:50,000
+and it will contact the server and push your files over.
+
+16
+00:00:50,000 --> 00:00:53,000
+You can do this with shared hosting providers on the internet.
+
+17
+00:00:53,000 --> 00:00:57,000
+You can also do it on intranet servers if you're deploying with inside your company.
+
+18
+00:00:57,000 --> 00:01:02,000
+The one catch to web deploy here is I would want to push to local host.
+
+19
+00:01:02,000 --> 00:01:07,000
+And the problem is that in order to do this, I need to be an administrator.
+
+20
+00:01:07,000 --> 00:01:10,000
+So I could re-launch Visual Studio using renams
+
+21
+00:01:10,000 --> 00:01:10,000
+( assumed spelling )
+
+22
+00:01:10,000 --> 00:01:14,000
+administrator and then right click and publish and be successful,
+
+23
+00:01:14,000 --> 00:01:16,000
+but I'm going to show you a different approach.
+
+24
+00:01:16,000 --> 00:01:19,000
+We're going to build a web deploy package.
+
+25
+00:01:19,000 --> 00:01:24,000
+A web deploy package is ultimately just a zip file, and you can take the zip file and put it
+
+26
+00:01:24,000 --> 00:01:29,000
+on a USB key or email it to a administrator at your company, and they will be able
+
+27
+00:01:29,000 --> 00:01:33,000
+to take the web deploy package and copy it to a server, and install it for you.
+
+28
+00:01:33,000 --> 00:01:36,000
+In this case, we'll be doing the installing.
+
+29
+00:01:36,000 --> 00:01:40,000
+Let me create a package -- let me create a directory under dev.
+
+30
+00:01:40,000 --> 00:01:44,000
+We'll call it Ode To Food release.
+
+31
+00:01:44,000 --> 00:01:47,000
+And I need to include .zip in the name so release.zip.
+
+32
+00:01:47,000 --> 00:01:54,000
+And actually, let me put the zip file inside of a folder called release.
+
+33
+00:01:54,000 --> 00:01:57,000
+And then I pick the site where I want this to be deployed.
+
+34
+00:01:57,000 --> 00:02:01,000
+So it could be something like default website/OdeToFood, but I actually want this
+
+35
+00:02:01,000 --> 00:02:04,000
+in the root directory of the website.
+
+36
+00:02:04,000 --> 00:02:07,000
+So if someone just goes to local host, they will see this application running.
+
+37
+00:02:07,000 --> 00:02:12,000
+So the site I wanted to deploy it to on this IIS server is default website.
+
+38
+00:02:12,000 --> 00:02:18,000
+And that's actually just a parameter that you can change when you deploy it.
+
+39
+00:02:18,000 --> 00:02:22,000
+But now, if I click next, the next screen will go through what sort
+
+40
+00:02:22,000 --> 00:02:25,000
+of configuration do I want it to build in; release or to bug.
+
+41
+00:02:25,000 --> 00:02:30,000
+We will deploy in release mode and I can also pick a connection string
+
+42
+00:02:30,000 --> 00:02:32,000
+to use for default connection.
+
+43
+00:02:32,000 --> 00:02:35,000
+Remember, right now default connection is the connection string that's
+
+44
+00:02:35,000 --> 00:02:38,000
+in the web.config that's pointing to local DB.
+
+45
+00:02:38,000 --> 00:02:45,000
+When I deploy this to IIS, I want it to point to that sql express instance that I just installed.
+
+46
+00:02:45,000 --> 00:02:49,000
+So I will say that the default connection should actually point here.
+
+47
+00:02:49,000 --> 00:02:52,000
+The server name will be dot/sqlexpress.
+
+48
+00:02:52,000 --> 00:02:55,000
+I will use Windows authentication to connect.
+
+49
+00:02:55,000 --> 00:02:59,000
+We'll see how that creates a slight hiccup, but we'll work around that,
+
+50
+00:02:59,000 --> 00:03:06,000
+and the database that we will use; I will call it OTF production just
+
+51
+00:03:06,000 --> 00:03:07,000
+to make this dramatically different.
+
+52
+00:03:07,000 --> 00:03:09,000
+And select okay.
+
+53
+00:03:09,000 --> 00:03:14,000
+We can say yes, go ahead create this database for me.
+
+54
+00:03:14,000 --> 00:03:19,000
+And when this application is deployed, that connection string will be substituted
+
+55
+00:03:19,000 --> 00:03:24,000
+into the default connection, and replace whatever we are using there for development.
+
+56
+00:03:24,000 --> 00:03:28,000
+And then this checkbox here, execute first code migrations.
+
+57
+00:03:28,000 --> 00:03:33,000
+That's where I was telling you if you select this checkbox, Visual Studio will also add a bit
+
+58
+00:03:33,000 --> 00:03:36,000
+of configuration to your web.config file that will automatically run
+
+59
+00:03:36,000 --> 00:03:38,000
+into the framework code first migrations.
+
+60
+00:03:38,000 --> 00:03:43,000
+But we're actually going to explicitly run the migrations in our code,
+
+61
+00:03:43,000 --> 00:03:45,000
+so I'm going to leave that unselected.
+
+62
+00:03:45,000 --> 00:03:50,000
+Then there's a preview screen, which will tell you, you are about to create release.zip.
+
+63
+00:03:50,000 --> 00:03:54,000
+And let me just click publish.
+
+64
+00:03:54,000 --> 00:03:56,000
+All the files will be packaged up together.
+
+65
+00:03:56,000 --> 00:04:04,000
+And what I can do now is open up a command prompt; make sure I right click it and say run
+
+66
+00:04:04,000 --> 00:04:08,000
+as administrator because I will need administrator privileges
+
+67
+00:04:08,000 --> 00:04:10,000
+to actually get this installed into IIS.
+
+68
+00:04:10,000 --> 00:04:14,000
+And then come into that directory where I placed the zip file,
+
+69
+00:04:14,000 --> 00:04:19,000
+and inside of here I'll find the zip file.
+
+70
+00:04:19,000 --> 00:04:24,000
+I'll also find a command script that I can run that will do the installation for me.
+
+71
+00:04:24,000 --> 00:04:29,000
+And if I run it without any parameters, it will pop up a little help and notepad
+
+72
+00:04:29,000 --> 00:04:32,000
+that will tell me there's two ways to run this.
+
+73
+00:04:32,000 --> 00:04:36,000
+You can pass the /T to test the deployment and simulate what would happen,
+
+74
+00:04:36,000 --> 00:04:39,000
+and it will show you any errors that might occur.
+
+75
+00:04:39,000 --> 00:04:43,000
+Or, you can do a /Y to just go ahead and do the full deployment.
+
+76
+00:04:43,000 --> 00:04:47,000
+You can also point it to a remote computer, pass in a username and password;
+
+77
+00:04:47,000 --> 00:04:49,000
+all sorts of additional flags you could use.
+
+78
+00:04:49,000 --> 00:04:55,000
+Let's see what happens if we run this with a /T.
+
+79
+00:04:55,000 --> 00:05:01,000
+I don't see any error messages, so this just might go through if I run it with a /Y.
+
+80
+00:05:01,000 --> 00:05:09,000
+And now, if I come back into internet explorer, where we used to see an IIS 8 banner page,
+
+81
+00:05:09,000 --> 00:05:15,000
+if I refresh, we'll see our application trying to make a connection
+
+82
+00:05:15,000 --> 00:05:17,000
+to the database, but it can't quite get there.
+
+83
+00:05:17,000 --> 00:05:19,000
+It doesn't have permission to do it.
+
+84
+00:05:19,000 --> 00:05:26,000
+And this is because the IIS worker process that we looked at earlier W3WP.EXE runs
+
+85
+00:05:26,000 --> 00:05:31,000
+under an identity known as IIS app pool default app pool.
+
+86
+00:05:31,000 --> 00:05:34,000
+And this user account doesn't have any permissions
+
+87
+00:05:34,000 --> 00:05:36,000
+in the database or on the server at all.
+
+88
+00:05:36,000 --> 00:05:41,000
+When we're using local DB for development, we're administrators for local DB
+
+89
+00:05:41,000 --> 00:05:45,000
+and IIS express is running under our identity, so we can do anything with local DB.
+
+90
+00:05:45,000 --> 00:05:49,000
+But to get this application running with a production database,
+
+91
+00:05:49,000 --> 00:05:54,000
+I need to give some permissions to that default app pool account.
+
+92
+00:05:54,000 --> 00:06:01,000
+So I'll open up sql server management studio, and under security there will be logins.
+
+93
+00:06:01,000 --> 00:06:05,000
+What I want to do is create a new login for that account.
+
+94
+00:06:05,000 --> 00:06:09,000
+So the account is IIS app pools/default app pool.
+
+95
+00:06:09,000 --> 00:06:17,000
+And I'll come over into user mapping, and say please give this login the ability to get
+
+96
+00:06:17,000 --> 00:06:23,000
+into OTF production as a user, and give this login the ability to read data,
+
+97
+00:06:23,000 --> 00:06:26,000
+to write data, and to execute DDL.
+
+98
+00:06:26,000 --> 00:06:29,000
+Essentially execute things like create table.
+
+99
+00:06:29,000 --> 00:06:32,000
+The entity framework migrations will need to modify the schema.
+
+100
+00:06:32,000 --> 00:06:34,000
+We'll need to be DDL admin here.
+
+101
+00:06:34,000 --> 00:06:38,000
+And now click okay.
+
+102
+00:06:38,000 --> 00:06:45,000
+And now come back and refresh the browser and our application is now running under IIS 8.
+
+103
+00:06:45,000 --> 00:06:50,000
+We have our database in place; we have our C data in the database.
+
+104
+00:06:50,000 --> 00:06:54,000
+I should be able to log in, create restaurants, create reviews, and use all the features
+
+105
+00:06:54,000 --> 00:59:00,000
+that we've built into this application.
+

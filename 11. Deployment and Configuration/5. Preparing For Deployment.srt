@@ -1,0 +1,332 @@
+1
+00:00:01,000 --> 00:00:04,000
+There's just a couple housekeeping tasks that I want to take care
+
+2
+00:00:04,000 --> 00:00:07,000
+of to get my application ready for deployment.
+
+3
+00:00:07,000 --> 00:00:10,000
+These mostly revolve around the database.
+
+4
+00:00:10,000 --> 00:00:14,000
+The first thing I'd like to do is re-do our database migrations.
+
+5
+00:00:14,000 --> 00:00:16,000
+We've been a little loose with our migrations.
+
+6
+00:00:16,000 --> 00:00:19,000
+We've been running with automatic migrations enabled, which means,
+
+7
+00:00:19,000 --> 00:00:24,000
+we don't get explicit migration scripts; or migration files in the migrations folder.
+
+8
+00:00:24,000 --> 00:00:28,000
+Instead when we go to the package manager and go to update database,
+
+9
+00:00:28,000 --> 00:00:32,000
+it just makes whatever changes in the database that it sees fit to do.
+
+10
+00:00:32,000 --> 00:00:35,000
+Whatever is needed to sink up the schema with our models.
+
+11
+00:00:35,000 --> 00:00:39,000
+But for my first deployment, I'd like to baseline the database and get us into a state
+
+12
+00:00:39,000 --> 00:00:43,000
+where we will not be using automatic migrations anymore.
+
+13
+00:00:43,000 --> 00:00:48,000
+We'll be a little more careful because after we deploy, we'll get live data in the database.
+
+14
+00:00:48,000 --> 00:00:52,000
+We need to start taking care of things, and making sure we're managing the schema properly.
+
+15
+00:00:52,000 --> 00:00:53,000
+At least that's how I feel.
+
+16
+00:00:53,000 --> 00:00:56,000
+I essentially want to restart the migrations.
+
+17
+00:00:56,000 --> 00:00:59,000
+There's nothing in the database that I need right now.
+
+18
+00:00:59,000 --> 00:01:03,000
+All the data comes from our seed method down here, which while I'm in here,
+
+19
+00:01:03,000 --> 00:01:09,000
+I'm also going to remove the 1000 restaurants that we create just to test paging and sorting
+
+20
+00:01:09,000 --> 00:01:11,000
+because I don't want to deploy those either.
+
+21
+00:01:11,000 --> 00:01:17,000
+And I will also delete our initial database migration script.
+
+22
+00:01:17,000 --> 00:01:21,000
+I'm just going to recreate this from scratch using a brand new database.
+
+23
+00:01:21,000 --> 00:01:26,000
+And the definition of the schema will be based on what is in our model classes right now;
+
+24
+00:01:26,000 --> 00:01:28,000
+what's a restaurant, what's a review.
+
+25
+00:01:28,000 --> 00:01:32,000
+And the best way to do this with entity framework migrations is to come in
+
+26
+00:01:32,000 --> 00:01:37,000
+and also delete your database, so it doesn't see anything there and knows
+
+27
+00:01:37,000 --> 00:01:39,000
+that you want to start from scratch.
+
+28
+00:01:39,000 --> 00:01:43,000
+And I can do this through the sql server management studio just by highlighting Ode
+
+29
+00:01:43,000 --> 00:01:47,000
+To Food and right-clicking and saying delete; or hitting the delete key.
+
+30
+00:01:47,000 --> 00:01:51,000
+I'm going to tell sql management studio to close any existing connections
+
+31
+00:01:51,000 --> 00:01:53,000
+to make sure we can drop this database.
+
+32
+00:01:53,000 --> 00:01:54,000
+And it looks like it's gone.
+
+33
+00:01:54,000 --> 00:02:02,000
+And now reopen the package manager console, and let's create our initial migration.
+
+34
+00:02:02,000 --> 00:02:05,000
+Remember, we're not using automatic migrations anymore.
+
+35
+00:02:05,000 --> 00:02:09,000
+We won't be able to just say update database and have it create a database for us.
+
+36
+00:02:09,000 --> 00:02:12,000
+We need to have a migration script there first.
+
+37
+00:02:12,000 --> 00:02:16,000
+So add migration, initial create.
+
+38
+00:02:16,000 --> 00:02:22,000
+And I need to make sure that this executes us under the right project;
+
+39
+00:02:22,000 --> 00:02:24,000
+not OdeToFood.test, but OdeToFood.
+
+40
+00:02:24,000 --> 00:02:30,000
+That's where my entity framework DB context class is.
+
+41
+00:02:30,000 --> 00:02:34,000
+And now we will have an initial create that includes everything that we've been using,
+
+42
+00:02:34,000 --> 00:02:37,000
+the user profile class, restaurants, restaurant reviews.
+
+43
+00:02:37,000 --> 00:02:40,000
+And this is the point where I would also go through this file
+
+44
+00:02:40,000 --> 00:02:43,000
+and make sure all the column sizes are reasonable.
+
+45
+00:02:43,000 --> 00:02:45,000
+Make sure indexes are applied.
+
+46
+00:02:45,000 --> 00:02:47,000
+But for this application we can forge ahead.
+
+47
+00:02:47,000 --> 00:02:51,000
+Now, the other thing I'm going to want to do with this application is that it when deploys,
+
+48
+00:02:51,000 --> 00:02:54,000
+I want it to run the migrations automatically.
+
+49
+00:02:54,000 --> 00:02:58,000
+There's a way to do that through configuration, but we're actually going to do it through code.
+
+50
+00:02:58,000 --> 00:03:03,000
+And the other thing I want to do before I forget is make sure
+
+51
+00:03:03,000 --> 00:03:06,000
+that web security does not get initialized more than once
+
+52
+00:03:06,000 --> 00:03:09,000
+because if you call initialized database more than once,
+
+53
+00:03:09,000 --> 00:03:13,000
+this line of code will throw an exception and stop everything.
+
+54
+00:03:13,000 --> 00:03:19,000
+It's very easy to check if web security is initialized.
+
+55
+00:03:19,000 --> 00:03:24,000
+If web security initialized -- and put a not in front of here --
+
+56
+00:03:24,000 --> 00:03:29,000
+so if it's not initialized, we will initialize the database.
+
+57
+00:03:29,000 --> 00:03:32,000
+And the reason I'm putting that check there is because now we're going
+
+58
+00:03:32,000 --> 00:03:36,000
+to be running migrations when the web application runs.
+
+59
+00:03:36,000 --> 00:03:40,000
+So this initialized database connection can run when the web application is running.
+
+60
+00:03:40,000 --> 00:03:45,000
+And we have another call to initialize the database connection here during
+
+61
+00:03:45,000 --> 00:03:48,000
+application start.
+
+62
+00:03:48,000 --> 00:03:54,000
+I'm also going to put a guard around this.
+
+63
+00:03:54,000 --> 00:03:59,000
+Although I'm fairly certain it's always going to run before we reach this point because I want
+
+64
+00:03:59,000 --> 00:04:04,000
+to run the migrations before we get into this point in application start.
+
+65
+00:04:04,000 --> 00:04:07,000
+I'm still going to put that check there just to make sure it doesn't throw and exception.
+
+66
+00:04:07,000 --> 00:04:13,000
+And it is during the application start event when I want to run the migrations,
+
+67
+00:04:13,000 --> 00:04:17,000
+and I can do that using a class called DB migrator.
+
+68
+00:04:17,000 --> 00:04:22,000
+It is in the system.data.entity.migrations namespace.
+
+69
+00:04:22,000 --> 00:04:24,000
+So I'm just going to bring that in.
+
+70
+00:04:24,000 --> 00:04:29,000
+And we give it our configuration class that is in our project in a migrations folder.
+
+71
+00:04:29,000 --> 00:04:31,000
+So also bring that namespace in.
+
+72
+00:04:31,000 --> 00:04:32,000
+And then just tell it to update.
+
+73
+00:04:32,000 --> 00:04:35,000
+That will run any schema changes that need applied.
+
+74
+00:04:35,000 --> 00:04:38,000
+That will run the seed method to make sure the database is populated.
+
+75
+00:04:38,000 --> 00:04:44,000
+And the reason I'm doing this in code instead of in my web.config file, which is possible is
+
+76
+00:04:44,000 --> 00:04:48,000
+because I want to make very sure about when these migrations run.
+
+77
+00:04:48,000 --> 00:04:53,000
+I want them to run at this point before web security tries to initialize the database.
+
+78
+00:04:53,000 --> 00:04:57,000
+If you're not using forms authentication or if you are using forms authentication,
+
+79
+00:04:57,000 --> 00:05:01,000
+but not using web security, you wouldn't have to use this approach.
+
+80
+00:05:01,000 --> 00:05:05,000
+You could just put some configuration in place that would run the migrations automatically.
+
+81
+00:05:05,000 --> 00:05:09,000
+And the tools as we'll see in just a bit, will automatically add that configuration for us.
+
+82
+00:05:09,000 --> 00:05:11,000
+I'll point that out when we get to it.
+
+83
+00:05:11,000 --> 00:59:00,000
+But for now, I think we've reached the point where we are ready to deploy.
+

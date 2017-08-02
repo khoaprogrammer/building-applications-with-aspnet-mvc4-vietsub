@@ -1,0 +1,736 @@
+1
+00:00:02,000 --> 00:00:06,000
+Let's implement a listing of reviews for each restaurant.
+
+2
+00:00:06,000 --> 00:00:10,000
+Since we're going to not use this details view anymore I'm going to delete
+
+3
+00:00:10,000 --> 00:00:15,000
+that from my views folder and I'll also delete the details action for my restaurant controller.
+
+4
+00:00:15,000 --> 00:00:18,000
+And since we don't have a details action I need
+
+5
+00:00:18,000 --> 00:00:23,000
+to change the index view that's displaying all the restaurant to not have a link to details,
+
+6
+00:00:23,000 --> 00:00:28,000
+instead we will say here's where you can go to see the reviews for this restaurant
+
+7
+00:00:28,000 --> 00:00:32,000
+and that will go to the index action on the reviews controller.
+
+8
+00:00:32,000 --> 00:00:37,000
+And now there's a little set of bug here in the way that I've invoked to action link
+
+9
+00:00:37,000 --> 00:00:39,000
+because I've picked the wrong overload.
+
+10
+00:00:39,000 --> 00:00:44,000
+I expect that ID equals item.ID will go as the route values parameter.
+
+11
+00:00:44,000 --> 00:00:48,000
+Because it did before I just added one more thing here, the name of the controller to call,
+
+12
+00:00:48,000 --> 00:00:50,000
+why wouldn't it go to route values.
+
+13
+00:00:50,000 --> 00:00:54,000
+And just because of the way that the action link overloads
+
+14
+00:00:54,000 --> 00:00:57,000
+or design you'll notice I'm not passing this as route values,
+
+15
+00:00:57,000 --> 00:00:59,000
+I'm passing this as htmlAttributes.
+
+16
+00:00:59,000 --> 00:01:06,000
+And the string reviews is being passed as route values and I see this happen all the time I want
+
+17
+00:01:06,000 --> 00:01:09,000
+to be able to show you how to spot this particular bug.
+
+18
+00:01:09,000 --> 00:01:16,000
+If I save this view and refresh the browser and I hover over one of the reviews links that's
+
+19
+00:01:16,000 --> 00:01:21,000
+about to appear I'll see in the little chrome pop window that previous the url
+
+20
+00:01:21,000 --> 00:01:28,000
+that I do not have an ID in the url, instead I have restaurant query string length equal seven.
+
+21
+00:01:28,000 --> 00:01:32,000
+Anytime you see length equal seven you probably picked the wrong over load
+
+22
+00:01:32,000 --> 00:01:37,000
+of action link unless you really did mean to pass length in the query string.
+
+23
+00:01:37,000 --> 00:01:43,000
+The only thing I need to do to fix this is to pass an additional parameter
+
+24
+00:01:43,000 --> 00:01:49,000
+so that reviews becomes the controller name, ID equals item.ID goes to route values
+
+25
+00:01:49,000 --> 00:01:52,000
+and this last parameter goes to htmlAttributes.
+
+26
+00:01:52,000 --> 00:01:56,000
+htmlAttributes by the way, that's a way to add additional attributes
+
+27
+00:01:56,000 --> 00:01:58,000
+to that anchor tag that is being produced.
+
+28
+00:01:58,000 --> 00:02:01,000
+So if you wanted to give that anchor tag a special class
+
+29
+00:02:01,000 --> 00:02:05,000
+or title attribute you could specify another anonymously typed object here something
+
+30
+00:02:05,000 --> 00:02:12,000
+like new title equals foo and that will be emitted into the html.
+
+31
+00:02:12,000 --> 00:02:17,000
+The passing null here will suffice if I don't want to set any htmlAttributes
+
+32
+00:02:17,000 --> 00:02:21,000
+that should also fix the link if I come back out here and refresh the view.
+
+33
+00:02:21,000 --> 00:02:27,000
+Now, I can see that this looks like what I need, slash review slash index slash one or slash two,
+
+34
+00:02:27,000 --> 00:02:30,000
+so the ID is now in the url, very good.
+
+35
+00:02:30,000 --> 00:02:34,000
+But if I click that link we'll have an exception because we comment it
+
+36
+00:02:34,000 --> 00:02:37,000
+out our reviews controller in an earlier module.
+
+37
+00:02:37,000 --> 00:02:42,000
+What I want to do now is select everything with control A uncomment with control KU
+
+38
+00:02:42,000 --> 00:02:47,000
+and delete code that we don't need anymore, for instance we don't need this in memory data.
+
+39
+00:02:47,000 --> 00:02:52,000
+Really, the only thing we need is we'll just start back with the index view that's right here
+
+40
+00:02:52,000 --> 00:02:54,000
+at the very top of the controller.
+
+41
+00:02:54,000 --> 00:02:58,000
+And in fact we don't need this best review anymore.
+
+42
+00:02:58,000 --> 00:03:02,000
+We deleted that from the layout action in the previous module.
+
+43
+00:03:02,000 --> 00:03:04,000
+What we do need is a data source.
+
+44
+00:03:04,000 --> 00:03:08,000
+So let me go ahead and add an OdeToFoodDb private variable and instantiate
+
+45
+00:03:08,000 --> 00:03:10,000
+up here when the controller is created.
+
+46
+00:03:10,000 --> 00:03:14,000
+Now, we'll also go ahead and override dispose.
+
+47
+00:03:14,000 --> 00:03:17,000
+You can just type override, have this lists pop up.
+
+48
+00:03:17,000 --> 00:03:23,000
+Pick the method that you want to override and then type code into it.
+
+49
+00:03:23,000 --> 00:03:23,000
+This looks good.
+
+50
+00:03:23,000 --> 00:03:29,000
+And now, what we'll do is change the index action around.
+
+51
+00:03:29,000 --> 00:03:32,000
+So, the index action will receive an Id parameter.
+
+52
+00:03:32,000 --> 00:03:34,000
+And what can be a little bit confusing here is
+
+53
+00:03:34,000 --> 00:03:38,000
+that this Id parameter is not the Id for overview.
+
+54
+00:03:38,000 --> 00:03:42,000
+Typically, when you're working with an Id inside of the controller it's an Id for the entity
+
+55
+00:03:42,000 --> 00:03:45,000
+that that controller is centered around.
+
+56
+00:03:45,000 --> 00:03:48,000
+Instead this is an ID that represents a restaurant Id.
+
+57
+00:03:48,000 --> 00:03:50,000
+That's a little bit confusing.
+
+58
+00:03:50,000 --> 00:03:52,000
+I could in the index view say instead
+
+59
+00:03:52,000 --> 00:03:58,000
+of Id equals item.Id I could say restaurant Id equals item.Id
+
+60
+00:03:58,000 --> 00:04:01,000
+and pass restaurant Id along in the query string.
+
+61
+00:04:01,000 --> 00:04:04,000
+Remember the routing engine doesn't know anything about restaurant Id in the URL
+
+62
+00:04:04,000 --> 00:04:07,000
+so we'd have to go in the query string.
+
+63
+00:04:07,000 --> 00:04:12,000
+I could add a new route if I wanted a restaurant Id to appear in the URL.
+
+64
+00:04:12,000 --> 00:04:14,000
+But I want to show you another option.
+
+65
+00:04:14,000 --> 00:04:23,000
+I'm just trying to change the name of this from Id to restaurant Id and instead
+
+66
+00:04:23,000 --> 00:04:26,000
+of changing the routes or changing where this parameter is passed,
+
+67
+00:04:26,000 --> 00:04:28,000
+I'm putting it into the query string, I'm just going to alias.
+
+68
+00:04:28,000 --> 00:04:31,000
+I can do that with the bind attribute.
+
+69
+00:04:31,000 --> 00:04:36,000
+But bind allows you to do is tell the MVC Model Binder that when it goes to look
+
+70
+00:04:36,000 --> 00:04:43,000
+for the restaurant Id parameter value look for something called Id
+
+71
+00:04:43,000 --> 00:04:46,000
+which is not very obvious syntax I know,
+
+72
+00:04:46,000 --> 00:04:48,000
+but that's essentially what this attribute is going to do.
+
+73
+00:04:48,000 --> 00:04:51,000
+When it looks for restaurant Id it will look for with the name of Id.
+
+74
+00:04:51,000 --> 00:04:55,000
+And now I can paste on some code that will go out and find
+
+75
+00:04:55,000 --> 00:04:58,000
+that restaurant by its restaurant Id.
+
+76
+00:04:58,000 --> 00:05:02,000
+If it's not equal to null we will render a view with that restaurant.
+
+77
+00:05:02,000 --> 00:05:04,000
+Otherwise we'll return a four for error.
+
+78
+00:05:04,000 --> 00:05:09,000
+And at this point we don't have any views for the reviews controller.
+
+79
+00:05:09,000 --> 00:05:11,000
+So, we're going to need to add a view.
+
+80
+00:05:11,000 --> 00:05:12,000
+I'll add an index view.
+
+81
+00:05:12,000 --> 00:05:13,000
+It's going to use razor.
+
+82
+00:05:13,000 --> 00:05:18,000
+I wanted to be strongly typed against a restaurant review.
+
+83
+00:05:18,000 --> 00:05:22,000
+Even though we're passing in a restaurant I'm going to strongly type it to restaurant review
+
+84
+00:05:22,000 --> 00:05:26,000
+because I want the scaffolding to create as much of the HTML forming as possible.
+
+85
+00:05:26,000 --> 00:05:30,000
+We're going to need to go in and fix this up because we're actually passing
+
+86
+00:05:30,000 --> 00:05:33,000
+in a restaurant not a restaurant review.
+
+87
+00:05:33,000 --> 00:05:33,000
+But that's okay.
+
+88
+00:05:33,000 --> 00:05:35,000
+This is going to help me.
+
+89
+00:05:35,000 --> 00:05:39,000
+When I click add I'm going to do a couple things.
+
+90
+00:05:39,000 --> 00:05:45,000
+First of all let me copy this model directive because it's going to come in useful here just
+
+91
+00:05:45,000 --> 00:05:51,000
+in a minute and change the model to say, no, you don't need a restaurant review.
+
+92
+00:05:51,000 --> 00:05:53,000
+What you'll be receiving is a restaurant.
+
+93
+00:05:53,000 --> 00:06:00,000
+And that means I could change this H2 tag to say something like reviews for at Model.Name
+
+94
+00:06:00,000 --> 00:06:07,000
+and that will give me the restaurant name.
+
+95
+00:06:07,000 --> 00:06:11,000
+And now let me take that model directive actually and paste it right here
+
+96
+00:06:11,000 --> 00:06:15,000
+and take all the rest of those code out because this code
+
+97
+00:06:15,000 --> 00:06:19,000
+that the scaffolding generated is here towards iterating
+
+98
+00:06:19,000 --> 00:06:22,000
+through a collection of reviews and writing them out.
+
+99
+00:06:22,000 --> 00:06:25,000
+But the model for this view is a restaurant.
+
+100
+00:06:25,000 --> 00:06:29,000
+What I want to do is create a partial view that will take care of rendering this table for me
+
+101
+00:06:29,000 --> 00:06:35,000
+and the model for that partial view will be an IEnumerable of restaurant review.
+
+102
+00:06:35,000 --> 00:06:39,000
+Inside of the reviews folder I'll create a new partial view.
+
+103
+00:06:39,000 --> 00:06:42,000
+Let's call it Reviews.
+
+104
+00:06:42,000 --> 00:06:45,000
+Using a Razor I strongly type to restaurant review
+
+105
+00:06:45,000 --> 00:06:48,000
+and we'll create it as a partial view of course.
+
+106
+00:06:48,000 --> 00:06:49,000
+I'll click Add.
+
+107
+00:06:49,000 --> 00:06:53,000
+Actually, delete the model directive that's here and paste this in.
+
+108
+00:06:53,000 --> 00:06:56,000
+This gives me everything that I need.
+
+109
+00:06:56,000 --> 00:06:59,000
+Our model is going to be IEnumerable of restaurant review.
+
+110
+00:06:59,000 --> 00:07:02,000
+I wanted to create a table of these reviews.
+
+111
+00:07:02,000 --> 00:07:06,000
+I don't necessarily want it to display the restaurant Id because that's meaningless
+
+112
+00:07:06,000 --> 00:07:09,000
+to an end user so let's delete that column.
+
+113
+00:07:09,000 --> 00:07:13,000
+I'll also delete that down here where it's displaying the value
+
+114
+00:07:13,000 --> 00:07:15,000
+and I think we'll just go with an edit link.
+
+115
+00:07:15,000 --> 00:07:20,000
+So, delete the details and the delete link and save everything.
+
+116
+00:07:20,000 --> 00:07:22,000
+Let me do a build and see if this works.
+
+117
+00:07:22,000 --> 00:07:27,000
+Oh, it won't work yet because back in the index view we need to render that partial.
+
+118
+00:07:27,000 --> 00:07:29,000
+I'll do that ahead of the create link.
+
+119
+00:07:29,000 --> 00:07:38,000
+So, html.partial, please render the reviews view for me and pass in Model.Reviews.
+
+120
+00:07:38,000 --> 00:07:43,000
+I'll take the reviews that are associated with this restaurant and pass it in to
+
+121
+00:07:43,000 --> 00:07:45,000
+that partial view as the strongly type model.
+
+122
+00:07:45,000 --> 00:07:47,000
+It will take care or rendering the table for me.
+
+123
+00:07:47,000 --> 00:07:53,000
+And now, let me do another build just to make sure everything is out there.
+
+124
+00:07:53,000 --> 00:07:55,000
+And let's refresh this page.
+
+125
+00:07:55,000 --> 00:08:02,000
+And let me go to the reviews for this first restaurant that I know there is a review
+
+126
+00:08:02,000 --> 00:08:04,000
+in there because we see that the database with a review.
+
+127
+00:08:04,000 --> 00:08:08,000
+But when I click that link I'll get a very strange air.
+
+128
+00:08:08,000 --> 00:08:10,000
+This is something that you could spend a long time debugging
+
+129
+00:08:10,000 --> 00:08:12,000
+if you don't know what's going on.
+
+130
+00:08:12,000 --> 00:08:16,000
+Because the error is a little bit misleading it's telling you that you passed
+
+131
+00:08:16,000 --> 00:08:18,000
+in a restaurant to this partial view.
+
+132
+00:08:18,000 --> 00:08:22,000
+But the partial view needs an IEnumerable of Restaurant Review.
+
+133
+00:08:22,000 --> 00:08:24,000
+And then you'll go back and look at your code, and you'll say,
+
+134
+00:08:24,000 --> 00:08:27,000
+but I'm not passing a restaurant to this partial view.
+
+135
+00:08:27,000 --> 00:08:33,000
+I'm passing in at Model.Reviews which should be a collection of restaurant review.
+
+136
+00:08:33,000 --> 00:08:34,000
+What is debug?
+
+137
+00:08:34,000 --> 00:08:36,000
+What's broken about the runtime here?
+
+138
+00:08:36,000 --> 00:08:40,000
+But the problem is not that you're passing the wrong thing.
+
+139
+00:08:40,000 --> 00:08:44,000
+The problem is that these reviews property is going to be null by default.
+
+140
+00:08:44,000 --> 00:08:47,000
+And this is something that you run into with the entity framework.
+
+141
+00:08:47,000 --> 00:08:50,000
+There's several different ways to solve this problem.
+
+142
+00:08:50,000 --> 00:08:54,000
+So, just to make it clear let me open up the Restaurant class and tell you
+
+143
+00:08:54,000 --> 00:08:58,000
+that in the controller when we do Restaurants.Find
+
+144
+00:08:58,000 --> 00:09:02,000
+in passing an Id what the entity framework will do is happily load
+
+145
+00:09:02,000 --> 00:09:05,000
+up these properties, Id, Name, City and Country.
+
+146
+00:09:05,000 --> 00:09:10,000
+It won't touch reviews because that's information that's in a different table.
+
+147
+00:09:10,000 --> 00:09:13,000
+There's a one to many relationship between restaurant and reviews.
+
+148
+00:09:13,000 --> 00:09:18,000
+And the entity framework just doesn't load up this associated child collections automatically.
+
+149
+00:09:18,000 --> 00:09:22,000
+At least not in this scenario the way I have things to find here.
+
+150
+00:09:22,000 --> 00:09:26,000
+There's at least six different ways to solve this problem.
+
+151
+00:09:26,000 --> 00:09:31,000
+I'll show you the easiest one which is just to add the virtual keyword here.
+
+152
+00:09:31,000 --> 00:09:36,000
+Now, what the entity framework will do when you spell virtual correctly is that it will
+
+153
+00:09:36,000 --> 00:09:39,000
+at runtime create a little wrapper for this restaurant class
+
+154
+00:09:39,000 --> 00:09:42,000
+and intercept recalls to the reviews property.
+
+155
+00:09:42,000 --> 00:09:44,000
+So that when you go to get to the reviews
+
+156
+00:09:44,000 --> 00:09:48,000
+for a restaurant it will make sure that it loads them up for you.
+
+157
+00:09:48,000 --> 00:09:51,000
+And that requires a second query to the database.
+
+158
+00:09:51,000 --> 00:09:56,000
+In other words Db.Restaurants.Find will just pull in the restaurant information.
+
+159
+00:09:56,000 --> 00:10:01,000
+Later in the view when we say Model.Reviews behind the scenes the entity framework will
+
+160
+00:10:01,000 --> 00:10:03,000
+issue a second query to pull in those reviews.
+
+161
+00:10:03,000 --> 00:10:06,000
+And you might say, but that's data access from a view
+
+162
+00:10:06,000 --> 00:10:09,000
+and I'll say that's fine because it's implicit.
+
+163
+00:10:09,000 --> 00:10:13,000
+I'm not writing explicit code data access code to load something.
+
+164
+00:10:13,000 --> 00:10:15,000
+It's just happening behind the scenes for me.
+
+165
+00:10:15,000 --> 00:10:17,000
+But some people will worry that there are two queries instead
+
+166
+00:10:17,000 --> 00:10:19,000
+of one to get all this information.
+
+167
+00:10:19,000 --> 00:10:23,000
+And for now, I'll just point you to some documentation that if you read
+
+168
+00:10:23,000 --> 00:10:28,000
+through it will explain how to eagerly load related information at the time you do a query.
+
+169
+00:10:28,000 --> 00:10:33,000
+I can get you down to just a single query to pull in a restaurant and a bunch of reviews.
+
+170
+00:10:33,000 --> 00:10:36,000
+As I said there's a number of different ways to solve this.
+
+171
+00:10:36,000 --> 00:10:40,000
+But just having the virtual keyword there is one of the easiest solutions
+
+172
+00:10:40,000 --> 00:10:42,000
+if you're not too worried about performance.
+
+173
+00:10:42,000 --> 00:10:49,000
+So, with the virtual keyword in place on a Restaurant Reviews, now I've done a build.
+
+174
+00:10:49,000 --> 00:10:50,000
+Let me go in and refresh this.
+
+175
+00:10:50,000 --> 00:10:53,000
+And this area should go away.
+
+176
+00:10:53,000 --> 00:10:58,000
+So a very non intuitive error what is going now because we have some reviews here
+
+177
+00:10:58,000 --> 00:11:02,000
+and it should also work when there are on reviews
+
+178
+00:11:02,000 --> 00:11:06,000
+because behind the scenes the entity framework is making sure it gives you some collection even
+
+179
+00:11:06,000 --> 00:11:07,000
+if it's an empty collection.
+
+180
+00:11:07,000 --> 00:11:12,000
+Now, again, our display isn't the prettiest display in the world.
+
+181
+00:11:12,000 --> 00:11:15,000
+It would be nice not to have ReviewerName, all this one word.
+
+182
+00:11:15,000 --> 00:11:18,000
+We'll come back and fix that later when we start looking
+
+183
+00:11:18,000 --> 00:11:21,000
+at some annotations that you can add to a model.
+
+184
+00:11:21,000 --> 00:59:00,000
+For right now I want to focus on creating a new review.
+

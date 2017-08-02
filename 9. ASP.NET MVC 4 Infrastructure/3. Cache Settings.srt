@@ -1,0 +1,568 @@
+1
+00:00:00,000 --> 00:00:01,000
+( Silence )
+
+2
+00:00:01,000 --> 00:00:03,000
+In addition to duration, the output cache attribute supports a number
+
+3
+00:00:03,000 --> 00:00:05,000
+of different settings.
+
+4
+00:00:05,000 --> 00:00:09,000
+These settings are all available from the underlying ASP.net cache engine.
+
+5
+00:00:09,000 --> 00:00:11,000
+It's the same engine that web forms will use
+
+6
+00:00:11,000 --> 00:00:14,000
+which is why I call caching part of the ASP.net infrastructure.
+
+7
+00:00:14,000 --> 00:00:18,000
+It's not something that's specific to just the MVC framework
+
+8
+00:00:18,000 --> 00:00:21,000
+but one of these settings is the vary by (phonetic) parameter.
+
+9
+00:00:21,000 --> 00:00:26,000
+The default setting for this is star or asterisk which means vary by every parameter possible
+
+10
+00:00:26,000 --> 00:00:28,000
+and that is usually the setting that you want.
+
+11
+00:00:28,000 --> 00:00:32,000
+That's the default because you normally do not want to return the same cached response
+
+12
+00:00:32,000 --> 00:00:37,000
+for different parameters and by parameters think of things like query string parameters.
+
+13
+00:00:37,000 --> 00:00:40,000
+A query string parameter can contain a search term and you wouldn't want
+
+14
+00:00:40,000 --> 00:00:44,000
+to return the same cached response when someone is searching for a
+
+15
+00:00:44,000 --> 00:00:50,000
+and b. Those would be two different results for two different search strings but if I do want
+
+16
+00:00:50,000 --> 00:00:53,000
+to take control over this, I could say vary by param equals none
+
+17
+00:00:53,000 --> 00:00:55,000
+which means don't vary by any parameter.
+
+18
+00:00:55,000 --> 00:00:59,000
+Always return the same response regardless of what you see in the query string
+
+19
+00:00:59,000 --> 00:01:03,000
+or I can say vary by and specify the name of a parameter that I want to vary by.
+
+20
+00:01:03,000 --> 00:01:08,000
+And you can have multiple names in there separated by a semicolon.
+
+21
+00:01:08,000 --> 00:01:13,000
+So if I were to say vary by a param search term and someone searches
+
+22
+00:01:13,000 --> 00:01:19,000
+and passes along the parameter value of a. That would be one cached response that ASP.net saves.
+
+23
+00:01:19,000 --> 00:01:22,000
+A little bit someone comes along and passes a search term of z.
+
+24
+00:01:22,000 --> 00:01:26,000
+That would be a second cached result that the ASP.net saves and it would only use
+
+25
+00:01:26,000 --> 00:01:29,000
+that in response to another request that came
+
+26
+00:01:29,000 --> 00:01:34,000
+in that says search term equals z. We'll see that in demo in just a bit.
+
+27
+00:01:34,000 --> 00:01:36,000
+You can also set the cache location.
+
+28
+00:01:36,000 --> 00:01:40,000
+The default value here is anywhere meaning it will cache on the server
+
+29
+00:01:40,000 --> 00:01:42,000
+and the client can also cache the result.
+
+30
+00:01:42,000 --> 00:01:46,000
+You can be very specific and say that the result should only be cached on the server
+
+31
+00:01:46,000 --> 00:01:49,000
+or on the client or on proxy servers in between.
+
+32
+00:01:49,000 --> 00:01:51,000
+There's also a vary by header setting.
+
+33
+00:01:51,000 --> 00:01:53,000
+That allows you to vary the cache based
+
+34
+00:01:53,000 --> 00:01:58,000
+on a specific HTTB (phonetic) header like except language.
+
+35
+00:01:58,000 --> 00:01:59,000
+We wouldn't want to return a response
+
+36
+00:01:59,000 --> 00:02:04,000
+that included English text when someone needs German text.
+
+37
+00:02:04,000 --> 00:02:06,000
+We'll see how except language works in this module.
+
+38
+00:02:06,000 --> 00:02:10,000
+And if all fails, you can always do vary by custom.
+
+39
+00:02:10,000 --> 00:02:11,000
+When you do vary by custom you'll need
+
+40
+00:02:11,000 --> 00:02:16,000
+to override a method inside the global.asax.cs file.
+
+41
+00:02:16,000 --> 00:02:21,000
+Inside of that method, you can build your own custom caching string telling ASP.net what
+
+42
+00:02:21,000 --> 00:02:23,000
+to cache and how to categorize it.
+
+43
+00:02:23,000 --> 00:02:27,000
+You could look at anything in the request including headers or quickie values.
+
+44
+00:02:27,000 --> 00:02:30,000
+There's some examples on MSDN that will show you how to do that.
+
+45
+00:02:30,000 --> 00:02:35,000
+There's also examples that will show you how to setup a sequel dependency.
+
+46
+00:02:35,000 --> 00:02:40,000
+A sequel dependency will cache a response until data inside of a sequel server table changes.
+
+47
+00:02:40,000 --> 00:02:44,000
+It sounds great but it's not widely used just because there are a lot of restrictions
+
+48
+00:02:44,000 --> 00:02:48,000
+on the type of sequel query that can be used.
+
+49
+00:02:48,000 --> 00:02:50,000
+( Silence )
+
+50
+00:02:50,000 --> 00:02:53,000
+In Visual Studio, now that we know how the output cache attribute works
+
+51
+00:02:53,000 --> 00:02:56,000
+with a child action, I'm going to remove this child action
+
+52
+00:02:56,000 --> 00:02:58,000
+because it's not really providing any value.
+
+53
+00:02:58,000 --> 00:03:01,000
+It was just here for demonstration purposes.
+
+54
+00:03:01,000 --> 00:03:04,000
+(Silence) And I'll also need to remove the call to html.action
+
+55
+00:03:04,000 --> 00:03:06,000
+that was rendering that child action.
+
+56
+00:03:06,000 --> 00:03:10,000
+And now that we've made that change, let's bump up the duration on the output cache attribute
+
+57
+00:03:10,000 --> 00:03:15,000
+for our index action and run this with the debugger to see how it behaves with paging.
+
+58
+00:03:15,000 --> 00:03:21,000
+And as expected that first request comes into index action, I press F5.
+
+59
+00:03:21,000 --> 00:03:25,000
+We now have a cached response for the home page and I can come up and pound
+
+60
+00:03:25,000 --> 00:03:27,000
+on the refresh button as much as I like.
+
+61
+00:03:27,000 --> 00:03:32,000
+The ASP.net run time is always returning a cached response.
+
+62
+00:03:32,000 --> 00:03:34,000
+Now let me try to go to the next page.
+
+63
+00:03:34,000 --> 00:03:38,000
+We'll come back into the index action because the output cache directive will vary
+
+64
+00:03:38,000 --> 00:03:42,000
+by every parameter and previously, we didn't have a page parameter.
+
+65
+00:03:42,000 --> 00:03:44,000
+Now we do have a page parameter.
+
+66
+00:03:44,000 --> 00:03:45,000
+The page number is equal to 2.
+
+67
+00:03:45,000 --> 00:03:49,000
+So it needs to pick up a new response and cache that.
+
+68
+00:03:49,000 --> 00:03:51,000
+Now we have cached response for page 2.
+
+69
+00:03:51,000 --> 00:03:53,000
+I go to the next page, same thing.
+
+70
+00:03:53,000 --> 00:03:56,000
+We come into the index action, produce that response for page 3,
+
+71
+00:03:56,000 --> 00:04:01,000
+and now I have cached responses for pages 2 and 3.
+
+72
+00:04:01,000 --> 00:04:02,000
+I can toggle between the two.
+
+73
+00:04:02,000 --> 00:04:05,000
+It's not going to go back into the index action.
+
+74
+00:04:05,000 --> 00:04:08,000
+So does this also work for search?
+
+75
+00:04:08,000 --> 00:04:09,000
+Let's search for a 20.
+
+76
+00:04:09,000 --> 00:04:11,000
+We come into the index action.
+
+77
+00:04:11,000 --> 00:04:13,000
+That changed the search term parameter.
+
+78
+00:04:13,000 --> 00:04:16,000
+We get the response and it appears on the screen correctly.
+
+79
+00:04:16,000 --> 00:04:18,000
+What if I go to 21?
+
+80
+00:04:18,000 --> 00:04:21,000
+Again into the index action, come back to 20.
+
+81
+00:04:21,000 --> 00:04:26,000
+That just serves up a cached response.
+
+82
+00:04:26,000 --> 00:04:27,000
+Let me show you a problem.
+
+83
+00:04:27,000 --> 00:04:30,000
+What if I come directly to the application through a bookmark
+
+84
+00:04:30,000 --> 00:04:34,000
+and I'm looking for search term equals 20?
+
+85
+00:04:34,000 --> 00:04:38,000
+Well now the browser issued a get request not asynchronous request but a get request
+
+86
+00:04:38,000 --> 00:04:42,000
+and it's displaying a cached response that was only a portion of the page.
+
+87
+00:04:42,000 --> 00:04:44,000
+So we're missing the layout view.
+
+88
+00:04:44,000 --> 00:04:45,000
+We're missing our style sheets.
+
+89
+00:04:45,000 --> 00:04:48,000
+We're missing our scripts and here's the problem.
+
+90
+00:04:48,000 --> 00:04:52,000
+The only difference between a full request which is what I just did
+
+91
+00:04:52,000 --> 00:04:58,000
+that needs the entire page full of html and the AJAX request that we were using previously,
+
+92
+00:04:58,000 --> 00:05:02,000
+the only difference between those two is an HTTB header known as x requested with.
+
+93
+00:05:02,000 --> 00:05:06,000
+So the ASP.net caching layer, there's no change in the parameters.
+
+94
+00:05:06,000 --> 00:05:12,000
+So it will happily return the partial view that it cached to fulfill a previous request
+
+95
+00:05:12,000 --> 00:05:17,000
+but that's not what we want in this scenario and searching by going directly to the page
+
+96
+00:05:17,000 --> 00:05:21,000
+with the value in the query string, if that's a supported scenario we need to fix this.
+
+97
+00:05:21,000 --> 00:05:25,000
+Actually there's two things that we need to do.
+
+98
+00:05:25,000 --> 00:05:26,000
+First, I'll stop debugging.
+
+99
+00:05:26,000 --> 00:05:30,000
+( Silence )
+
+100
+00:05:30,000 --> 00:05:35,000
+And we'll come into our output cache attribute and also tell it vary by a header.
+
+101
+00:05:35,000 --> 00:05:39,000
+The x requested with header because this will be present on an AJAX request
+
+102
+00:05:39,000 --> 00:05:43,000
+but not on a whole page request and now ASP.net will be able to tell the difference
+
+103
+00:05:43,000 --> 00:05:46,000
+between the two and cached different responses.
+
+104
+00:05:46,000 --> 00:05:51,000
+One with a full page of html, one with just the portion of the page that needs to update.
+
+105
+00:05:51,000 --> 00:05:54,000
+Unfortunately this often isn't enough.
+
+106
+00:05:54,000 --> 00:05:58,000
+We're also allowing the browser to cache the response with this output cache attribute
+
+107
+00:05:58,000 --> 00:06:01,000
+and some browsers won't be smart enough to detect the difference
+
+108
+00:06:01,000 --> 00:06:03,000
+between those two requests either.
+
+109
+00:06:03,000 --> 00:06:09,000
+So I am also going to add a location parameter.
+
+110
+00:06:09,000 --> 00:06:13,000
+To do this I need to bring in a name space for this numerated value, system.web.ui
+
+111
+00:06:13,000 --> 00:06:18,000
+but now we're only going to allow caching on the server.
+
+112
+00:06:18,000 --> 00:06:20,000
+And ASP.net will send instructions to the browser
+
+113
+00:06:20,000 --> 00:06:23,000
+and the response so the response isn't cached.
+
+114
+00:06:23,000 --> 00:06:25,000
+The browser always has to come back to the server and check.
+
+115
+00:06:25,000 --> 00:06:28,000
+On the server, ASP.net can just serve up the response
+
+116
+00:06:28,000 --> 00:06:32,000
+from memory if it has a cached response.
+
+117
+00:06:32,000 --> 00:06:37,000
+Of course another solution to this problem would be to call a different action for AJAX requests
+
+118
+00:06:37,000 --> 00:06:38,000
+and that would make a lot of sense.
+
+119
+00:06:38,000 --> 00:06:42,000
+I combine the two into a single action here because it made it easy for a demo
+
+120
+00:06:42,000 --> 00:06:46,000
+but it would be easy to change the url for an AJAX request in our JAVA script
+
+121
+00:06:46,000 --> 00:06:48,000
+and have it call a different action.
+
+122
+00:06:48,000 --> 00:06:52,000
+And then we wouldn't have this check for request.AJAXrequest.
+
+123
+00:06:52,000 --> 00:06:54,000
+We would only return a full response.
+
+124
+00:06:54,000 --> 00:06:59,000
+That is AJAX request method, by the way also looks at the (inaudible) requested with header
+
+125
+00:06:59,000 --> 00:07:04,000
+to determine if a request is an asynch request.
+
+126
+00:07:04,000 --> 00:07:09,000
+Now we'll run the application again and just to avoid any strange things.
+
+127
+00:07:09,000 --> 00:07:13,000
+I'm going to go into the developer tools by pressing F12 and just telling Internet Explorer,
+
+128
+00:07:13,000 --> 00:07:17,000
+clear out anything that you might have previously cached.
+
+129
+00:07:17,000 --> 00:07:20,000
+This way we'll make sure that we're starting with a fresh slate when I test
+
+130
+00:07:20,000 --> 00:07:23,000
+out this functionality with the new parameter values in place.
+
+131
+00:07:23,000 --> 00:07:27,000
+So let's try the search for 20 and we hit the index action.
+
+132
+00:07:27,000 --> 00:07:28,000
+That was good.
+
+133
+00:07:28,000 --> 00:07:30,000
+Try a search for 21.
+
+134
+00:07:30,000 --> 00:07:31,000
+Again, hitting the index action.
+
+135
+00:07:31,000 --> 00:07:34,000
+Try an asynchronous search for 20.
+
+136
+00:07:34,000 --> 00:07:39,000
+That was a cached response which was good and now let's go to the query string
+
+137
+00:07:39,000 --> 00:07:43,000
+and enter a full request for search term equals 20 and we do, indeed,
+
+138
+00:07:43,000 --> 00:07:47,000
+come into the index action and the page renders normally.
+
+139
+00:07:47,000 --> 00:07:53,000
+And that's all thanks to doing a vary by header and only caching on the server.
+
+140
+00:07:53,000 --> 00:07:57,000
+If we wanted the client browser to be able to cache too, we really would need
+
+141
+00:07:57,000 --> 00:08:00,000
+to split this index action into two pieces.
+
+142
+00:08:00,000 --> 00:59:00,000
+One that only responds to an AJAX request and one that responds for a full page.
+

@@ -1,0 +1,44 @@
+1
+00:00:00,000 --> 00:00:03,000
+Hi, this is Scott Allan.
+
+2
+00:00:03,000 --> 00:00:06,000
+And in this module I'll be focusing on configuration
+
+3
+00:00:06,000 --> 00:00:09,000
+and deployment of an ASP.NET MVC application.
+
+4
+00:00:09,000 --> 00:00:12,000
+I'll talk about the various configuration files that you'll find on the machine,
+
+5
+00:00:12,000 --> 00:00:15,000
+and what those configuration files mean to your application.
+
+6
+00:00:15,000 --> 00:00:19,000
+I'll also be transforming my development machine into a webserver
+
+7
+00:00:19,000 --> 00:00:22,000
+by installing internet information services -- or IIS --
+
+8
+00:00:22,000 --> 00:00:27,000
+and building a web deployment package to install the application into IIS.
+
+9
+00:00:27,000 --> 00:00:28,000
+Then finally, we'll take a look at deploying
+
+10
+00:00:28,000 --> 00:00:32,000
+to the cloud using Microsoft's Windows Azure websites.
+
+11
+00:00:32,000 --> 00:59:00,000
+( Silence )
+

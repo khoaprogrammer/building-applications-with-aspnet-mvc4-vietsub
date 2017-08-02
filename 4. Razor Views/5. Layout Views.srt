@@ -1,0 +1,548 @@
+1
+00:00:01,000 --> 00:00:07,000
+Next, let's turn our attention to what was not in our index view or restaurant reviews.
+
+2
+00:00:07,000 --> 00:00:10,000
+What was not in our index view was the navigational menu that you see
+
+3
+00:00:10,000 --> 00:00:16,000
+in the application, at home, about and contact links or the Ode to Food logo
+
+4
+00:00:16,000 --> 00:00:18,000
+or the copyright at the bottom of the page.
+
+5
+00:00:18,000 --> 00:00:21,000
+All the code and mark up in our index view was there only
+
+6
+00:00:21,000 --> 00:00:25,000
+to output the review information into the middle of the page.
+
+7
+00:00:25,000 --> 00:00:29,000
+As I alluded to in the introduction, there is another type of view at work here
+
+8
+00:00:29,000 --> 00:00:31,000
+to handle these common things that appear everywhere.
+
+9
+00:00:31,000 --> 00:00:34,000
+Every application has some common UI structure.
+
+10
+00:00:34,000 --> 00:00:38,000
+You need navigation links and headers on every page and maybe a footer.
+
+11
+00:00:38,000 --> 00:00:42,000
+To provide that structure in Razor, we use a layout view.
+
+12
+00:00:42,000 --> 00:00:47,000
+If you're familiar with ASP.NET web forms, then you have probably used master pages.
+
+13
+00:00:47,000 --> 00:00:51,000
+Razor layout views are similar to master pages but really, they're much,
+
+14
+00:00:51,000 --> 00:00:54,000
+much better and easier to understand.
+
+15
+00:00:54,000 --> 00:00:57,000
+In this layout views, that's typically where you have your doc type, your head tag
+
+16
+00:00:57,000 --> 00:00:59,000
+and all the common markup that you need.
+
+17
+00:00:59,000 --> 00:01:05,000
+And then a layout view has two special methods that I can call render body and render section.
+
+18
+00:01:05,000 --> 00:01:11,000
+These methods allow the content views like the index view that we wrote to plug in their pieces
+
+19
+00:01:11,000 --> 00:01:14,000
+of the UI into specific locations of the layout.
+
+20
+00:01:14,000 --> 00:01:18,000
+Let's look at an example.
+
+21
+00:01:18,000 --> 00:01:23,000
+Inside of the index view that we've been working on, let me remove some of the experiments
+
+22
+00:01:23,000 --> 00:01:26,000
+that we've done with code blocks and save the view and refresh.
+
+23
+00:01:26,000 --> 00:01:30,000
+And just point out again that the only thing we're really rendering here is the middle
+
+24
+00:01:30,000 --> 00:01:33,000
+section, the latest reviews.
+
+25
+00:01:33,000 --> 00:01:37,000
+All the other pieces like the logo and the menu, those are handled by the layout view.
+
+26
+00:01:37,000 --> 00:01:42,000
+You can find the layout view if you go into the Solution Explorer, go into view Shared folder
+
+27
+00:01:42,000 --> 00:01:45,000
+and here is underscore layout.csHTML.
+
+28
+00:01:45,000 --> 00:01:47,000
+There's nothing special about that underscore.
+
+29
+00:01:47,000 --> 00:01:51,000
+Many developers use underscore just as a convention to identify views
+
+30
+00:01:51,000 --> 00:01:55,000
+that are not primary content views like the index view that we wrote.
+
+31
+00:01:55,000 --> 00:01:59,000
+It's not a view you would typically return as a view result from a controller.
+
+32
+00:01:59,000 --> 00:02:01,000
+But the layout view itself is really nothing special.
+
+33
+00:02:01,000 --> 00:02:04,000
+For the most part, it's just another Razor view.
+
+34
+00:02:04,000 --> 00:02:08,000
+It has literal text that can have C Sharp code expressions, it can have code blocks.
+
+35
+00:02:08,000 --> 00:02:11,000
+It's where you typically have your doc type.
+
+36
+00:02:11,000 --> 00:02:12,000
+It's where you want to have your head tag
+
+37
+00:02:12,000 --> 00:02:16,000
+and you typically have a definition for the body element.
+
+38
+00:02:16,000 --> 00:02:21,000
+And any changes that I make here will be reflected across the entire application
+
+39
+00:02:21,000 --> 00:02:24,000
+because in this application, this is the only layout view that we're using.
+
+40
+00:02:24,000 --> 00:02:27,000
+You can have more than one but we may now have only one.
+
+41
+00:02:27,000 --> 00:02:30,000
+I can demonstrate that if I collapse this header section
+
+42
+00:02:30,000 --> 00:02:35,000
+and then let me just use Control K, Control C to comment that out.
+
+43
+00:02:35,000 --> 00:02:37,000
+I'll save the view and refresh.
+
+44
+00:02:37,000 --> 00:02:43,000
+And you can see not only did our restaurant review is changed but also if I was able
+
+45
+00:02:43,000 --> 00:02:47,000
+to navigate to the homepage, it's also missing that section now too.
+
+46
+00:02:47,000 --> 00:02:52,000
+To undo commenting that out and scroll down here a little bit,
+
+47
+00:02:52,000 --> 00:02:55,000
+and here is where you can see the call to a RenderBody.
+
+48
+00:02:55,000 --> 00:02:58,000
+When a layout view calls RenderBody, that is on the content view,
+
+49
+00:02:58,000 --> 00:03:03,000
+our Index.csHTML that is one it will render and output it to HTML
+
+50
+00:03:03,000 --> 00:03:07,000
+and that HTML will be inserted right here where RenderBody is.
+
+51
+00:03:07,000 --> 00:03:09,000
+One obvious question at this point might be,
+
+52
+00:03:09,000 --> 00:03:12,000
+how does the MVC runtime know to use this layout view?
+
+53
+00:03:12,000 --> 00:03:16,000
+We're not saying anything inside of the layout view that would be particular
+
+54
+00:03:16,000 --> 00:03:20,000
+to telling everyone that this is the layout view for the application.
+
+55
+00:03:20,000 --> 00:03:24,000
+We're certainly not doing anything inside of Index.csHTML that indicates
+
+56
+00:03:24,000 --> 00:03:26,000
+that that's the layout view we're using.
+
+57
+00:03:26,000 --> 00:03:28,000
+And the answer to this question actually comes
+
+58
+00:03:28,000 --> 00:03:33,000
+from a small magical file called underscore ViewStart.csHTML.
+
+59
+00:03:33,000 --> 00:03:37,000
+You'll find it in the root of your Views folder.
+
+60
+00:03:37,000 --> 00:03:39,000
+When I open that file up you can see there's a code block inside of here
+
+61
+00:03:39,000 --> 00:03:44,000
+that sets a layout property equal to tilde slash Views slash Shared slash
+
+62
+00:03:44,000 --> 00:03:47,000
+underscore Layout.csHTML.
+
+63
+00:03:47,000 --> 00:03:52,000
+So the secret here is that underscore ViewStart.csHTML has the ability
+
+64
+00:03:52,000 --> 00:03:56,000
+to execute this code before my view starts rendering and it sets this property.
+
+65
+00:03:56,000 --> 00:03:59,000
+And this is just a convention with the Razor view engine.
+
+66
+00:03:59,000 --> 00:04:02,000
+If you have a file called underscore ViewStart.csHTML,
+
+67
+00:04:02,000 --> 00:04:07,000
+anything you put in that code block at the top will be able to execute before the view does.
+
+68
+00:04:07,000 --> 00:04:10,000
+And this works in a hierarchy.
+
+69
+00:04:10,000 --> 00:04:14,000
+So if ViewStart.csHTML is in the root of the Views folder,
+
+70
+00:04:14,000 --> 00:04:17,000
+it applies to all the views that are inside of here.
+
+71
+00:04:17,000 --> 00:04:21,000
+But if I make a copy of this file and put it inside of Reviews,
+
+72
+00:04:21,000 --> 00:04:25,000
+let's open up this copy underscore ViewStart.csHTML
+
+73
+00:04:25,000 --> 00:04:28,000
+and change this over to Layout2.
+
+74
+00:04:28,000 --> 00:04:34,000
+Now I'll save everything and refresh the home page.
+
+75
+00:04:34,000 --> 00:04:37,000
+We have our header section back and this works normally.
+
+76
+00:04:37,000 --> 00:04:44,000
+But if I go to reviews, we'll get a runtime error because we've specified that the Views
+
+77
+00:04:44,000 --> 00:04:47,000
+and the Reviews folder should use a different layout file,
+
+78
+00:04:47,000 --> 00:04:49,000
+underscore Layout.csHTML and that doesn't exist.
+
+79
+00:04:49,000 --> 00:04:53,000
+So in order for this to work I don't have
+
+80
+00:04:53,000 --> 00:04:57,000
+to have underscore Layout.csHTML in the shared folder.
+
+81
+00:04:57,000 --> 00:04:59,000
+So let me delete this file.
+
+82
+00:04:59,000 --> 00:05:05,000
+First, let me make a copy of this.
+
+83
+00:05:05,000 --> 00:05:08,000
+And also I'll show you that you can overwrite this on a per view basis.
+
+84
+00:05:08,000 --> 00:05:12,000
+So if I open up our index view that's showing the latest reviews,
+
+85
+00:05:12,000 --> 00:05:16,000
+I can also specify the layout file here and let's just change it
+
+86
+00:05:16,000 --> 00:05:21,000
+to Layout3.csHTML so we can see a difference.
+
+87
+00:05:21,000 --> 00:05:22,000
+Save everything and refresh.
+
+88
+00:05:22,000 --> 00:05:24,000
+Now it's looking for Layout3.
+
+89
+00:05:24,000 --> 00:05:27,000
+I can also turn off a layout view here if I wanted to.
+
+90
+00:05:27,000 --> 00:05:29,000
+I could just say layout.
+
+91
+00:05:29,000 --> 00:05:30,000
+I don't want to use a layout page.
+
+92
+00:05:30,000 --> 00:05:32,000
+I'll set that equal to null.
+
+93
+00:05:32,000 --> 00:05:35,000
+And now it's working but we're also not using a layout page
+
+94
+00:05:35,000 --> 00:05:40,000
+so we do not have any style sheets applied and the view looks very plain and simple.
+
+95
+00:05:40,000 --> 00:05:45,000
+Let's go back to using the default layout view.
+
+96
+00:05:45,000 --> 00:05:49,000
+Now inside of a layout view, in addition to RenderBody
+
+97
+00:05:49,000 --> 00:05:53,000
+which is a required call somewhere inside of a layout view you must call RenderBody.
+
+98
+00:05:53,000 --> 00:05:56,000
+You can also call another method called RenderSection.
+
+99
+00:05:56,000 --> 00:05:57,000
+This is optional.
+
+100
+00:05:57,000 --> 00:05:59,000
+You can have one or more sections.
+
+101
+00:05:59,000 --> 00:06:04,000
+And what RenderSection will do is provide a content view like Index.csHTML,
+
+102
+00:06:04,000 --> 00:06:08,000
+the ability to plug in content into other sections of the page.
+
+103
+00:06:08,000 --> 00:06:11,000
+So this RenderSection is rendering a section called featured.
+
+104
+00:06:11,000 --> 00:06:14,000
+There's also another RenderSection down here at the bottom of the layout view
+
+105
+00:06:14,000 --> 00:06:19,000
+that will allow a content page to inject scripts at the bottom of the page.
+
+106
+00:06:19,000 --> 00:06:22,000
+We'll come back to that later when we talk about Ajax.
+
+107
+00:06:22,000 --> 00:06:23,000
+But right now let's talk about this RenderSection
+
+108
+00:06:23,000 --> 00:06:26,000
+which is currently not a required section
+
+109
+00:06:26,000 --> 00:06:30,000
+that means a content view can have this section that cannot.
+
+110
+00:06:30,000 --> 00:06:33,000
+If I switch this over to be a required section,
+
+111
+00:06:33,000 --> 00:06:37,000
+what will happen when we render this Reviews view is
+
+112
+00:06:37,000 --> 00:06:42,000
+that we get a runtime error saying you did not have this section called featured.
+
+113
+00:06:42,000 --> 00:06:47,000
+I want to change this back to being an optional section but we're also going to implement
+
+114
+00:06:47,000 --> 00:06:49,000
+that section inside of Index.csHTML.
+
+115
+00:06:49,000 --> 00:06:55,000
+Let's just take this bit of markup that we already have and put it inside of a section.
+
+116
+00:06:55,000 --> 00:06:57,000
+We can define these sections anywhere.
+
+117
+00:06:57,000 --> 00:06:59,000
+You just have to give them the name.
+
+118
+00:06:59,000 --> 00:07:02,000
+That name has to match what you specified in RenderSection.
+
+119
+00:07:02,000 --> 00:07:06,000
+And let's put that we are showing the latest X number of reviews inside
+
+120
+00:07:06,000 --> 00:07:08,000
+of the featured section and refresh.
+
+121
+00:07:08,000 --> 00:07:12,000
+And you can see that appears at the top of the view.
+
+122
+00:07:12,000 --> 00:07:18,000
+But inside of layout, if for some reason I wanted to show a featured content at the bottom
+
+123
+00:07:18,000 --> 00:07:28,000
+of the page, let's say in the footer, I could also work.
+
+124
+00:07:28,000 --> 00:07:31,000
+So let me move that section back up to the top.
+
+125
+00:07:31,000 --> 00:07:40,000
+And now that I'm looking at it, what would be really nice is that when I'm on the home page
+
+126
+00:07:40,000 --> 00:07:43,000
+of the application, I'd have a link here to go
+
+127
+00:07:43,000 --> 00:07:46,000
+to that ReviewsController instead of typing reviews into the URL.
+
+128
+00:07:46,000 --> 00:07:47,000
+That's easy enough.
+
+129
+00:07:47,000 --> 00:07:51,000
+This is the navigational menu that the layout page specifies.
+
+130
+00:07:51,000 --> 00:07:56,000
+Let me make a copy of that last action link and create a new action link.
+
+131
+00:07:56,000 --> 00:07:57,000
+We've looked at this before.
+
+132
+00:07:57,000 --> 00:08:01,000
+This is the text I want to display, Reviews.
+
+133
+00:08:01,000 --> 00:08:05,000
+This is the action that I want to reach from some controller, the Index action.
+
+134
+00:08:05,000 --> 00:08:09,000
+And this is the name of the controller that I want to reach, the ReviewsController.
+
+135
+00:08:09,000 --> 00:08:15,000
+And now if I save everything and refresh, we'll have a Reviews link
+
+136
+00:08:15,000 --> 00:08:17,000
+that will appear throughout the application.
+
+137
+00:08:17,000 --> 00:59:00,000
+I can click on it and we end up on the ReviewsController.
+

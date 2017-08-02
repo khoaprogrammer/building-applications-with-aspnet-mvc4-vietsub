@@ -1,0 +1,232 @@
+1
+00:00:02,000 --> 00:00:05,000
+The next topic we want to talk about it is how to localize an application.
+
+2
+00:00:05,000 --> 00:00:07,000
+There are two important settings for every thread of execution
+
+3
+00:00:07,000 --> 00:00:11,000
+that determine how an application behaves under different cultures.
+
+4
+00:00:11,000 --> 00:00:16,000
+The first setting is exposed by the static current culture property of the thread class.
+
+5
+00:00:16,000 --> 00:00:18,000
+This property tells the run time how to format strings.
+
+6
+00:00:18,000 --> 00:00:24,000
+For instance, if we have a dot 2 (phonetic) string on a date time or a dot 2 on a currency,
+
+7
+00:00:24,000 --> 00:00:28,000
+then how should the date time be formatted and what currency symbol should be used?
+
+8
+00:00:28,000 --> 00:00:31,000
+Is it going to be a euro, a dollar, a rupee or a yen?
+
+9
+00:00:31,000 --> 00:00:36,000
+Another important setting is exposed from the static current UI culture property.
+
+10
+00:00:36,000 --> 00:00:41,000
+This setting impacts how the run time performs resource loading which we're about to look at.
+
+11
+00:00:41,000 --> 00:00:43,000
+You can set these properties in your own code.
+
+12
+00:00:43,000 --> 00:00:45,000
+For example, if you have one of those sites
+
+13
+00:00:45,000 --> 00:00:49,000
+where you let the user select what language they want to see and that's in a drop down list
+
+14
+00:00:49,000 --> 00:00:51,000
+or they click on a flag icon, that would be a scenario
+
+15
+00:00:51,000 --> 00:00:54,000
+where you would set these properties manually.
+
+16
+00:00:54,000 --> 00:00:57,000
+Or you can let ASP.net set these properties for you.
+
+17
+00:00:57,000 --> 00:00:59,000
+ASP.net will set the properties based
+
+18
+00:00:59,000 --> 00:01:03,000
+on the accept language HTTP header that the client's browser sends.
+
+19
+00:01:03,000 --> 00:01:06,000
+In order for ASP.net to do this automatically though,
+
+20
+00:01:06,000 --> 00:01:12,000
+you do have to add a globalization section to your web.doc config file and set the culture
+
+21
+00:01:12,000 --> 00:01:15,000
+and UI culture attributes to auto.
+
+22
+00:01:15,000 --> 00:01:18,000
+Let's see how these settings make our application behave.
+
+23
+00:01:18,000 --> 00:01:20,000
+( Silence )
+
+24
+00:01:20,000 --> 00:01:21,000
+Inside of the index view for the home controller,
+
+25
+00:01:21,000 --> 00:01:24,000
+let's do a little experiment with the globalization settings.
+
+26
+00:01:24,000 --> 00:01:26,000
+So first I'm going to add a code block
+
+27
+00:01:26,000 --> 00:01:29,000
+that defines two variables, amount which is a decimal.
+
+28
+00:01:29,000 --> 00:01:32,000
+That's what the m suffix is and sum date
+
+29
+00:01:32,000 --> 00:01:36,000
+which is a date time representing July 9th of the year 2002.
+
+30
+00:01:36,000 --> 00:01:42,000
+And now I will add some code to output these two variables by calling two string.
+
+31
+00:01:42,000 --> 00:01:46,000
+Amount will call two string and pass in a C parameter which means please format this
+
+32
+00:01:46,000 --> 00:01:50,000
+as a currency and with sum date, we'll just call two short date string.
+
+33
+00:01:50,000 --> 00:01:56,000
+And before we run the application, I will come into the web config and inside of system.web,
+
+34
+00:01:56,000 --> 00:01:59,000
+I will add that globalization section that we talked about.
+
+35
+00:01:59,000 --> 00:02:05,000
+We need to set culture equals auto and we need to set UI culture equals auto.
+
+36
+00:02:05,000 --> 00:02:07,000
+And now let's see how this behaves.
+
+37
+00:02:07,000 --> 00:02:13,000
+I will run the application with Internet Explorer and since my default culture
+
+38
+00:02:13,000 --> 00:02:17,000
+on this machine is United States English, I see the currency value is formatted
+
+39
+00:02:17,000 --> 00:02:23,000
+with a dollar sign and the date is formatted as month, day, year.
+
+40
+00:02:23,000 --> 00:02:25,000
+But now let me come into the Internet Explorer options.
+
+41
+00:02:25,000 --> 00:02:27,000
+So ALT T will open the tools menu.
+
+42
+00:02:27,000 --> 00:02:29,000
+Come into internet options.
+
+43
+00:02:29,000 --> 00:02:36,000
+Under appearance, go to languages and here I can set language preferences.
+
+44
+00:02:36,000 --> 00:02:42,000
+It's from here where I can add a language and in this list, let me select French
+
+45
+00:02:42,000 --> 00:02:48,000
+and not the Canadian French but the real Francois from France and let me take
+
+46
+00:02:48,000 --> 00:02:52,000
+that language and move it up in the list.
+
+47
+00:02:52,000 --> 00:03:00,000
+So this is now essentially my preferred language and I will close this out and refresh the page.
+
+48
+00:03:00,000 --> 00:03:06,000
+( Silence )
+
+49
+00:03:06,000 --> 00:03:09,000
+And now my currency is formatted with a comma and a euro sign
+
+50
+00:03:09,000 --> 00:03:11,000
+and the date format has also changed.
+
+51
+00:03:11,000 --> 00:03:13,000
+It is now day month year.
+
+52
+00:03:13,000 --> 00:03:16,000
+So what we've done so far is to see how globalization works
+
+53
+00:03:16,000 --> 00:03:18,000
+and this is just a starting point for localization.
+
+54
+00:03:18,000 --> 00:03:23,000
+We've changed how data amounts were formatted but we would also need to go
+
+55
+00:03:23,000 --> 00:03:27,000
+through the application and take care of string literals like search by name if we really want
+
+56
+00:03:27,000 --> 00:03:29,000
+to localize those to a specific culture
+
+57
+00:03:29,000 --> 00:03:32,000
+because all the literal texts in here are still in English.
+
+58
+00:03:32,000 --> 00:59:00,000
+Let's see how we can change that.
+

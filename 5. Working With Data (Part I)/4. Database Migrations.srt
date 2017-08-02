@@ -1,0 +1,916 @@
+1
+00:00:02,000 --> 00:00:04,000
+You might be wondering if it's possible to influence
+
+2
+00:00:04,000 --> 00:00:07,000
+where the Entity Framework creates database and also
+
+3
+00:00:07,000 --> 00:00:11,000
+if you can influence how the Entity Framework creates a database.
+
+4
+00:00:11,000 --> 00:00:14,000
+Can you change the names of tables and add indexes and things like that?
+
+5
+00:00:14,000 --> 00:00:18,000
+Let's look at the first question, the where question.
+
+6
+00:00:18,000 --> 00:00:23,000
+You can configure your data context with a specific database connection string.
+
+7
+00:00:23,000 --> 00:00:26,000
+The way you do this is to call into the base class constructor.
+
+8
+00:00:26,000 --> 00:00:30,000
+And the syntax for that in C Sharp is to use the keyword base.
+
+9
+00:00:30,000 --> 00:00:33,000
+And right here, I could pass a connection string.
+
+10
+00:00:33,000 --> 00:00:37,000
+Explicitly specify the server, the database, and the credentials.
+
+11
+00:00:37,000 --> 00:00:41,000
+But we generally don't hard code connection strings into an application because when we want
+
+12
+00:00:41,000 --> 00:00:44,000
+to point the application to a different database that means we have
+
+13
+00:00:44,000 --> 00:00:46,000
+to change the code and recompile.
+
+14
+00:00:46,000 --> 00:00:50,000
+And since we usually write applications that used different databases, at least,
+
+15
+00:00:50,000 --> 00:00:54,000
+there's one database during development and one for deployment, and perhaps one for testing.
+
+16
+00:00:54,000 --> 00:00:58,000
+Well, it's a good idea not to hard code connection stings.
+
+17
+00:00:58,000 --> 00:01:03,000
+Instead, with ASP.NET, we can store connection strings in our web.config file.
+
+18
+00:01:03,000 --> 00:01:07,000
+I'm going to open up the web.config file that's in the root of this application.
+
+19
+00:01:07,000 --> 00:01:10,000
+And we can see there already is a connection string here in place
+
+20
+00:01:10,000 --> 00:01:13,000
+for us, it's called default connection.
+
+21
+00:01:13,000 --> 00:01:16,000
+The project template put this in place when we created this new application.
+
+22
+00:01:16,000 --> 00:01:20,000
+And we can change this connection string to point anywhere.
+
+23
+00:01:20,000 --> 00:01:21,000
+I'm just going to tweak it a little bit.
+
+24
+00:01:21,000 --> 00:01:25,000
+I still want it to point to LocalDB but I want the initial catalog not
+
+25
+00:01:25,000 --> 00:01:28,000
+to have the word ASP.NET and all this other stuff in it.
+
+26
+00:01:28,000 --> 00:01:36,000
+I just want it to be OdeToFoodDb Integrated Security equals SSPI.
+
+27
+00:01:36,000 --> 00:01:40,000
+That basically means connect with the process credentials, which is fine.
+
+28
+00:01:40,000 --> 00:01:43,000
+We do want it to attach to a file that's in the DataDirectory.
+
+29
+00:01:43,000 --> 00:01:49,000
+And again, I'm going to call this OdeToFoodDb.mdf
+
+30
+00:01:49,000 --> 00:01:51,000
+so it's very easy to identify there.
+
+31
+00:01:51,000 --> 00:01:57,000
+And now, if I want the Entity Framework to use this connection string, what I do when I call
+
+32
+00:01:57,000 --> 00:02:04,000
+into the base class constructor is say, name equals, and the name of my connection string.
+
+33
+00:02:04,000 --> 00:02:09,000
+And that tells it to go out into the web.config and use whatever that connection string value is
+
+34
+00:02:09,000 --> 00:02:11,000
+when it connects to the database.
+
+35
+00:02:11,000 --> 00:02:14,000
+Now, I never need to recompile the application when I want to point somewhere else,
+
+36
+00:02:14,000 --> 00:02:20,000
+I just need to go into the config file and I should be able to run the application again.
+
+37
+00:02:20,000 --> 00:02:24,000
+And we should be back to a blank page, there it is,
+
+38
+00:02:24,000 --> 00:02:26,000
+because we're now pointing to a new database.
+
+39
+00:02:26,000 --> 00:02:29,000
+It doesn't have that restaurant in there that I added manually.
+
+40
+00:02:29,000 --> 00:02:33,000
+But I should still be able to use the Database Explorer to poke around in that database.
+
+41
+00:02:33,000 --> 00:02:37,000
+In fact, default connection is already here in my data connections.
+
+42
+00:02:37,000 --> 00:02:39,000
+It just detected that when I loaded this project.
+
+43
+00:02:39,000 --> 00:02:41,000
+And there's Restaurants and RestaurantReviews.
+
+44
+00:02:41,000 --> 00:02:44,000
+I could add data in there manually again.
+
+45
+00:02:44,000 --> 00:02:47,000
+And also, I should be able to see this database now if I come
+
+46
+00:02:47,000 --> 00:02:51,000
+into the Solution Explorer and look in the App Data folder.
+
+47
+00:02:51,000 --> 00:02:56,000
+What I'll have to do is allow Solution Explorer to show all files with this toolbar button.
+
+48
+00:02:56,000 --> 00:02:59,000
+And there I can see OdeToFoodDb.mdf.
+
+49
+00:02:59,000 --> 00:03:02,000
+There are some other databases here that I should clean out
+
+50
+00:03:02,000 --> 00:03:06,000
+but we'll worry about that later.
+
+51
+00:03:06,000 --> 00:03:09,000
+Let's go back to our second question at the beginning which is,
+
+52
+00:03:09,000 --> 00:03:12,000
+how can I influence how the Entity Framework creates my schema?
+
+53
+00:03:12,000 --> 00:03:17,000
+And can I have it initially populates some data for me into that database?
+
+54
+00:03:17,000 --> 00:03:20,000
+And the answer to both of these questions is yes.
+
+55
+00:03:20,000 --> 00:03:23,000
+All we need to do is use Entity Framework Migrations.
+
+56
+00:03:23,000 --> 00:03:27,000
+Migrations are a feature of the Entity Framework that allow you to configure database schemas
+
+57
+00:03:27,000 --> 00:03:33,000
+with C Sharp code, seed your databases with C Sharp code and Migrations can then track changes
+
+58
+00:03:33,000 --> 00:03:36,000
+that you're making in your entity classes.
+
+59
+00:03:36,000 --> 00:03:38,000
+Those classes like Restaurant and RestaurantReview.
+
+60
+00:03:38,000 --> 00:03:44,000
+And it can keep the database schema in sync with the changes that you make in your C Sharp code.
+
+61
+00:03:44,000 --> 00:03:48,000
+The way to get started with Migrations is to open up the Package Manager Console.
+
+62
+00:03:48,000 --> 00:03:49,000
+There's two ways to do this.
+
+63
+00:03:49,000 --> 00:03:55,000
+You can go to the View menu and go to Other Windows and find the Package Manager Console
+
+64
+00:03:55,000 --> 00:04:00,000
+or you can use this Quick Launch toolbox that's up here in the upper right of Visual Studio
+
+65
+00:04:00,000 --> 00:04:05,000
+and just type, Package or Package Manager Console, it'll find all the commands
+
+66
+00:04:05,000 --> 00:04:08,000
+in the menus everywhere throughout Visual Studio really quickly
+
+67
+00:04:08,000 --> 00:04:10,000
+and then you can just click on it.
+
+68
+00:04:10,000 --> 00:04:15,000
+The Package Manager Console will open up here inside of Visual Studio as another window.
+
+69
+00:04:15,000 --> 00:04:18,000
+It's essentially a PowerShell command line.
+
+70
+00:04:18,000 --> 00:04:22,000
+If you know how to write scripts in PowerShell then you can use any PowerShell command in here
+
+71
+00:04:22,000 --> 00:04:26,000
+that you want and list directories and manage services.
+
+72
+00:04:26,000 --> 00:04:31,000
+Inside of here if you want to get what directory you're in, you can type GET-D and then hit tab.
+
+73
+00:04:31,000 --> 00:04:35,000
+You can see it has some tab completion.
+
+74
+00:04:35,000 --> 00:04:39,000
+Let's try and Get-Date instead, that executes, that's a PowerShell command.
+
+75
+00:04:39,000 --> 00:04:41,000
+But we're here actually for Migrations.
+
+76
+00:04:41,000 --> 00:04:44,000
+And what I want to do is enable Migration.
+
+77
+00:04:44,000 --> 00:04:49,000
+So, enable dash with an M, it knows I want Enable Migrations.
+
+78
+00:04:49,000 --> 00:04:54,000
+And I'm going to have to specify a ContextTypeName.
+
+79
+00:04:54,000 --> 00:04:59,000
+This is the name of my DBContext that I want to enable Migrations for.
+
+80
+00:04:59,000 --> 00:05:03,000
+In this case, just typing in OdeToFoodDb is sufficient.
+
+81
+00:05:03,000 --> 00:05:08,000
+And now when I press enter, this is going to kick off some logic that is part
+
+82
+00:05:08,000 --> 00:05:12,000
+of the Code First Migrations of the Entity Framework that goes out and pokes
+
+83
+00:05:12,000 --> 00:05:16,000
+around the environment and looks like at my classes, looks at any existing database,
+
+84
+00:05:16,000 --> 00:05:20,000
+and it will add a new folder with a new file into my solution.
+
+85
+00:05:20,000 --> 00:05:22,000
+The new folder is called Migrations.
+
+86
+00:05:22,000 --> 00:05:27,000
+And inside of Migrations, right now there's two files, Configuration.cs
+
+87
+00:05:27,000 --> 00:05:31,000
+and basically a schema change script that's written in C Sharp.
+
+88
+00:05:31,000 --> 00:05:34,000
+Let's talk about configuration first.
+
+89
+00:05:34,000 --> 00:05:38,000
+The configuration class is really about controlling Code First Migrations.
+
+90
+00:05:38,000 --> 00:05:39,000
+How do you want it to perform?
+
+91
+00:05:39,000 --> 00:05:41,000
+When should it run?
+
+92
+00:05:41,000 --> 00:05:46,000
+The one setting in here that is most notable is the Automatic Migrations Enabled setting.
+
+93
+00:05:46,000 --> 00:05:47,000
+By default, it will be false.
+
+94
+00:05:47,000 --> 00:05:51,000
+And that means, basically, that the Entity Framework won't make any changes
+
+95
+00:05:51,000 --> 00:05:55,000
+in your database unless you explicitly tell the Entity Framework
+
+96
+00:05:55,000 --> 00:05:57,000
+that you want it to make changes.
+
+97
+00:05:57,000 --> 00:06:00,000
+I'm going to set this to true because quite often,
+
+98
+00:06:00,000 --> 00:06:03,000
+when you are initially starting a project, you just want to be able to make changes
+
+99
+00:06:03,000 --> 00:06:08,000
+in your C Sharp code wherever those classes are and just have the database be ready
+
+100
+00:06:08,000 --> 00:06:10,000
+for you in the application to run.
+
+101
+00:06:10,000 --> 00:06:12,000
+If you're working in a more controlled environment
+
+102
+00:06:12,000 --> 00:06:16,000
+and the product is a little more mature, you might want to set this to false
+
+103
+00:06:16,000 --> 00:06:19,000
+and be very explicit about when changes in the database happen.
+
+104
+00:06:19,000 --> 00:06:23,000
+But I'll show the impact of setting this to true a little bit later.
+
+105
+00:06:23,000 --> 00:06:27,000
+The second nice part of the configuration class is the seed method.
+
+106
+00:06:27,000 --> 00:06:29,000
+This is basically where you can tell the Entity Framework
+
+107
+00:06:29,000 --> 00:06:32,000
+to populate the database with some initial data.
+
+108
+00:06:32,000 --> 00:06:37,000
+And now, every time that it goes to update the database, it's going to invoke the seed method.
+
+109
+00:06:37,000 --> 00:06:41,000
+And this gives you the opportunity to populate those tables
+
+110
+00:06:41,000 --> 00:06:44,000
+that always need data, things like lookup data.
+
+111
+00:06:44,000 --> 00:06:45,000
+You need a list of countries.
+
+112
+00:06:45,000 --> 00:06:49,000
+You need a list of postal codes, all of those types of things can go
+
+113
+00:06:49,000 --> 00:06:52,000
+into seed, and that's usually static data.
+
+114
+00:06:52,000 --> 00:06:55,000
+But I'm going to do something a little bit different because we do not have a screen
+
+115
+00:06:55,000 --> 00:07:01,000
+yet that will allow us to create a restaurant or a review, I'm going to paste in some code
+
+116
+00:07:01,000 --> 00:07:02,000
+that will create restaurants for us.
+
+117
+00:07:02,000 --> 00:07:07,000
+I'm pasting it in so you don't have to watch my typing skills, I know it's painful.
+
+118
+00:07:07,000 --> 00:07:13,000
+I do need to bring in some name spaces, OdeTofood.models and system.collection.generic.
+
+119
+00:07:13,000 --> 00:07:18,000
+But now that this code is legal, let me explain a little about what it does.
+
+120
+00:07:18,000 --> 00:07:24,000
+This is walking up to the RestaurantsDb set on our OdeToFoodDb context and it's saying add
+
+121
+00:07:24,000 --> 00:07:27,000
+or update the following restaurants.
+
+122
+00:07:27,000 --> 00:07:31,000
+So literally go into the database and see if any of these restaurants exist
+
+123
+00:07:31,000 --> 00:07:33,000
+by name, it's looking them up by name.
+
+124
+00:07:33,000 --> 00:07:37,000
+So what we'll see if there's a Sabatino's in the Restaurants table.
+
+125
+00:07:37,000 --> 00:07:42,000
+And if there is, it will update that record with the information I have here.
+
+126
+00:07:42,000 --> 00:07:45,000
+If that name doesn't exist in the Restaurants table,
+
+127
+00:07:45,000 --> 00:07:48,000
+it will add this new restaurant as a row into that table.
+
+128
+00:07:48,000 --> 00:07:50,000
+It will do that for all three of these, in fact,
+
+129
+00:07:50,000 --> 00:07:54,000
+it's even going to add a review for this last restaurant here.
+
+130
+00:07:54,000 --> 00:07:59,000
+And now, every time I update the database, the seed method will run.
+
+131
+00:07:59,000 --> 00:08:03,000
+And when I'm talking about updates, I'm talking about Migration updates.
+
+132
+00:08:03,000 --> 00:08:06,000
+You typically run a database update when you want to migrate the schema.
+
+133
+00:08:06,000 --> 00:08:09,000
+And that's why it's important that we're not just doing an add
+
+134
+00:08:09,000 --> 00:08:12,000
+because we might update this database multiple times.
+
+135
+00:08:12,000 --> 00:08:16,000
+As we're making schema changes, we're doing an add or update
+
+136
+00:08:16,000 --> 00:08:19,000
+so this information isn't duplicated inside of here.
+
+137
+00:08:19,000 --> 00:08:21,000
+So how do you update the database?
+
+138
+00:08:21,000 --> 00:08:23,000
+There's a couple of different ways to do it.
+
+139
+00:08:23,000 --> 00:08:27,000
+You can configure the application to automatically apply updates,
+
+140
+00:08:27,000 --> 00:08:30,000
+that's going to be very useful much later in the course when we deploy this
+
+141
+00:08:30,000 --> 00:08:33,000
+and it will just create a database for us in the Cloud.
+
+142
+00:08:33,000 --> 00:08:38,000
+We can also do it explicitly through the Package Manager Console.
+
+143
+00:08:38,000 --> 00:08:42,000
+It's a command update-database which I'm going to run
+
+144
+00:08:42,000 --> 00:08:47,000
+with the flag-verbose, so update database-verbose.
+
+145
+00:08:47,000 --> 00:08:52,000
+Verbose isn't going to add much information to this update
+
+146
+00:08:52,000 --> 00:08:54,000
+because we don't have any other changes to do.
+
+147
+00:08:54,000 --> 00:08:58,000
+And the two important pieces of output here are number one,
+
+148
+00:08:58,000 --> 00:09:01,000
+there were no pending code-based Migrations which is good.
+
+149
+00:09:01,000 --> 00:09:04,000
+That means essentially nothing in our C Sharp class has changed
+
+150
+00:09:04,000 --> 00:09:06,000
+so it didn't have to change the database.
+
+151
+00:09:06,000 --> 00:09:10,000
+But it did run the seed method that would that put that information into the database.
+
+152
+00:09:10,000 --> 00:09:14,000
+I'd be able to see that if I went into the Database Explorer.
+
+153
+00:09:14,000 --> 00:09:18,000
+I should also be able to see it if I just refresh the application.
+
+154
+00:09:18,000 --> 00:09:23,000
+And there you can see, I pulled those records out of the database.
+
+155
+00:09:23,000 --> 00:09:25,000
+So they are always there.
+
+156
+00:09:25,000 --> 00:09:28,000
+And every time I do the update database, it will check to make sure that they're there
+
+157
+00:09:28,000 --> 00:09:32,000
+and update them if they already are.
+
+158
+00:09:32,000 --> 00:09:35,000
+The other piece of output about no pending code-based Migrations, again,
+
+159
+00:09:35,000 --> 00:09:38,000
+that's because the Entity Framework didn't detect any changes.
+
+160
+00:09:38,000 --> 00:09:43,000
+But the other thing I can do when I run update database is have the database synchronize
+
+161
+00:09:43,000 --> 00:09:44,000
+with my model.
+
+162
+00:09:44,000 --> 00:09:45,000
+So for instance, if at this point,
+
+163
+00:09:45,000 --> 00:09:50,000
+I realize that a review should really also include the name of the person
+
+164
+00:09:50,000 --> 00:09:55,000
+that was reviewing this, I would probably come into this class and give this a new property,
+
+165
+00:09:55,000 --> 00:10:00,000
+let's call it ReviewerName and do a Build.
+
+166
+00:10:00,000 --> 00:10:07,000
+And at this point, if I come back to the Package Manager Console, I could do one of two things.
+
+167
+00:10:07,000 --> 00:10:12,000
+I could tell the Entity Framework that I explicitly need a Migration script to move
+
+168
+00:10:12,000 --> 00:10:16,000
+from the database schema as it currently exists into a new database schema
+
+169
+00:10:16,000 --> 00:10:21,000
+that can store ReviewerName or I can just tell it to update the database and let it figure
+
+170
+00:10:21,000 --> 00:10:23,000
+that out without being very explicit about it.
+
+171
+00:10:23,000 --> 00:10:28,000
+I'd only be able to do that because Automatic Migrations are enabled.
+
+172
+00:10:28,000 --> 00:10:32,000
+So what I will want to do is just to update the database.
+
+173
+00:10:32,000 --> 00:10:36,000
+But before I do that, let me show you what a Migration script would look like.
+
+174
+00:10:36,000 --> 00:10:39,000
+Because when we enabled Migrations in this project,
+
+175
+00:10:39,000 --> 00:10:43,000
+the Entity Framework created both the configuration.csfile
+
+176
+00:10:43,000 --> 00:10:46,000
+but also this, and this will create .CS file.
+
+177
+00:10:46,000 --> 00:10:51,000
+And if we look in here, it's essentially a schema change in C Sharp code.
+
+178
+00:10:51,000 --> 00:10:53,000
+In order to initially create the database,
+
+179
+00:10:53,000 --> 00:10:58,000
+what we need to do is create a table called Restaurants, give it the following columns, ID,
+
+180
+00:10:58,000 --> 00:11:02,000
+name, city, and country, and set the ID to be primary key.
+
+181
+00:11:02,000 --> 00:11:05,000
+By the way, ID is also an identity column.
+
+182
+00:11:05,000 --> 00:11:07,000
+That means in SQL Server, you'll have
+
+183
+00:11:07,000 --> 00:11:11,000
+that value automatically populated when you insert a new row.
+
+184
+00:11:11,000 --> 00:11:15,000
+We also need to create a table called RestaurantReviews with the following columns.
+
+185
+00:11:15,000 --> 00:11:17,000
+It has a primary key.
+
+186
+00:11:17,000 --> 00:11:20,000
+It also has foreign key that references another table.
+
+187
+00:11:20,000 --> 00:11:26,000
+And we want to apply an index to RestaurantId because it will probably be important
+
+188
+00:11:26,000 --> 00:11:29,000
+to query the reviews given a specific Restaurant ID
+
+189
+00:11:29,000 --> 00:11:32,000
+so we can find all the reviews for a given Restaurant.
+
+190
+00:11:32,000 --> 00:11:36,000
+I'll just quickly point out that there's many other commands that you can run in here.
+
+191
+00:11:36,000 --> 00:11:40,000
+For instance, if you just need it to execute some row of SQL during a Migration,
+
+192
+00:11:40,000 --> 00:11:43,000
+maybe to update some data, you could put an update statement in here,
+
+193
+00:11:43,000 --> 00:11:45,000
+execute it through that SQL method.
+
+194
+00:11:45,000 --> 00:11:48,000
+And when you update the database,
+
+195
+00:11:48,000 --> 00:11:52,000
+when the Entity Framework applies the script, that statement will execute.
+
+196
+00:11:52,000 --> 00:11:56,000
+So these Migrations, I keep calling them scripts even though they're not really SQL scripts,
+
+197
+00:11:56,000 --> 00:11:58,000
+they're C Sharp code.
+
+198
+00:11:58,000 --> 00:12:00,000
+But you can generate SQL scripts from them.
+
+199
+00:12:00,000 --> 00:12:04,000
+The Entity Framework keeps track of which ones have been applied to a database,
+
+200
+00:12:04,000 --> 00:12:09,000
+which new ones need to be applied, and then what order they need to be applied.
+
+201
+00:12:09,000 --> 00:12:12,000
+It takes care of all that for you to a table that's hidden inside
+
+202
+00:12:12,000 --> 00:12:15,000
+of database called underscore Migration History.
+
+203
+00:12:15,000 --> 00:12:17,000
+It will be a system table in your database.
+
+204
+00:12:17,000 --> 00:12:22,000
+But at this point, what has happened is that we have changed the definition of review.
+
+205
+00:12:22,000 --> 00:12:25,000
+We really need to update the database to get that in sync.
+
+206
+00:12:25,000 --> 00:12:32,000
+So let me run Update-Database-Verbose again and you'll see in the output
+
+207
+00:12:32,000 --> 00:12:37,000
+that the Entity Framework automatically applied an alter table RestaurantReviews
+
+208
+00:12:37,000 --> 00:12:39,000
+to add ReviewerName to the table.
+
+209
+00:12:39,000 --> 00:12:43,000
+So that's what I could've generated as an explicit Migration
+
+210
+00:12:43,000 --> 00:12:45,000
+that would come out in the C Sharp code style.
+
+211
+00:12:45,000 --> 00:12:47,000
+But since I have the Automatic Migrations enabled,
+
+212
+00:12:47,000 --> 00:12:50,000
+I just let the Entity Framework take care of that.
+
+213
+00:12:50,000 --> 00:12:56,000
+And if I wanted to actually have a name in there for this particular review,
+
+214
+00:12:56,000 --> 00:13:00,000
+I could always say ReviewerName equal Scott.
+
+215
+00:13:00,000 --> 00:13:03,000
+Run update database again and it will run that seed method,
+
+216
+00:13:03,000 --> 00:13:06,000
+that value Scott should be put into the database.
+
+217
+00:13:06,000 --> 00:13:12,000
+And now, one more thing to know about, you might have noticed that when we added ReviewerName,
+
+218
+00:13:12,000 --> 00:13:15,000
+it was added as in nvarchar(max) field.
+
+219
+00:13:15,000 --> 00:13:17,000
+That may not be what you want.
+
+220
+00:13:17,000 --> 00:13:21,000
+You might want to restrict that field to a specific lane.
+
+221
+00:13:21,000 --> 00:13:25,000
+But I'm going to defer that discussion till the next module when we start talking
+
+222
+00:13:25,000 --> 00:13:29,000
+about data annotations because we can change that through a data annotation.
+
+223
+00:13:29,000 --> 00:13:34,000
+In fact, we can change nearly everything that the Entity Framework is doing to the database
+
+224
+00:13:34,000 --> 00:13:39,000
+in some fashion either through attributes or through some explicit code.
+
+225
+00:13:39,000 --> 00:13:41,000
+But for our application, we're just going to move ahead.
+
+226
+00:13:41,000 --> 00:13:45,000
+We've seen just enough to know how to use Entity Framework,
+
+227
+00:13:45,000 --> 00:13:49,000
+how to use Entity Framework Migrations.
+
+228
+00:13:49,000 --> 00:13:52,000
+And we have an application that's up and running that's displaying restaurants
+
+229
+00:13:52,000 --> 00:59:00,000
+that are coming from a table in SQL Server.
+

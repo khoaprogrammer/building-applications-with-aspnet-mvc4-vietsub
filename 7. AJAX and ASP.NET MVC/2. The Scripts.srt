@@ -1,0 +1,276 @@
+1
+00:00:02,000 --> 00:00:05,000
+The letter J in AJAX stands for JavaScript which means we'll need
+
+2
+00:00:05,000 --> 00:00:06,000
+to send JavaScript to the client.
+
+3
+00:00:06,000 --> 00:00:11,000
+And I think it will be good to look at what Script Libraries are already available
+
+4
+00:00:11,000 --> 00:00:15,000
+in the project and how to manage those scripts to get them to the client
+
+5
+00:00:15,000 --> 00:00:17,000
+which will demonstrate some new features in the framework.
+
+6
+00:00:17,000 --> 00:00:20,000
+So inside of the Scripts folder in Solution Explorer,
+
+7
+00:00:20,000 --> 00:00:24,000
+you can see the JavaScript files are available when you create a new project.
+
+8
+00:00:24,000 --> 00:00:27,000
+We'll start at the top with _references.js.
+
+9
+00:00:27,000 --> 00:00:33,000
+This file works with Visual Studio 2012 to give Studio a list of the files you commonly use
+
+10
+00:00:33,000 --> 00:00:36,000
+so that you can get better IntelliSense when writing JavaScript.
+
+11
+00:00:36,000 --> 00:00:42,000
+If we open up the file, we'll see it contains references inside of JavaScript comments.
+
+12
+00:00:42,000 --> 00:00:45,000
+These references look suspiciously like XML.
+
+13
+00:00:45,000 --> 00:00:49,000
+But these references are telling Visual Studio what files you commonly use.
+
+14
+00:00:49,000 --> 00:00:52,000
+We can see the list includes jquery, jquery-ui and more.
+
+15
+00:00:52,000 --> 00:00:56,000
+And now, Visual Studio will go out and find those files and parse them
+
+16
+00:00:56,000 --> 00:00:58,000
+and try to provide better IntelliSense for you.
+
+17
+00:00:58,000 --> 00:01:01,000
+It should know about method names and attributes of the objects
+
+18
+00:01:01,000 --> 00:01:03,000
+that you work with from these libraries.
+
+19
+00:01:03,000 --> 00:01:06,000
+If you were commonly working with additional libraries in the application,
+
+20
+00:01:06,000 --> 00:01:09,000
+you probably want to list those files here too.
+
+21
+00:01:09,000 --> 00:01:12,000
+Underneath of references is the jQuery library.
+
+22
+00:01:12,000 --> 00:01:15,000
+There's three versions of the core jQuery library file.
+
+23
+00:01:15,000 --> 00:01:18,000
+The first one has IntelliSense in the name.
+
+24
+00:01:18,000 --> 00:01:19,000
+You'll never use this file.
+
+25
+00:01:19,000 --> 00:01:20,000
+You'll never send it to the client.
+
+26
+00:01:20,000 --> 00:01:25,000
+This is just another aid for Visual Studio to generate intelligent prompts with IntelliSense.
+
+27
+00:01:25,000 --> 00:01:28,000
+When the references file says to reference jQuery,
+
+28
+00:01:28,000 --> 00:01:32,000
+Visual Studio will automatically find this file which has some additional comments inside
+
+29
+00:01:32,000 --> 00:01:35,000
+to make Visual Studio look smarter.
+
+30
+00:01:35,000 --> 00:01:41,000
+The jquery-1.7.1.js file, that's the core jQuery library that you can send to the client.
+
+31
+00:01:41,000 --> 00:01:45,000
+If you aren't familiar with the jQuery, then it is a JavaScript library
+
+32
+00:01:45,000 --> 00:01:50,000
+that gives us an API we can use on the client to select and manipulate DOM elements,
+
+33
+00:01:50,000 --> 00:01:53,000
+make asynchronous call to the server, and lots more.
+
+34
+00:01:53,000 --> 00:01:56,000
+jQuery supports all the modern browsers including Internet Explorer,
+
+35
+00:01:56,000 --> 00:01:58,000
+Chromes, Safari, Firefox, Opera.
+
+36
+00:01:58,000 --> 00:02:02,000
+And if you're new to jQuery, you'll see a few tips on this module.
+
+37
+00:02:02,000 --> 00:02:05,000
+This version of the jQuery file is very readable.
+
+38
+00:02:05,000 --> 00:02:10,000
+If you open it up, you can find lots of white space, well-formatted code, and comments.
+
+39
+00:02:10,000 --> 00:02:13,000
+The jQuery file with .min in the name is minified.
+
+40
+00:02:13,000 --> 00:02:18,000
+Minification is the process of going through a JavaScript file and making it small as possible
+
+41
+00:02:18,000 --> 00:02:22,000
+by removing unneeded white space, unneeded comments, and even shortening the names
+
+42
+00:02:22,000 --> 00:02:26,000
+of symbols and variables that are exposed to the outside world.
+
+43
+00:02:26,000 --> 00:02:29,000
+If you open that up, you'll see it's not very readable.
+
+44
+00:02:29,000 --> 00:02:33,000
+But it is smaller, and by making the file smaller, the browser will need less time
+
+45
+00:02:33,000 --> 00:02:39,000
+to download the file, which means, your page can load faster and users like fast pages.
+
+46
+00:02:39,000 --> 00:02:44,000
+However, we don't really need to touch this file because there's feature in ASP.NET MVC 4
+
+47
+00:02:44,000 --> 00:02:46,000
+that will automatically minify files for us
+
+48
+00:02:46,000 --> 00:02:50,000
+or pick up minified files as we'll see in just a bit.
+
+49
+00:02:50,000 --> 00:02:55,000
+In the Scripts folder, we also have jquery-ui which is a plug-in or extension for jQuery
+
+50
+00:02:55,000 --> 00:02:59,000
+that gives you UI widgets like dialog and accordion that you can use.
+
+51
+00:02:59,000 --> 00:03:01,000
+There's a minified and unminified version.
+
+52
+00:03:01,000 --> 00:03:05,000
+We also have jquery.validate, another plug-in for jQuery.
+
+53
+00:03:05,000 --> 00:03:08,000
+This one provides client side validation features.
+
+54
+00:03:08,000 --> 00:03:12,000
+The MVC framework actually relies on this library.
+
+55
+00:03:12,000 --> 00:03:16,000
+We also have knockout.js which you can use on the client to apply a model view--
+
+56
+00:03:16,000 --> 00:03:18,000
+view model design pattern in client script.
+
+57
+00:03:18,000 --> 00:03:21,000
+It provides features like declarative data by mean.
+
+58
+00:03:21,000 --> 00:03:25,000
+And then, there is modernizr, which as I mentioned early in the course,
+
+59
+00:03:25,000 --> 00:03:29,000
+is a library to detect and enable HTML5 features on a browser.
+
+60
+00:03:29,000 --> 00:03:34,000
+The files I skipped over all have unobtrusive in the mean, and these files are authored
+
+61
+00:03:34,000 --> 00:03:40,000
+by the MVC team and they serve as a bridge between ASP.NET MVC and jQuery.
+
+62
+00:03:40,000 --> 00:03:44,000
+In order for some MVC features to work like client side validation,
+
+63
+00:03:44,000 --> 00:03:48,000
+you need both the jQuery validation library and jQuery,
+
+64
+00:03:48,000 --> 00:03:53,000
+and the jquery.validate.unobtrusive script file because it takes metadata that's omitted
+
+65
+00:03:53,000 --> 00:03:58,000
+by HTML helpers like Editor 4 and feeds that data into jQuery validations
+
+66
+00:03:58,000 --> 00:04:01,000
+so it can apply the validation rules on the client.
+
+67
+00:04:01,000 --> 00:04:03,000
+We'll see that metadata in this module.
+
+68
+00:04:03,000 --> 00:04:06,000
+And now that we know what's here, let's look at how we send these script files
+
+69
+00:04:06,000 --> 00:59:00,000
+to the client in an efficient manner.
+

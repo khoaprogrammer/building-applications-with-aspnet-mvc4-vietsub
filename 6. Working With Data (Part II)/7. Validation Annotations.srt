@@ -1,0 +1,456 @@
+1
+00:00:02,000 --> 00:00:06,000
+Currently, when we edit a review, we could run into a couple problems.
+
+2
+00:00:06,000 --> 00:00:10,000
+There's nothing that constrains the rating to any sort of scale so if someone wanted
+
+3
+00:00:10,000 --> 00:00:13,000
+to save a rating of 1000 into the database, we would let them.
+
+4
+00:00:13,000 --> 00:00:18,000
+There's also nothing that requires them to enter a body or restricts them from entering a body
+
+5
+00:00:18,000 --> 00:00:21,000
+with 10,000 exclamation points in it.
+
+6
+00:00:21,000 --> 00:00:25,000
+These are all types of validations that we can do very easily with the MVC framework.
+
+7
+00:00:25,000 --> 00:00:28,000
+Before we look at them, let me just add a couple of things back into the project.
+
+8
+00:00:28,000 --> 00:00:32,000
+Let's remove the bind attribute for right now, I actually want people
+
+9
+00:00:32,000 --> 00:00:36,000
+to be able to edit the reviewer name.
+
+10
+00:00:36,000 --> 00:00:40,000
+I'll hit control Z in the edit view to bring back the editor for the reviewer name.
+
+11
+00:00:40,000 --> 00:00:45,000
+And now, let's go over and look at restaurant review and apply some data annotations.
+
+12
+00:00:45,000 --> 00:00:50,000
+So, one annotation that you can apply is the range annotation.
+
+13
+00:00:50,000 --> 00:00:56,000
+I can say that this rating has to be between one and ten and now, when we do model binding
+
+14
+00:00:56,000 --> 00:01:01,000
+in ASP.NET MVC, the model binder after it moves property values into this properties,
+
+15
+00:01:01,000 --> 00:01:05,000
+it also exercises any validation logic that is applied through this attributes.
+
+16
+00:01:05,000 --> 00:01:10,000
+So it defines that the rating is 100, it will tell you that the model state is not valid
+
+17
+00:01:10,000 --> 00:01:13,000
+and then you can let the user try this again.
+
+18
+00:01:13,000 --> 00:01:17,000
+There's also a required attribute although putting this
+
+19
+00:01:17,000 --> 00:01:21,000
+on an integer property is a little bit redundant because to the model binder,
+
+20
+00:01:21,000 --> 00:01:26,000
+an integer property is required by default because integers and C sharp are value types.
+
+21
+00:01:26,000 --> 00:01:28,000
+That means they cannot be null.
+
+22
+00:01:28,000 --> 00:01:34,000
+And when the model binder comes across a value type like int or date time, long and decimal,
+
+23
+00:01:34,000 --> 00:01:38,000
+it automatically requires a value to be present in the request for that.
+
+24
+00:01:38,000 --> 00:01:44,000
+We can also come in and tell the body-- tell the model binder that the body should be required
+
+25
+00:01:44,000 --> 00:01:51,000
+and we can also give it a maximum string length, let's say 1,024 characters.
+
+26
+00:01:51,000 --> 00:01:54,000
+In addition to this attributes, there's also attributes
+
+27
+00:01:54,000 --> 00:01:59,000
+to apply a regular expression validation, there's attributes to compare two properties
+
+28
+00:01:59,000 --> 00:02:01,000
+and there's an attribute to do a remote validation.
+
+29
+00:02:01,000 --> 00:02:04,000
+Actually, call back to the server and check your property value
+
+30
+00:02:04,000 --> 00:02:06,000
+as the user is typing into a forum.
+
+31
+00:02:06,000 --> 00:02:12,000
+You can read all about these validation annotations on MSDN and MVC documentation.
+
+32
+00:02:12,000 --> 00:02:17,000
+So just having this attributes in place and doing a build,
+
+33
+00:02:17,000 --> 00:02:20,000
+we'll make something different happen in my application
+
+34
+00:02:20,000 --> 00:02:24,000
+and that something different might not be something that you expect right away
+
+35
+00:02:24,000 --> 00:02:25,000
+but that something different is this.
+
+36
+00:02:25,000 --> 00:02:29,000
+The entity framework is always checking the model that is in effect against the model
+
+37
+00:02:29,000 --> 00:02:33,000
+that you use to create the database including any migrations
+
+38
+00:02:33,000 --> 00:02:34,000
+that have been put into the database.
+
+39
+00:02:34,000 --> 00:02:39,000
+And at this point in time, it is detected that there is something different about the model
+
+40
+00:02:39,000 --> 00:02:40,000
+and if you think about it, some
+
+41
+00:02:40,000 --> 00:02:43,000
+of these attributes really do influence the database schema.
+
+42
+00:02:43,000 --> 00:02:48,000
+For instance, saying that Body is required is like saying I need a not null column.
+
+43
+00:02:48,000 --> 00:02:52,000
+Previously, this was a null column, you can insert null values into it.
+
+44
+00:02:52,000 --> 00:02:56,000
+Specifying a string length gives this a definite string length.
+
+45
+00:02:56,000 --> 00:03:02,000
+Previously, it was nvarchar max, now it has a maximum length of 1,024 characters.
+
+46
+00:03:02,000 --> 00:03:06,000
+If I want it to get pass this error, there's a couple different ways to do it.
+
+47
+00:03:06,000 --> 00:03:10,000
+There is a way to just tell the entity framework trust me, I know what I'm doing,
+
+48
+00:03:10,000 --> 00:03:12,000
+just work with me and move ahead.
+
+49
+00:03:12,000 --> 00:03:17,000
+Or, you can actually apply the migrations to get the database schema and sync with what is
+
+50
+00:03:17,000 --> 00:03:20,000
+in your C sharp code and that's what we'll do.
+
+51
+00:03:20,000 --> 00:03:24,000
+Remember, we have automatic migrations enabled so what I am able to do is just come in
+
+52
+00:03:24,000 --> 00:03:29,000
+and say let's update the database and I'll throw in the Verbose flag.
+
+53
+00:03:29,000 --> 00:03:34,000
+If I do this, it's going to fail the first time because migrations is smart enough to realize
+
+54
+00:03:34,000 --> 00:03:38,000
+that we're taking one column, the body column or choose to be nvarchar max
+
+55
+00:03:38,000 --> 00:03:42,000
+and we're making it smaller that could result in data loss.
+
+56
+00:03:42,000 --> 00:03:49,000
+But here, I can say basically, I know what I'm doing and I want to force this through and now,
+
+57
+00:03:49,000 --> 00:03:52,000
+we can see things like alter table RestaurantReviews, alter the column body
+
+58
+00:03:52,000 --> 00:03:56,000
+to make it nvarchar 1024, not null.
+
+59
+00:03:56,000 --> 00:04:01,000
+And then we rerun the seed method, that mens all my data should still be in here.
+
+60
+00:04:01,000 --> 00:04:02,000
+We didn't loose anything.
+
+61
+00:04:02,000 --> 00:04:06,000
+And now, after I do a build one more time just to be safe,
+
+62
+00:04:06,000 --> 00:04:11,000
+I should be able to refresh the home page and we'll have a working application again.
+
+63
+00:04:11,000 --> 00:04:15,000
+So let's go into restaurants and look at one that has reviews
+
+64
+00:04:15,000 --> 00:04:21,000
+and see if we can edit this review and put the value of 1,000 in for the rating.
+
+65
+00:04:21,000 --> 00:04:24,000
+No, as soon as I tab off of that, it will give me a message
+
+66
+00:04:24,000 --> 00:04:28,000
+that the field rating must be between one and ten.
+
+67
+00:04:28,000 --> 00:04:32,000
+Notice, I didn't even click the Save button and that's because one of the nice things
+
+68
+00:04:32,000 --> 00:04:38,000
+that the editor for HTML helper will do for you is emit some Metadata into the input tag
+
+69
+00:04:38,000 --> 00:04:40,000
+that client-side JavaScript can pick up
+
+70
+00:04:40,000 --> 00:04:43,000
+and exercise the validation logic for you on the client-side.
+
+71
+00:04:43,000 --> 00:04:47,000
+So before the user even tries to submit these to the server,
+
+72
+00:04:47,000 --> 00:04:49,000
+we can tell them that they've done something wrong.
+
+73
+00:04:49,000 --> 00:04:55,000
+Same thing should happen here with Great, if I blank that out and try to click Save this time,
+
+74
+00:04:55,000 --> 00:04:58,000
+now, it can come back and tell me the body field is required.
+
+75
+00:04:58,000 --> 00:05:00,000
+That request actually didn't go to the server.
+
+76
+00:05:00,000 --> 00:05:02,000
+That was triggered on the client side by JavaScript.
+
+77
+00:05:02,000 --> 00:05:05,000
+Some of these validations require a little more
+
+78
+00:05:05,000 --> 00:05:08,000
+than just filling something in and tabbing out of the input.
+
+79
+00:05:08,000 --> 00:05:14,000
+But as soon as I start typing in here again, the validation message goes away.
+
+80
+00:05:14,000 --> 00:05:18,000
+And as a user, I feel happy and I can also fix the rating here.
+
+81
+00:05:18,000 --> 00:05:22,000
+And just to be clear, these validations are run on a client side,
+
+82
+00:05:22,000 --> 00:05:27,000
+they're also run on the server side so even if the user has JavaScript disabled for some reason
+
+83
+00:05:27,000 --> 00:05:33,000
+and a bad value comes into your server, the model binder will run the same validation rules
+
+84
+00:05:33,000 --> 00:05:35,000
+after it's done its model binding for this restaurant review.
+
+85
+00:05:35,000 --> 00:05:41,000
+And if any one of those rules failed, it will set model state is valid equals False.
+
+86
+00:05:41,000 --> 00:05:46,000
+And then when you re-render the view, things like the validation message four will pick
+
+87
+00:05:46,000 --> 00:05:49,000
+up those error messages and display them in the view.
+
+88
+00:05:49,000 --> 00:05:53,000
+In addition to data annotations for validation,
+
+89
+00:05:53,000 --> 00:05:57,000
+there's also a data annotations that can influence the display.
+
+90
+00:05:57,000 --> 00:06:02,000
+So if you remember, we had HTML helpers like display for and display name
+
+91
+00:06:02,000 --> 00:06:06,000
+for that we would use to write out things like the reviewer name here.
+
+92
+00:06:06,000 --> 00:06:10,000
+And the problem is that reviewer name as all one word isn't very pretty.
+
+93
+00:06:10,000 --> 00:06:13,000
+That's being written out by LabelFor ReviewerName.
+
+94
+00:06:13,000 --> 00:06:19,000
+So let me introduce you to just a couple of the display annotations here with the reviewer name.
+
+95
+00:06:19,000 --> 00:06:22,000
+One of the things we could use here is the display annotation
+
+96
+00:06:22,000 --> 00:06:26,000
+and one of the parameters we can pass for the display annotation is the name
+
+97
+00:06:26,000 --> 00:06:29,000
+that should be used when this is shown in the UI.
+
+98
+00:06:29,000 --> 00:06:38,000
+So I could just say this is perhaps user name as two words.
+
+99
+00:06:38,000 --> 00:06:41,000
+There's also a display format attribute.
+
+100
+00:06:41,000 --> 00:06:46,000
+With this attribute, you can specify things like the data format string
+
+101
+00:06:46,000 --> 00:06:49,000
+that should be applied that's quite useful when you want
+
+102
+00:06:49,000 --> 00:06:52,000
+to format numbers and dates for display.
+
+103
+00:06:52,000 --> 00:07:00,000
+For this one, what I could do is say that the NullDisplayText perhaps is anonymous.
+
+104
+00:07:00,000 --> 00:07:06,000
+We don't know who the user is and it always helps when I spell that correctly.
+
+105
+00:07:06,000 --> 00:07:11,000
+And now, let me do a build and come back out and refresh this page.
+
+106
+00:07:11,000 --> 00:07:17,000
+And we can see that Reviewer Name has changed to User Name.
+
+107
+00:07:17,000 --> 00:07:22,000
+And if I blank out the User Name to get rid of this ugly value that some malicious user put
+
+108
+00:07:22,000 --> 00:07:28,000
+in my database, I can see that User Name displays as anonymous when it has no value.
+
+109
+00:07:28,000 --> 00:07:32,000
+When I go into Edit it, I see the real value that's there which is empty,
+
+110
+00:07:32,000 --> 00:07:35,000
+it's just when we use the display for helper,
+
+111
+00:07:35,000 --> 00:07:40,000
+it's going to use that null value display text in place of a null string.
+
+112
+00:07:40,000 --> 00:07:45,000
+Again, there's many more Display attributes they can use, if you just want to poke around inside
+
+113
+00:07:45,000 --> 00:07:49,000
+of the System.ComponentModel.DataAnnotations name space,
+
+114
+00:07:49,000 --> 00:59:00,000
+I think you'll find a number of useful attributes in there.
+

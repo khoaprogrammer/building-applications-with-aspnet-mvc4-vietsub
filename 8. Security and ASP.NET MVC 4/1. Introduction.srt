@@ -1,0 +1,48 @@
+1
+00:00:02,000 --> 00:00:03,000
+Hi. This is Scott Allen.
+
+2
+00:00:03,000 --> 00:00:07,000
+In this module is we'll look at the security features of ASP.NET MVC.
+
+3
+00:00:07,000 --> 00:00:13,000
+In this module I want to show you how to work with users and roles and also how to use OpenID
+
+4
+00:00:13,000 --> 00:00:17,000
+and OAuth so your customers can sign in to your website using a third party
+
+5
+00:00:17,000 --> 00:00:19,000
+like Microsoft, Google, or Facebook.
+
+6
+00:00:19,000 --> 00:00:21,000
+I also want to show you some of the attacks that you'll face
+
+7
+00:00:21,000 --> 00:00:24,000
+if you deploy an application on a web server.
+
+8
+00:00:24,000 --> 00:00:26,000
+So we'll look at cross-site request forgeries
+
+9
+00:00:26,000 --> 00:00:30,000
+and how to make your application resist such an attack.
+
+10
+00:00:30,000 --> 00:00:35,000
+We'll start by looking at authentication and see how we can use Windows Integrated Authentication
+
+11
+00:00:35,000 --> 00:00:40,000
+for internet style apps and forms-based authentication for web applications.
+
+12
+00:00:40,000 --> 00:59:00,000
+( Pause )
+

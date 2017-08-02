@@ -1,0 +1,524 @@
+1
+00:00:01,000 --> 00:00:06,000
+Libraries like jQuery and Modernizr are libraries that you typically use everywhere
+
+2
+00:00:06,000 --> 00:00:10,000
+in an application, which means you need a script reference on every page.
+
+3
+00:00:10,000 --> 00:00:13,000
+And as we've learned, it is the Layout views that are the place to go
+
+4
+00:00:13,000 --> 00:00:15,000
+when you have some common markup that you want on every page.
+
+5
+00:00:15,000 --> 00:00:18,000
+This application only has one Layout view.
+
+6
+00:00:18,000 --> 00:00:19,000
+It's in the Shared folder.
+
+7
+00:00:19,000 --> 00:00:21,000
+It's called _Layout.
+
+8
+00:00:21,000 --> 00:00:26,000
+And at the very top of the Layout view, you can see a call to Script.Render.
+
+9
+00:00:26,000 --> 00:00:28,000
+And this somehow involves Modernizr.
+
+10
+00:00:28,000 --> 00:00:32,000
+Before we talk about the details of Scripts.Render, let me just assure you,
+
+11
+00:00:32,000 --> 00:00:37,000
+this will put a script tag referencing the Modernizr JavaScript library into the top
+
+12
+00:00:37,000 --> 00:00:42,000
+of the page here, inside of the head tag.
+
+13
+00:00:42,000 --> 00:00:47,000
+It is important to include some JavaScript libraries at the top of a page.
+
+14
+00:00:47,000 --> 00:00:48,000
+This is true for Modernizr.
+
+15
+00:00:48,000 --> 00:00:52,000
+Modernizr needs to start executing before the rest of your HTML goes to the client.
+
+16
+00:00:52,000 --> 00:00:57,000
+As we talked about in the first module of the course, Modernizr will make sure older browser
+
+17
+00:00:57,000 --> 00:01:01,000
+like IE6 are prepared to work with a new HTML5 elements like nav
+
+18
+00:01:01,000 --> 00:01:04,000
+and section which appear in this page.
+
+19
+00:01:04,000 --> 00:01:08,000
+And to do this, Modernizr has to start executing before those elements appear.
+
+20
+00:01:08,000 --> 00:01:12,000
+Other libraries and scripts don't need to appear at the top of every page.
+
+21
+00:01:12,000 --> 00:01:15,000
+You can instead include them at the bottom of a page.
+
+22
+00:01:15,000 --> 00:01:19,000
+And if we come down to the bottom of the Layout view, we can see another call to Script.Render.
+
+23
+00:01:19,000 --> 00:01:22,000
+This one somehow involves jQuery.
+
+24
+00:01:22,000 --> 00:01:25,000
+When possible, you should add scripts to the bottom of the page
+
+25
+00:01:25,000 --> 00:01:27,000
+because it can make a page perform better, or at least,
+
+26
+00:01:27,000 --> 00:01:31,000
+it looks like the page is performing better because the browser doesn't have to block
+
+27
+00:01:31,000 --> 00:01:34,000
+as it downloads the script and executes the code inside.
+
+28
+00:01:34,000 --> 00:01:38,000
+Web browsers tend to bring everything else to a halt when they encounter a script tag.
+
+29
+00:01:38,000 --> 00:01:42,000
+But by placing scripts at the bottom, we get more content to the client
+
+30
+00:01:42,000 --> 00:01:45,000
+as the HTML images will start to display and then finally,
+
+31
+00:01:45,000 --> 00:01:48,000
+the browsers sees the scripts and loads them at the end.
+
+32
+00:01:48,000 --> 00:01:52,000
+And now, let's go to the question of what is Scripts.Render doing?
+
+33
+00:01:52,000 --> 00:01:55,000
+And for that matter, what is Styles.Render doing?
+
+34
+00:01:55,000 --> 00:01:58,000
+Because it turns out, these two calls are closely related.
+
+35
+00:01:58,000 --> 00:02:03,000
+They both rely on new features and ASP.NET that can bundle and minify files for you.
+
+36
+00:02:03,000 --> 00:02:06,000
+Scripts.Render can give you a minified job script bundle.
+
+37
+00:02:06,000 --> 00:02:10,000
+Style.Render can give you a minified bundle of style sheets.
+
+38
+00:02:10,000 --> 00:02:12,000
+What's a bundle, you might ask.
+
+39
+00:02:12,000 --> 00:02:16,000
+Well, another way to boost the performance of a webpage is to combine files together,
+
+40
+00:02:16,000 --> 00:02:19,000
+so a browser doesn't need to download as many resources.
+
+41
+00:02:19,000 --> 00:02:22,000
+For example, if you have three style sheets to include in a page,
+
+42
+00:02:22,000 --> 00:02:25,000
+you might want to bundle them together into a single style sheet
+
+43
+00:02:25,000 --> 00:02:29,000
+so the browser only downloads one file instead of three.
+
+44
+00:02:29,000 --> 00:02:33,000
+But, during development, it's often nice to have three separate files.
+
+45
+00:02:33,000 --> 00:02:36,000
+They're probably creative for different purposes and it's easy to find
+
+46
+00:02:36,000 --> 00:02:39,000
+and maintain the code when it's nicely separated.
+
+47
+00:02:39,000 --> 00:02:41,000
+That provides a bit of tension because we went three files
+
+48
+00:02:41,000 --> 00:02:44,000
+for development, but a single file for download.
+
+49
+00:02:44,000 --> 00:02:47,000
+And this is where the bundling feature in ASP.NET steps
+
+50
+00:02:47,000 --> 00:02:51,000
+in because it can dynamically bundle files together at runtime.
+
+51
+00:02:51,000 --> 00:02:56,000
+To see this, let's open up the Global.asax.cs file, look in our friend,
+
+52
+00:02:56,000 --> 00:03:02,000
+the application start event where we can see a call in here to BundleConfig.RegisterBundles.
+
+53
+00:03:02,000 --> 00:03:06,000
+Up at the cursor there, and strike the F12 key to open that file up.
+
+54
+00:03:06,000 --> 00:03:08,000
+And here we arrive inside of a class
+
+55
+00:03:08,000 --> 00:03:11,000
+that is building various style bundles and script bundles.
+
+56
+00:03:11,000 --> 00:03:13,000
+There are two parts to a bundle.
+
+57
+00:03:13,000 --> 00:03:16,000
+First, you give the bundle a virtual path to reach the bundle.
+
+58
+00:03:16,000 --> 00:03:20,000
+In other words, if I open up a browser and come to this URL,
+
+59
+00:03:20,000 --> 00:03:24,000
+I'll receive all the files that are included in the bundle.
+
+60
+00:03:24,000 --> 00:03:29,000
+This is also the path or the identifier you use when you reference a bundle and want
+
+61
+00:03:29,000 --> 00:03:34,000
+to render it using Scripts.Render or Styles.Render.
+
+62
+00:03:34,000 --> 00:03:38,000
+The files that are included in the bundle are listed with calls to include
+
+63
+00:03:38,000 --> 00:03:40,000
+and you might want to include one file.
+
+64
+00:03:40,000 --> 00:03:43,000
+You can certainly have a one file bundle.
+
+65
+00:03:43,000 --> 00:03:45,000
+But you can also include multiple files.
+
+66
+00:03:45,000 --> 00:03:47,000
+You can specify a full name here.
+
+67
+00:03:47,000 --> 00:03:52,000
+You can also specify a place holder for a version number and you can use wild cards.
+
+68
+00:03:52,000 --> 00:03:56,000
+For instance, the first script bundle here that is basically including jQuery is going
+
+69
+00:03:56,000 --> 00:03:58,000
+to have a placeholder for the version.
+
+70
+00:03:58,000 --> 00:04:05,000
+That means if I upgrade jQuery from -1.7.1 to -1.8.0,
+
+71
+00:04:05,000 --> 00:04:08,000
+I don't need to come in and change my C# code.
+
+72
+00:04:08,000 --> 00:04:12,000
+The script bundle will automatically pick up the latest version from the file system,
+
+73
+00:04:12,000 --> 00:04:15,000
+whatever is in my Scripts folder, and it's smart enough to distinguish
+
+74
+00:04:15,000 --> 00:04:19,000
+between IntelliSense files, minified files, and unminified files.
+
+75
+00:04:19,000 --> 00:04:23,000
+So even though we have three versions of that core jQuery library, the IntelliSense,
+
+76
+00:04:23,000 --> 00:04:27,000
+the minified and the regular file, it's only going to pick the one that it needs
+
+77
+00:04:27,000 --> 00:04:29,000
+and it won't include jQuery more than once.
+
+78
+00:04:29,000 --> 00:04:32,000
+You can also use wild cards.
+
+79
+00:04:32,000 --> 00:04:37,000
+So down here in the jQuery validation bundle, you can see a call to jquery.unobtrusive,
+
+80
+00:04:37,000 --> 00:04:41,000
+that means go out and find all the files that start with jquery.unobtrusive.
+
+81
+00:04:41,000 --> 00:04:45,000
+But again, it's going to be smart enough not to include both the minified
+
+82
+00:04:45,000 --> 00:04:49,000
+and the unminified file, it can distinguish between those two.
+
+83
+00:04:49,000 --> 00:04:52,000
+So the first bundle, the jQuery bundle, that's a bundle of one file.
+
+84
+00:04:52,000 --> 00:04:55,000
+And that's okay because in bundling will add some other features to this,
+
+85
+00:04:55,000 --> 00:04:58,000
+it can minify files that aren't minified.
+
+86
+00:04:58,000 --> 00:05:02,000
+In the jQuery validation bundle, that's going to include at least two files,
+
+87
+00:05:02,000 --> 00:05:06,000
+jquery.unobtrusive and jquery.validate.
+
+88
+00:05:06,000 --> 00:05:09,000
+Once you've created a bundle which includes all of the files that you need,
+
+89
+00:05:09,000 --> 00:05:17,000
+you render it in markup using Scripts.Render or Styles.Render as we saw on the Layout view.
+
+90
+00:05:17,000 --> 00:05:19,000
+And you can see, it is using that virtual path,
+
+91
+00:05:19,000 --> 00:05:22,000
+that identifier that you selected for the bundle.
+
+92
+00:05:22,000 --> 00:05:27,000
+And I call it a virtual path because there's not really a file at that location.
+
+93
+00:05:27,000 --> 00:05:31,000
+But the MVC runtime is smart enough to intercept that request and route it through the bundling
+
+94
+00:05:31,000 --> 00:05:34,000
+and minification pictures here which will served up the files you need.
+
+95
+00:05:34,000 --> 00:05:39,000
+So once you've created a bundle, you render Scripts.Render or Styles.Render.
+
+96
+00:05:39,000 --> 00:05:44,000
+And these methods will behave differently depending on your application configuration.
+
+97
+00:05:44,000 --> 00:05:49,000
+So for example, back in Bundle.Config, there was a StyleBundle to find
+
+98
+00:05:49,000 --> 00:05:52,000
+for all of the jQuery UI style sheets.
+
+99
+00:05:52,000 --> 00:05:55,000
+You can see those quite a few of them because they factor them out based on features.
+
+100
+00:05:55,000 --> 00:05:58,000
+If you wand to use just a dialog, then all you need
+
+101
+00:05:58,000 --> 00:06:01,000
+to do is include the core style sheet and the dialog style sheet.
+
+102
+00:06:01,000 --> 00:06:05,000
+But if you use everything, you'd want to include all these style sheets.
+
+103
+00:06:05,000 --> 00:06:09,000
+I'm going to take this bundle and render it from the Layout view
+
+104
+00:06:09,000 --> 00:06:12,000
+because eventually we will be using jQuery UI.
+
+105
+00:06:12,000 --> 00:06:20,000
+So I just need to add a call to Styles.Render and pass that path in.
+
+106
+00:06:20,000 --> 00:06:23,000
+And now, let's run the application.
+
+107
+00:06:23,000 --> 00:06:26,000
+And I'll do a View Source.
+
+108
+00:06:26,000 --> 00:06:32,000
+And you can see, with my single call to Styles.Render,
+
+109
+00:06:32,000 --> 00:06:37,000
+I omitted a link for each style sheet into the page, almost 12 links or exactly 12 links.
+
+110
+00:06:37,000 --> 00:06:40,000
+So it added a style sheet link for every file in the bundle.
+
+111
+00:06:40,000 --> 00:06:44,000
+You might think that's not much of a bundling feature if we have individual links,
+
+112
+00:06:44,000 --> 00:06:47,000
+or certainly not combining things into a single download.
+
+113
+00:06:47,000 --> 00:06:50,000
+But this is because we are running the application in debug mode.
+
+114
+00:06:50,000 --> 00:06:53,000
+And in debug mode, you'll find it easier to debug scripts and styles
+
+115
+00:06:53,000 --> 00:06:57,000
+when they are not bundled up into a single download.
+
+116
+00:06:57,000 --> 00:07:01,000
+However, if I come over into the Web.config file, we can change how we're running.
+
+117
+00:07:01,000 --> 00:07:05,000
+I just need to find the debug setting which is right here at the top.
+
+118
+00:07:05,000 --> 00:07:09,000
+We'll change it from true to false so that we're running in release mode.
+
+119
+00:07:09,000 --> 00:07:15,000
+And I'll run the application again, and do a View Source.
+
+120
+00:07:15,000 --> 00:07:22,000
+And now, you can see there is a single link tag admitted since we're in a release mode.
+
+121
+00:07:22,000 --> 00:07:28,000
+And if I were to take this URL and place it into the browser to download this directly,
+
+122
+00:07:28,000 --> 00:07:34,000
+it will all get back as a css file, let's open it in Notepad.
+
+123
+00:07:34,000 --> 00:07:40,000
+And that's all of the css from all 12 of those files combined into a single file.
+
+124
+00:07:40,000 --> 00:07:43,000
+It's also been minified, so it's been made as small as possible.
+
+125
+00:07:43,000 --> 00:07:47,000
+There's no white space or comments to make this a larger download.
+
+126
+00:07:47,000 --> 00:07:51,000
+This bundling and minification features then can really decrease the amount of time needed
+
+127
+00:07:51,000 --> 00:07:53,000
+to load a page, and they're easy to use.
+
+128
+00:07:53,000 --> 00:07:56,000
+We'll be using them in this application as we send more scripts to the client just
+
+129
+00:07:56,000 --> 00:07:59,000
+by defining the new bundles and using Scripts.Render
+
+130
+00:07:59,000 --> 00:08:02,000
+to put those scripts in the client.
+
+131
+00:08:02,000 --> 00:59:00,000
+( Pause )
+

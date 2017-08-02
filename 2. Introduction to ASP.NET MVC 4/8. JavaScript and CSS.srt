@@ -1,0 +1,140 @@
+1
+00:00:02,000 --> 00:00:06,000
+So far, we've started to see how views, models and controllers work together
+
+2
+00:00:06,000 --> 00:00:10,000
+and we've also seen how you see this to write unit test for an MVC application.
+
+3
+00:00:10,000 --> 00:00:15,000
+But I also mentioned earlier that another goal of the MVC framework is to embrace the web
+
+4
+00:00:15,000 --> 00:00:22,000
+and that means being able to use standard web technologies like HTML 5, JavaScript, and CSS 3.
+
+5
+00:00:22,000 --> 00:00:25,000
+We've already seen a bit about how to work with HTML.
+
+6
+00:00:25,000 --> 00:00:30,000
+We know the razor views that are in our views folder emit this HTML and we've already seen
+
+7
+00:00:30,000 --> 00:00:33,000
+that the project does set up to use HTML 5.
+
+8
+00:00:33,000 --> 00:00:36,000
+But there's a couple of other folders we haven't looked at yet,
+
+9
+00:00:36,000 --> 00:00:39,000
+the scripts folder and the content folder.
+
+10
+00:00:39,000 --> 00:00:42,000
+Inside of the scripts folder you'll find JavaScript files.
+
+11
+00:00:42,000 --> 00:00:46,000
+The JavaScript files here include the popular jQuery library as well
+
+12
+00:00:46,000 --> 00:00:50,000
+as some other jQuery plug ins we'll be using later in this course,
+
+13
+00:00:50,000 --> 00:00:53,000
+plugins like jQuery validation and jQuery UI.
+
+14
+00:00:53,000 --> 00:00:57,000
+And the content you will find the CSS style sheet for this site.
+
+15
+00:00:57,000 --> 00:01:02,000
+This file site dot CSS is the file that's responsible for all the color
+
+16
+00:01:02,000 --> 00:01:05,000
+and font choices that you see in the application.
+
+17
+00:01:05,000 --> 00:01:09,000
+Let me make some basic changes to the body style here and see how that's reflected
+
+18
+00:01:09,000 --> 00:01:17,000
+in the application instead of a white background color, let's go with 3, 3, 3, and instead this
+
+19
+00:01:17,000 --> 00:01:19,000
+or that color let's change that over to white.
+
+20
+00:01:19,000 --> 00:01:22,000
+So essentially we're flipping the background and foreground colors.
+
+21
+00:01:22,000 --> 00:01:28,000
+And now once I save that file and refresh this page, you can see that influence is how
+
+22
+00:01:28,000 --> 00:01:31,000
+at least that top of the page displays.
+
+23
+00:01:31,000 --> 00:01:36,000
+But let me make a few more tweaks to that file and come right back.
+
+24
+00:01:36,000 --> 00:01:39,000
+Now I finished making a few tweaks to my CSS file.
+
+25
+00:01:39,000 --> 00:01:41,000
+And I've and added an image to the project.
+
+26
+00:01:41,000 --> 00:01:44,000
+And this is what the applications looks like now.
+
+27
+00:01:44,000 --> 00:01:48,000
+It's still not the prettiest application in the world but this is what we're going to be working
+
+28
+00:01:48,000 --> 00:01:49,000
+on throughout the rest of the course.
+
+29
+00:01:49,000 --> 00:01:53,000
+And hopefully we'll be adding features and making look it better.
+
+30
+00:01:53,000 --> 00:01:56,000
+If you are interested in looking at the source code for this project,
+
+31
+00:01:56,000 --> 00:02:01,000
+just go to odetofoodmvc4.codeplex.com.
+
+32
+00:02:01,000 --> 00:02:05,000
+From here you can come into the source code tab.
+
+33
+00:02:05,000 --> 00:02:09,000
+And from in the source code section you can download the latest source code.
+
+34
+00:02:09,000 --> 00:02:13,000
+You can also click this History link and go back and see what the code look
+
+35
+00:02:13,000 --> 00:59:00,000
+like at specific point in time like this point in time with the first video is nearly over.
+

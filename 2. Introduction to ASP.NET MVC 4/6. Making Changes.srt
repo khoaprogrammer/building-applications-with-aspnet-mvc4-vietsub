@@ -1,0 +1,664 @@
+1
+00:00:00,000 --> 00:00:07,000
+Let's look at the details of what happens when we click on the about link in our application.
+
+2
+00:00:07,000 --> 00:00:10,000
+The browser is going to send off a request to slash home slash about
+
+3
+00:00:10,000 --> 00:00:14,000
+and that request will reach our development web server here on the local host
+
+4
+00:00:14,000 --> 00:00:18,000
+which is this machine and that request will be received by IIS Express.
+
+5
+00:00:18,000 --> 00:00:21,000
+IIS Express is running and it's in the background.
+
+6
+00:00:21,000 --> 00:00:25,000
+You can see it if you go to the system tray area of the task bar.
+
+7
+00:00:25,000 --> 00:00:27,000
+Sometimes it hides itself here because it's shy.
+
+8
+00:00:27,000 --> 00:00:31,000
+But if you click on the little arrow, you can see that the icon looks
+
+9
+00:00:31,000 --> 00:00:35,000
+like stacked blue pizza boxes and I can right click it to see more details
+
+10
+00:00:35,000 --> 00:00:38,000
+like show me all the applications that you're currently running.
+
+11
+00:00:38,000 --> 00:00:44,000
+I can see it's running my OdeToFood application and it's running it on port 56470.
+
+12
+00:00:44,000 --> 00:00:46,000
+That's just a temporary port used for development.
+
+13
+00:00:46,000 --> 00:00:53,000
+ISS express is going to take that request and deliver it to my MVC application.
+
+14
+00:00:53,000 --> 00:00:58,000
+Inside of every MVC application, there is a routing engine which takes request and tries
+
+15
+00:00:58,000 --> 00:01:00,000
+to deliver them to the proper component.
+
+16
+00:01:00,000 --> 00:01:03,000
+We'll look at the routing API in the next module, but for now you're just going to have
+
+17
+00:01:03,000 --> 00:01:07,000
+to trust me when I tell you that the request ultimately ends up inside
+
+18
+00:01:07,000 --> 00:01:10,000
+of a class that's inside of the controllers folder.
+
+19
+00:01:10,000 --> 00:01:16,000
+In fact, it ends up in a class called home controller because by default a request
+
+20
+00:01:16,000 --> 00:01:21,000
+for slash home something will come to the home controller and a request for slash home slash
+
+21
+00:01:21,000 --> 00:01:26,000
+about will end up inside of this about method inside of the home controller.
+
+22
+00:01:26,000 --> 00:01:29,000
+So you can see there is a naming convention in play here.
+
+23
+00:01:29,000 --> 00:01:33,000
+Where if you just name things correctly, request will find their way to the proper place
+
+24
+00:01:33,000 --> 00:01:39,000
+and this isn't the only scenario where naming conventions play a role in MVC.
+
+25
+00:01:39,000 --> 00:01:41,000
+The about method doesn't have much work to do
+
+26
+00:01:41,000 --> 00:01:45,000
+and by the way we may call this an action in ASP.NET MVC.
+
+27
+00:01:45,000 --> 00:01:48,000
+So the public method inside of a controller are actions.
+
+28
+00:01:48,000 --> 00:01:51,000
+This action doesn't have much work to do.
+
+29
+00:01:51,000 --> 00:01:53,000
+It's not even really building a model.
+
+30
+00:01:53,000 --> 00:01:56,000
+But let me put a break point here by clicking out to the left
+
+31
+00:01:56,000 --> 00:01:59,000
+of the editor window and getting that little red dot.
+
+32
+00:01:59,000 --> 00:02:00,000
+Now, we can run it with the debugger
+
+33
+00:02:00,000 --> 00:02:05,000
+and see execution actually pause here when I click on the about link.
+
+34
+00:02:05,000 --> 00:02:07,000
+The debuggers are a great way to step through your code
+
+35
+00:02:07,000 --> 00:02:10,000
+and see what it's doing and inspecting variable values.
+
+36
+00:02:10,000 --> 00:02:14,000
+Let me click on about and you can see we hit this breakpoint.
+
+37
+00:02:14,000 --> 00:02:21,000
+And now I can press F10 to step through code one line at a time.
+
+38
+00:02:21,000 --> 00:02:24,000
+I can hover over things to view their values and so forth.
+
+39
+00:02:24,000 --> 00:02:28,000
+The line of code we're on now is about to return a view.
+
+40
+00:02:28,000 --> 00:02:33,000
+A view is one type of action result that you can return from an action
+
+41
+00:02:33,000 --> 00:02:35,000
+that tells the MVC framework what to do next.
+
+42
+00:02:35,000 --> 00:02:39,000
+Maybe you want to redirect the user or maybe you want to return some data
+
+43
+00:02:39,000 --> 00:02:41,000
+in a format for JavaScript to consume it.
+
+44
+00:02:41,000 --> 00:02:44,000
+Returning a view is telling the MVC framework that the next thing you want
+
+45
+00:02:44,000 --> 00:02:49,000
+to do is render a view, but what view will the MVC framework render?
+
+46
+00:02:49,000 --> 00:02:52,000
+Well there is also a naming convention in play here too.
+
+47
+00:02:52,000 --> 00:02:57,000
+The MVC framework is going to look inside of the views folder of this application.
+
+48
+00:02:57,000 --> 00:03:00,000
+Notice there is a folder called home that matches the controller I'm in,
+
+49
+00:03:00,000 --> 00:03:03,000
+that home controller without the controller pat of it.
+
+50
+00:03:03,000 --> 00:03:07,000
+But these are the views for the home controller and if I expand that,
+
+51
+00:03:07,000 --> 00:03:12,000
+I can see there is a view called about, that matches the action that I'm inside of.
+
+52
+00:03:12,000 --> 00:03:18,000
+The about action of the home controller and if I open this, what we'll see is the information
+
+53
+00:03:18,000 --> 00:03:27,000
+that is pretty much what we'll see if I hit F5 to continue and let this view render.
+
+54
+00:03:27,000 --> 00:03:33,000
+This about view has a dot CSHTML extension that is just the default extension for Razor views.
+
+55
+00:03:33,000 --> 00:03:37,000
+Notice that that view that appears on the left hand side doesn't include everything
+
+56
+00:03:37,000 --> 00:03:39,000
+that you see in the browser.
+
+57
+00:03:39,000 --> 00:03:43,000
+It doesn't include the text, your logo here or the register link or the log
+
+58
+00:03:43,000 --> 00:03:45,000
+on link or home about and contact.
+
+59
+00:03:45,000 --> 00:03:51,000
+It really just includes the content that is specific to this about action.
+
+60
+00:03:51,000 --> 00:03:55,000
+All these other pieces including the copyright at the bottom, those are things that we need
+
+61
+00:03:55,000 --> 00:03:58,000
+to appear on every page in this application.
+
+62
+00:03:58,000 --> 00:04:03,000
+So, they have been factored out of the individual views like about dot CSHTML.
+
+63
+00:04:03,000 --> 00:04:08,000
+We'll see how to build what's known as a lay out view that contain all that common mark up.
+
+64
+00:04:08,000 --> 00:04:12,000
+For now, what I want to focus on is just how do I deliver additional information
+
+65
+00:04:12,000 --> 00:04:16,000
+from the controller to this view and then have it displayed on this page.
+
+66
+00:04:16,000 --> 00:04:22,000
+So, let me stop debugging and come back into the home controller
+
+67
+00:04:22,000 --> 00:04:25,000
+and we'll make some changes here inside of about.
+
+68
+00:04:25,000 --> 00:04:28,000
+There is a couple of different ways to get information to the view.
+
+69
+00:04:28,000 --> 00:04:33,000
+One approach is to use the approach that we see here in the about action and that's simply
+
+70
+00:04:33,000 --> 00:04:36,000
+to put information inside of the ViewBag.
+
+71
+00:04:36,000 --> 00:04:39,000
+ViewBag is a dynamically typed object in C sharp.
+
+72
+00:04:39,000 --> 00:04:43,000
+That means you can add any sort of property to the ViewBag and it will be available inside
+
+73
+00:04:43,000 --> 00:04:46,000
+of the view to pull out and retrieve and display.
+
+74
+00:04:46,000 --> 00:04:49,000
+That's currently what's happening with this message property.
+
+75
+00:04:49,000 --> 00:04:57,000
+So it could also say something like ViewBag.Location equals Maryland
+
+76
+00:04:57,000 --> 00:05:01,000
+and the United States of America and do a build
+
+77
+00:05:01,000 --> 00:05:04,000
+and that value will be available inside of ViewBag also.
+
+78
+00:05:04,000 --> 00:05:08,000
+If I want to display that, I could come into about dot CSHTML
+
+79
+00:05:08,000 --> 00:05:16,000
+and let's remove what is currently inside of here and come up.
+
+80
+00:05:16,000 --> 00:05:21,000
+We're already displaying ViewBag.Message inside of an h2 tag so let me just have a div
+
+81
+00:05:21,000 --> 00:05:28,000
+that says location is at ViewBag.Location.
+
+82
+00:05:28,000 --> 00:05:33,000
+The amp sign is a way to tell the razor view engine here is a C sharp expression.
+
+83
+00:05:33,000 --> 00:05:38,000
+I want you to evaluate it and take the result and write it into the response right here
+
+84
+00:05:38,000 --> 00:05:40,000
+where I'm placing this particular expression.
+
+85
+00:05:40,000 --> 00:05:46,000
+So by having that in place there and saving the view, I should be able to come back
+
+86
+00:05:46,000 --> 00:05:54,000
+out to the browser and refresh and see that we now have location mailed in the USA.
+
+87
+00:05:54,000 --> 00:05:59,000
+So this is one approach that a controller can use to pass along information to a view
+
+88
+00:05:59,000 --> 00:06:00,000
+but let's look at a different approach,
+
+89
+00:06:00,000 --> 00:06:07,000
+an approach using what we call a strongly typed model.
+
+90
+00:06:07,000 --> 00:06:11,000
+Every MVC project will start with a models folder inside.
+
+91
+00:06:11,000 --> 00:06:15,000
+You can use this folder when you create new models for your application.
+
+92
+00:06:15,000 --> 00:06:18,000
+Although in reality, models can live anywhere even in a different project
+
+93
+00:06:18,000 --> 00:06:20,000
+that you reference from this project.
+
+94
+00:06:20,000 --> 00:06:22,000
+But we use the models folder for now.
+
+95
+00:06:22,000 --> 00:06:24,000
+All I need to do is right click this.
+
+96
+00:06:24,000 --> 00:06:28,000
+I want to add a new class.
+
+97
+00:06:28,000 --> 00:06:30,000
+I'll call this the about model.
+
+98
+00:06:30,000 --> 00:06:33,000
+And we'll keep things very simple.
+
+99
+00:06:33,000 --> 00:06:35,000
+This is a class, I'm just going to give it two properties.
+
+100
+00:06:35,000 --> 00:06:40,000
+I'll add them using a code snippet in Visual Studio so I can just type P-R-O-P
+
+101
+00:06:40,000 --> 00:06:45,000
+and hit tab twice that will expand out to a property.
+
+102
+00:06:45,000 --> 00:06:47,000
+I'll give the first property a type of string.
+
+103
+00:06:47,000 --> 00:06:52,000
+We will call this property name and I'll give us another property.
+
+104
+00:06:52,000 --> 00:06:56,000
+This one also type string will include the location.
+
+105
+00:06:56,000 --> 00:07:01,000
+And let's say that this about model represents everything that we want to show
+
+106
+00:07:01,000 --> 00:07:03,000
+when the user visits the about page.
+
+107
+00:07:03,000 --> 00:07:09,000
+So what I'll need to do is come into the HomeController and instead of using the ViewBag,
+
+108
+00:07:09,000 --> 00:07:14,000
+I'll declare a new instance of our about model.
+
+109
+00:07:14,000 --> 00:07:17,000
+The about model isn't a different name space that I'm currently in.
+
+110
+00:07:17,000 --> 00:07:21,000
+So for this to be legal C sharp code, I need to include the name space
+
+111
+00:07:21,000 --> 00:07:24,000
+that this is defined in which is OdeToFood.Models.
+
+112
+00:07:24,000 --> 00:07:31,000
+An easy way to do that is just to use this drop down menu here that's sometimes hard
+
+113
+00:07:31,000 --> 00:07:36,000
+to get a hold of, and click on this to add the using for OdeToFood.Models.
+
+114
+00:07:36,000 --> 00:07:41,000
+A quick way to do this is when your cursor is on that unexpected identifier.
+
+115
+00:07:41,000 --> 00:07:42,000
+Just hold down the control key and hit period.
+
+116
+00:07:42,000 --> 00:07:46,000
+That will drop down the menu then select it using enter.
+
+117
+00:07:46,000 --> 00:07:52,000
+That adds the using statement for me and we now have legal C sharp code.
+
+118
+00:07:52,000 --> 00:07:55,000
+Now, usually when you build a model, you need to do some sort
+
+119
+00:07:55,000 --> 00:07:57,000
+of data access or some calculations.
+
+120
+00:07:57,000 --> 00:07:59,000
+But right now, we'll just counter up something.
+
+121
+00:07:59,000 --> 00:08:02,000
+We'll save the data access stuff for later.
+
+122
+00:08:02,000 --> 00:08:05,000
+I'll give this a name, you can use your name and I will say
+
+123
+00:08:05,000 --> 00:08:11,000
+that my location is still Maryland in the United States.
+
+124
+00:08:11,000 --> 00:08:16,000
+And now that the model is complete, I can tell the MVC framework
+
+125
+00:08:16,000 --> 00:08:20,000
+that when it renders this view, you use this model.
+
+126
+00:08:20,000 --> 00:08:24,000
+So pass this model along to the view.
+
+127
+00:08:24,000 --> 00:08:27,000
+The next step would then be to modify the view to use this new model.
+
+128
+00:08:27,000 --> 00:08:31,000
+So let me come into the About.cshtml view.
+
+129
+00:08:31,000 --> 00:08:36,000
+The first thing I'll do up here at the top is tell the view about this model.
+
+130
+00:08:36,000 --> 00:08:41,000
+So I'm going to use what's known as a directive which is at model and that's a lower case M,
+
+131
+00:08:41,000 --> 00:08:44,000
+very important that you use the lower case M here,
+
+132
+00:08:44,000 --> 00:08:50,000
+tell it that the model it should expect will be an instance of about model.
+
+133
+00:08:50,000 --> 00:08:55,000
+And again in order for the name space to work, I'll have to hit control period and drop down
+
+134
+00:08:55,000 --> 00:08:59,000
+and say that this isn't OdeToFood.Models.AboutModel,
+
+135
+00:08:59,000 --> 00:09:01,000
+in this case it doesn't add a using statement,
+
+136
+00:09:01,000 --> 00:09:06,000
+just adds the pooling name space qualified type name which is just fun.
+
+137
+00:09:06,000 --> 00:09:12,000
+And now instead of going to ViewBag which we never knew quite what is in ViewBag.
+
+138
+00:09:12,000 --> 00:09:15,000
+There could be a message property, there might not be a message property.
+
+139
+00:09:15,000 --> 00:09:20,000
+Instead of using ViewBag, I will use the model property of this view.
+
+140
+00:09:20,000 --> 00:09:23,000
+The model property knows what we're passing in as a model
+
+141
+00:09:23,000 --> 00:09:26,000
+and quite often you can get IntelliSense, let me do a quick build
+
+142
+00:09:26,000 --> 00:09:30,000
+by doing shift control B making sure the project builds,
+
+143
+00:09:30,000 --> 00:09:33,000
+and then maybe when I hit period, I can see the IntelliSense.
+
+144
+00:09:33,000 --> 00:09:36,000
+I can see there is a name, that's what we'll put out here.
+
+145
+00:09:36,000 --> 00:09:39,000
+And I can see there is a location.
+
+146
+00:09:39,000 --> 00:09:44,000
+So, let me switch the server to the model.location just to save everything,
+
+147
+00:09:44,000 --> 00:09:46,000
+do another build, amount and refresh.
+
+148
+00:09:46,000 --> 00:09:51,000
+And we're now building this view using a strongly typed model.
+
+149
+00:09:51,000 --> 00:09:54,000
+And this is a very common approach to MVC development.
+
+150
+00:09:54,000 --> 00:09:57,000
+So, let me just reiterate what we did here.
+
+151
+00:09:57,000 --> 00:10:02,000
+This model property with the capital M at Model that will represent the model object
+
+152
+00:10:02,000 --> 00:10:05,000
+that I passed in to this view from the controller action.
+
+153
+00:10:05,000 --> 00:10:10,000
+And in fact, I told Razor that it should be expecting a model of type about model
+
+154
+00:10:10,000 --> 00:10:14,000
+and now visual studio and Razor and everyone in the world knows
+
+155
+00:10:14,000 --> 00:10:17,000
+that the object it should be receiving is an object of that type
+
+156
+00:10:17,000 --> 00:10:20,000
+that it should have name and location properties.
+
+157
+00:10:20,000 --> 00:10:24,000
+And what we've seen so far is really the essence of MVC, I have a request arrive
+
+158
+00:10:24,000 --> 00:10:28,000
+for slash home slash about that will be delivered by the framework to this
+
+159
+00:10:28,000 --> 00:10:30,000
+about action on my home controller.
+
+160
+00:10:30,000 --> 00:10:34,000
+I build a model, pass it to the default view.
+
+161
+00:10:34,000 --> 00:10:37,000
+When that view renders, it picks apart that model and puts all the pieces
+
+162
+00:10:37,000 --> 00:10:41,000
+in the right location for-- to display correctly to the user.
+
+163
+00:10:41,000 --> 00:10:46,000
+So, I can see this working, but how can I be a little more assured
+
+164
+00:10:46,000 --> 00:10:47,000
+that this will always work for me?
+
+165
+00:10:47,000 --> 00:10:50,000
+That's where unit testing come into play.
+
+166
+00:10:50,000 --> 00:59:00,000
+So, let's look at unit testing with ASP.NET MVC next.
+

@@ -1,0 +1,320 @@
+1
+00:00:02,000 --> 00:00:06,000
+Configuration files for .NET are hierarchical, meaning the configuration
+
+2
+00:00:06,000 --> 00:00:10,000
+for your application is controlled not only by the web.config in your project,
+
+3
+00:00:10,000 --> 00:00:13,000
+but also by configuration files at a higher level.
+
+4
+00:00:13,000 --> 00:00:16,000
+When you're running the MVC application, the configuration starts
+
+5
+00:00:16,000 --> 00:00:18,000
+with a machine level configuration file.
+
+6
+00:00:18,000 --> 00:00:23,000
+That file controls basic settings for all .NET applications that run on the same computer;
+
+7
+00:00:23,000 --> 00:00:28,000
+desktop applications, windows services, and even web applications -- everything.
+
+8
+00:00:28,000 --> 00:00:31,000
+We'll take a look at where this file lives and what's inside in just a minute.
+
+9
+00:00:31,000 --> 00:00:34,000
+There's also a machine level web.config file.
+
+10
+00:00:34,000 --> 00:00:38,000
+We looked at that when we were poking around in the health monitoring settings.
+
+11
+00:00:38,000 --> 00:00:43,000
+It puts in place all the default settings for every ASP.NET application on the machine.
+
+12
+00:00:43,000 --> 00:00:46,000
+And before we get to the web.config that's in our application,
+
+13
+00:00:46,000 --> 00:00:51,000
+we might also have a parent web.config file that we inherit settings from, and that would happen
+
+14
+00:00:51,000 --> 00:00:57,000
+if our application is deployed underneath another ASP.NET web application.
+
+15
+00:00:57,000 --> 00:01:02,000
+These configuration settings then are inherited downwards in the configuration in effect
+
+16
+00:01:02,000 --> 00:01:06,000
+for your application is a combination of all the configuration files.
+
+17
+00:01:06,000 --> 00:01:10,000
+Inside my web.config file I can generally override any settings that might be in place
+
+18
+00:01:10,000 --> 00:01:14,000
+from the machine level config or the machine level web.config file,
+
+19
+00:01:14,000 --> 00:01:18,000
+although administrators do have the option of locking down settings
+
+20
+00:01:18,000 --> 00:01:21,000
+and preventing me from changing a value.
+
+21
+00:01:21,000 --> 00:01:26,000
+Let's take a look at what these configuration files look like.
+
+22
+00:01:26,000 --> 00:01:30,000
+Using Windows Explorer, let's find the machine level configuration file.
+
+23
+00:01:30,000 --> 00:01:36,000
+I need to look on the C drive under windows, under Microsoft.net, framework.
+
+24
+00:01:36,000 --> 00:01:41,000
+And as I mentioned in an earlier module, even though we're running .NET 4.5 we need
+
+25
+00:01:41,000 --> 00:01:45,000
+to look in the version 4 config folder.
+
+26
+00:01:45,000 --> 00:01:48,000
+It's inside of here where we will find the machine level web.config.
+
+27
+00:01:48,000 --> 00:01:50,000
+I can open that up.
+
+28
+00:01:50,000 --> 00:01:53,000
+It's about the most boring configuration file you'll ever see.
+
+29
+00:01:53,000 --> 00:01:56,000
+Most of it is just sections describing the types to use
+
+30
+00:01:56,000 --> 00:01:59,000
+for other configuration sections when they're loaded.
+
+31
+00:01:59,000 --> 00:02:02,000
+But there are some things in here, and there are some things
+
+32
+00:02:02,000 --> 00:02:04,000
+in here that actually apply to ASP.NET.
+
+33
+00:02:04,000 --> 00:02:06,000
+For instance, all the way at the bottom,
+
+34
+00:02:06,000 --> 00:02:11,000
+here's the default membership provider that's configured for all ASP.NET applications.
+
+35
+00:02:11,000 --> 00:02:16,000
+It's the ASPNET sql membership provider, but we're not using this in our application.
+
+36
+00:02:16,000 --> 00:02:20,000
+We have changed the setting in our web.config -- overridden it.
+
+37
+00:02:20,000 --> 00:02:24,000
+Down here at the bottom -- remember we added our own membership section
+
+38
+00:02:24,000 --> 00:02:26,000
+that is using the simple membership provider.
+
+39
+00:02:26,000 --> 00:02:31,000
+So that's an example of changing the defaults that are specified at a higher level.
+
+40
+00:02:31,000 --> 00:02:36,000
+We can also find the root level web.config file here.
+
+41
+00:02:36,000 --> 00:02:39,000
+This is the file that would apply to all ASP.NET web applications
+
+42
+00:02:39,000 --> 00:02:43,000
+that are running version 4 or version 4.5 of .NET.
+
+43
+00:02:43,000 --> 00:02:46,000
+It's inside of here where you can find things like the default authorization rule;
+
+44
+00:02:46,000 --> 00:02:53,000
+will allow all users, even anonymous users into every site unless you tell us otherwise.
+
+45
+00:02:53,000 --> 00:02:58,000
+It's inside of this file where you can also find the default health monitoring rules --
+
+46
+00:02:58,000 --> 00:03:02,000
+we looked at those previously -- the default HTTP handlers;
+
+47
+00:03:02,000 --> 00:03:05,000
+that is like a file with and ASHX extension.
+
+48
+00:03:05,000 --> 00:03:07,000
+What is the handler for that?
+
+49
+00:03:07,000 --> 00:03:11,000
+What class does the .NET runtime need to instantiate to handle that request?
+
+50
+00:03:11,000 --> 00:03:15,000
+And we can also see inside of here some default modules.
+
+51
+00:03:15,000 --> 00:03:19,000
+Modules provide services like implementing our forms authentication,
+
+52
+00:03:19,000 --> 00:03:23,000
+doing checks against the cookie that arrives to see if the user has been authenticated.
+
+53
+00:03:23,000 --> 00:03:26,000
+Also, the routing engine is an HTTP module.
+
+54
+00:03:26,000 --> 00:03:30,000
+It runs in the ASP.NET pipeline and gets to look at every request.
+
+55
+00:03:30,000 --> 00:03:33,000
+That's what an HTTP module can do.
+
+56
+00:03:33,000 --> 00:03:37,000
+So many settings in this root level web.config file, but eventually the settings inside
+
+57
+00:03:37,000 --> 00:03:41,000
+of our own web.config file get to take effect.
+
+58
+00:03:41,000 --> 00:03:43,000
+And these can override the settings like for membership.
+
+59
+00:03:43,000 --> 00:03:48,000
+And we can even inside of our own application have web.config files
+
+60
+00:03:48,000 --> 00:03:51,000
+that override settings for a specific directory.
+
+61
+00:03:51,000 --> 00:03:55,000
+For instance, there's a web.config file in the views folder.
+
+62
+00:03:55,000 --> 00:03:58,000
+This is the web.config file that controls razor configuration.
+
+63
+00:03:58,000 --> 00:04:03,000
+These are the namespaces that are in effect when a razor template is parts and compiled.
+
+64
+00:04:03,000 --> 00:04:06,000
+We added a few custom namespaces here during the course.
+
+65
+00:04:06,000 --> 00:04:08,000
+And there's other interesting things in here too.
+
+66
+00:04:08,000 --> 00:04:09,000
+Like if I scroll down here a little bit,
+
+67
+00:04:09,000 --> 00:04:14,000
+there is an HTTP handler registered essentially saying, if a request arrives here looking
+
+68
+00:04:14,000 --> 00:04:21,000
+for any type of file using any type of HTTP verb -- doesn't matter if it's a get or a post --
+
+69
+00:04:21,000 --> 00:04:24,000
+the component that will handle that is the HTTP not found handler.
+
+70
+00:04:24,000 --> 00:04:29,000
+The HTTP not found handler essentially returns a 404 error to the client.
+
+71
+00:04:29,000 --> 00:04:31,000
+Why are we doing that inside of the views folder?
+
+72
+00:04:31,000 --> 00:04:35,000
+We're doing that because if someone launches a browser and request and file that is
+
+73
+00:04:35,000 --> 00:04:37,000
+in this views folder directly -- like if they typed
+
+74
+00:04:37,000 --> 00:04:44,000
+in localhost/views/home/index.cshtml, we want to return a 404 error.
+
+75
+00:04:44,000 --> 00:04:48,000
+A user shouldn't be able to go directly to a view using a browser.
+
+76
+00:04:48,000 --> 00:04:49,000
+They should go through a controller.
+
+77
+00:04:49,000 --> 00:04:52,000
+It's the controller that gets to select a view.
+
+78
+00:04:52,000 --> 00:04:56,000
+Therefore, we'll just return a 404 if anyone requests a file inside of here directly.
+
+79
+00:04:56,000 --> 00:05:00,000
+And this file is here by default when you start a new MVC application.
+
+80
+00:05:00,000 --> 00:59:00,000
+( Silence )
+
